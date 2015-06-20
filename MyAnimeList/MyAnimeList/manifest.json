@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "MyAnimeList Enhancements",
+    "version": "1.0",
+    "description": "Enhancements for anime list page.",
+    "permissions": [ "http://myanimelist.net/animelist/Ragnarok10" ],
+    "icons": {
+		"48": "icons/icon-48.png",
+		"128": "icons/icon-128.png"
+    },
+	"browser_action": {
+        "default_title": "MyAnimeList Enhancements"
+    },
+	"content_scripts": [ {
+        "js": [ "js/thirdparty/jquery-2.1.4.js", "js/content.js" ],
+        "matches": [ "http://myanimelist.net/animelist/Ragnarok10" ] 
+    } ]
+}
