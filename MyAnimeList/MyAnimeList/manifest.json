@@ -3,7 +3,7 @@
     "name": "MyAnimeList Enhancements",
     "version": "1.0",
     "description": "Enhancements for anime list page.",
-    "permissions": [ "http://myanimelist.net/animelist/Ragnarok10", "http://umal-api.coreyjustinroberts.com/" ],
+    "permissions": [ "http://myanimelist.net/animelist/*" ],
     "icons": {
 		"48": "icons/icon-48.png",
 		"128": "icons/icon-128.png"
@@ -13,6 +13,6 @@
     },
 	"content_scripts": [ {
         "js": [ "js/thirdparty/jquery-2.1.4.js", "js/content.js" ],
-        "matches": [ "http://myanimelist.net/animelist/Ragnarok10" ] 
+        "matches": [ "http://myanimelist.net/animelist/*" ] 
     } ]
 }
