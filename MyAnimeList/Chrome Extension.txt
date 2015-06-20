@@ -1,0 +1,59 @@
+** Features **
+1. Filter by genre ('genres[]')
+2. Add columns for Average Score, Genres, and possibly other non-user-specific data points.
+3. Sorting
+	a. Average Score ('members_score')
+	b. Number of favorites ('favorited_count')
+	c. Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
+	d. Alphabetical sort within another sorting method (secondary sort).
+	e. Reverse sort.
+4. Add a Chrome Extension icon to configure which columns should be added.
+
+----------------------------------------------------------------------------
+** Details **
+* Load all of the anime information using the API ahead of time, and store in in the JavaScript.
+* Probably want to wrap the anime-table and more-div into another div to make reordering them together easy. 
+  - Then store that container for all anime in the JavaScript so they don't need to be retrieved every time.
+* Possibly add a link/button/icon that when clicked/hovered will show all additional information.
+
+----------------------------------------------------------------------------
+** DOM Group anime-table and more-div **
+moreDivs = $('[id^="more"') // Gets all of the 'more' sections for the actual anime.
+animeTables = $('[id^="more"').prev() // Gets all of the anime tables for the actual anime. Needed to insert new column data.
+
+ForEach:
+a = $(animeTables[0])
+b = $(moreDivs[0])
+id = b.attr('id').slice(4)
+a.wrap(function() {
+  return '<div class="chrome-extension-container" data-anime-id="' + id + '"></div>';
+});
+a.parent().append(b)
+
+All Together:
+$('[id^="more"').each(function(index, el) {
+	var moreDiv = $(el);
+	var id = moreDiv.attr('id').slice(4);
+	var animeTable = moreDiv.prev();
+	animeTable.wrap(function() {
+		return '<div class="chrome-extension-container" data-anime-id="' + id + '"></div>';
+	});
+	animeTable.parent().append(moreDiv);
+});
+
+----------------------------------------------------------------------------
+** Ajax command **
+$.ajax({
+ url: 'http://umal-api.coreyjustinroberts.com/1.1/anime/13599',
+ dataType: 'jsonp',
+}).done(function(res) {
+ console.log(res);
+});
+
+Security risk since jsonp inserts a script tag which will execute code if code is returned instead of JSON. Fine if endpoint is trusted. No more risky than including a script tag in HTML.
+
+* Do this for every $('.chrome-extension-container') using the element's 'data-anime-id'.
+
+----------------------------------------------------------------------------
+** Other DOM Stuff **
+$('tr td.table_header').parent() // Gets all rows that really should be the thead row. Needed to insert new column header. Can also be used to get table groups for reverse sorting.
