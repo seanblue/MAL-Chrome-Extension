@@ -8,10 +8,8 @@
 	});
 
 	function run() {
-		console.log('start');
 		wrapAnime();
 		getAnime();
-		console.log('end');
 	}
 
 	function wrapAnime() {
@@ -40,23 +38,24 @@
 	}
 	
 	function loadAnimeDetails(id, container) {
-		$.ajax({
-			url: getApiUrl(id),
-			dataType: 'jsonp',
-			success: function(details) {
-				console.log(details);
-				saveAnimeDetails(id, container, details);
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', getApiUrl(id), true);
+		xhr.onreadystatechange = function(event) {
+			if (xhr.readyState == 4) {
+				var animeDetails = JSON.parse(event.target.response);
+				saveAnimeDetails(id, container, animeDetails);
 			}
-		});
+		}
+		xhr.send();
 	}
 	
 	function getApiUrl(id) {
 		return 'http://umal-api.coreyjustinroberts.com/1.1/anime/' + id;
 	}
 	
-	function saveAnimeDetails(id, container, details) {
+	function saveAnimeDetails(id, el, details) {
 		anime[id] = {
-			'container': container,
+			'el': el,
 			'details': details
 		}
 	}

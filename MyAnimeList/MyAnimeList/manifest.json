@@ -3,7 +3,7 @@
     "name": "MyAnimeList Enhancements",
     "version": "1.0",
     "description": "Enhancements for anime list page.",
-    "permissions": [ "http://myanimelist.net/animelist/Ragnarok10" ],
+    "permissions": [ "http://myanimelist.net/animelist/Ragnarok10", "http://umal-api.coreyjustinroberts.com/" ],
     "icons": {
 		"48": "icons/icon-48.png",
 		"128": "icons/icon-128.png"
