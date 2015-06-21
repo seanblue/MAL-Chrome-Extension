@@ -90,7 +90,13 @@
 		animeDivs.on('click', function(event) {
 			var el = $(this);
 			var id = getId(el);
-				
+			var anime = animeData[id];
+			if (typeof anime === 'undefined') {
+				return;
+			}
+			
+			var details = anime.details;
+			
 			var x = event.pageX;
 			var y = event.pageY;
 			
@@ -99,14 +105,12 @@
 				'top': y
 			});
 			
-			var anime = animeData[id].details;
-						
-			$('.mal-ext-info-title').text(anime.title);
-			$('.mal-ext-info-average').text(anime.members_score);
-			$('.mal-ext-info-rank').text(anime.rank);
-			$('.mal-ext-info-popularity').text(anime.popularity_rank);
+			$('.mal-ext-info-title').text(details.title);
+			$('.mal-ext-info-average').text(details.members_score);
+			$('.mal-ext-info-rank').text(details.rank);
+			$('.mal-ext-info-popularity').text(details.popularity_rank);
 			
-			var genres = anime.genres.join(', ');
+			var genres = details.genres.join(', ');
 			$('.mal-ext-info-genres').text(genres);
 			
 			animeInfoDiv.show();
