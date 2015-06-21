@@ -81,7 +81,7 @@
 	
 	function setupInfoDivContent(animePaddedDiv) {
 		var closeIconPath = chrome.extension.getURL('icons/close.png');
-		animePaddedDiv.append('<span class="mal-ext-close-popover"><img src="' + closeIconPath + '" height="12" width="12" /></span>');
+		animePaddedDiv.append('<span class="mal-ext-close-popover-span"><img class="mal-ext-close-popover" src="' + closeIconPath + '" height="12" width="12" /></span>');
 		
 		animePaddedDiv.append(getContentDiv('Title', 'title'));
 		animePaddedDiv.append(getContentDiv('Average Score', 'average'));
