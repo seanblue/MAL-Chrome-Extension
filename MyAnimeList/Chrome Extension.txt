@@ -1,13 +1,20 @@
 ** Features **
-1. Filter by genre ('genres[]')
-2. Add columns for Average Score, Genres, and possibly other non-user-specific data points.
-3. Sorting
+1. Show popover with additional information.
 	a. Average Score ('members_score')
-	b. Number of favorites ('favorited_count')
-	c. Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
-	d. Alphabetical sort within another sorting method (secondary sort).
-	e. Reverse sort.
-4. Add a Chrome Extension icon to configure which columns should be added.
+	b. Rank (rank)
+	c. Popularity (popularity_rank)
+	d. Number of Favorites ('favorited_count')
+	e. Genres (genres[])
+2. Filtering
+	a. Genre (genres[])
+	b. Type (type) ['TV', 'Movie', etc.]
+	c. Classification (classification) ['PG-13', etc. but with the description afterward]
+3. Sorting
+	a. All of the fields in the popover.
+	b. Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
+	c. Alphabetical sort within another sorting method (secondary sort).
+	d. Reverse sort.
+4. Add a Chrome Extension icon which allows any of the above main features to be turned on/off. Also allow only selected fields to be shown in popover.
 
 ----------------------------------------------------------------------------
 ** Details **
