@@ -4,6 +4,8 @@
 	var animeGroupSelector = '.' + animeGroupClass;
 	var animeData = {};
 	var animeDivs;
+	var animeHeaderTables;
+	var animeMoreSectionTables;
 	var animeInfoDiv;
 		
 	$(document).ready(function() {
@@ -14,11 +16,13 @@
 		wrapAnime();
 		loadAnime();
 		setupInfoDiv();
-		addEventHandlers();
+		addInfoIcons();
+		addInfoClickEvent();
 	}
 
 	function wrapAnime() {
-		$('[id^="more"').slice(0, testLimit).each(function(index, el) {
+		animeMoreSectionTables = $('[id^="more"');
+		animeMoreSectionTables.slice(0, testLimit).each(function(index, el) {
 			var moreDiv = $(el);
 			var id = moreDiv.attr('id').slice(4);
 			var animeTable = moreDiv.prev();
@@ -66,10 +70,10 @@
 	}
 	
 	function setupInfoDiv() {
-		animeInfoDiv = $('<div class="mal-ext-info" />');
+		animeInfoDiv = $('<div class="mal-ext-popover" />');
 		animeInfoDiv.prependTo('body');
 		
-		var animePaddedDiv = $('<div class="mal-ext-info-inner" />');
+		var animePaddedDiv = $('<div class="mal-ext-popover-inner" />');
 		animeInfoDiv.append(animePaddedDiv);
 		setupInfoDivContent(animePaddedDiv);		
 	}
@@ -83,12 +87,29 @@
 	}
 	
 	function getContentDiv(title, contentClass) {
-		return '<div class="mal-ext-info-content"><span class="mal-ext-info-header">' + title + ': </span><span class="mal-ext-info-' + contentClass + '" /></div>';
+		return '<div class="mal-ext-popover-content"><span class="mal-ext-popover-header">' + title + ': </span><span class="mal-ext-popover-' + contentClass + '" /></div>';
 	}
-
-	function addEventHandlers() {
-		animeDivs.on('click', function(event) {
-			var el = $(this);
+	
+	function addInfoIcons() {
+		var infoIconPath = chrome.extension.getURL('icons/info.png');
+		
+		animeHeaderTables = $('.table_header').closest('tr')
+		animeHeaderTables.each(function(index, el) {
+			$(el).prepend(getInfoTd());
+		});
+		
+		animeDivs.each(function(index, el) {
+			$(el).find('table tbody tr').prepend(getInfoTd().append('<img class="mal-ext-info" src="' + infoIconPath + '" height="16" width="16" />'));
+		});
+	}
+	
+	function getInfoTd() {
+		return $('<td class="mal-ext-info-col" width="20" />');
+	}
+	
+	function addInfoClickEvent() {
+		$('.mal-ext-info').on('click', function(event) {
+			var el = $(this).closest(animeGroupSelector);
 			var id = getId(el);
 			var anime = animeData[id];
 			if (typeof anime === 'undefined') {
@@ -105,13 +126,13 @@
 				'top': y
 			});
 			
-			$('.mal-ext-info-title').text(details.title);
-			$('.mal-ext-info-average').text(details.members_score);
-			$('.mal-ext-info-rank').text(details.rank);
-			$('.mal-ext-info-popularity').text(details.popularity_rank);
+			$('.mal-ext-popover-title').text(details.title);
+			$('.mal-ext-popover-average').text(details.members_score);
+			$('.mal-ext-popover-rank').text(details.rank);
+			$('.mal-ext-popover-popularity').text(details.popularity_rank);
 			
 			var genres = details.genres.join(', ');
-			$('.mal-ext-info-genres').text(genres);
+			$('.mal-ext-popover-genres').text(genres);
 			
 			animeInfoDiv.show();
 		});

@@ -1,4 +1,4 @@
-.mal-ext-info {
+.mal-ext-popover {
 	position: absolute;
 	display: none;
 	background-color: #D5EFFF;
@@ -7,10 +7,10 @@
 	overflow: auto;
 }
 
-.mal-ext-info-inner {
+.mal-ext-popover-inner {
 	padding: 4px;
 }
 
-.mal-ext-info-header {
+.mal-ext-popover-header {
 	font-weight: bold;
 }
