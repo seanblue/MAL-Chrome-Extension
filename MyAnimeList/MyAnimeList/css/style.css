@@ -1,0 +1,16 @@
+.mal-ext-info {
+	position: absolute;
+	display: none;
+	background-color: #D5EFFF;
+	border: 3px ridge #888888;
+	width: 250px;
+	overflow: auto;
+}
+
+.mal-ext-info-inner {
+	padding: 4px;
+}
+
+.mal-ext-info-header {
+	font-weight: bold;
+}

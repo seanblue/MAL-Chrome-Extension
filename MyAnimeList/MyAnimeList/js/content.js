@@ -1,7 +1,10 @@
 (function() {
 	var testLimit = 5;
-	var animeGroupClass = 'mal-chrome-extension-container';
-	var anime = {};
+	var animeGroupClass = 'mal-ext-container';
+	var animeGroupSelector = '.' + animeGroupClass;
+	var animeData = {};
+	var animeDivs;
+	var animeInfoDiv;
 		
 	$(document).ready(function() {
 		run();
@@ -9,7 +12,9 @@
 
 	function run() {
 		wrapAnime();
-		getAnime();
+		loadAnime();
+		setupInfoDiv();
+		addEventHandlers();
 	}
 
 	function wrapAnime() {
@@ -24,8 +29,8 @@
 		});
 	}
 	
-	function getAnime() {
-		var animeDivs = $('.' + animeGroupClass);
+	function loadAnime() {
+		animeDivs = $(animeGroupSelector);
 		animeDivs.each(function(index, el) {
 			var container = $(el);
 			var id = getId(container);
@@ -54,10 +59,58 @@
 	}
 	
 	function saveAnimeDetails(id, el, details) {
-		anime[id] = {
+		animeData[id] = {
 			'el': el,
 			'details': details
 		}
+	}
+	
+	function setupInfoDiv() {
+		animeInfoDiv = $('<div class="mal-ext-info" />');
+		animeInfoDiv.prependTo('body');
+		
+		var animePaddedDiv = $('<div class="mal-ext-info-inner" />');
+		animeInfoDiv.append(animePaddedDiv);
+		setupInfoDivContent(animePaddedDiv);		
+	}
+	
+	function setupInfoDivContent(animePaddedDiv) {
+		animePaddedDiv.append(getContentDiv('Title', 'title'));
+		animePaddedDiv.append(getContentDiv('Average Score', 'average'));
+		animePaddedDiv.append(getContentDiv('Rank: ', 'rank'));
+		animePaddedDiv.append(getContentDiv('Popularity: ', 'popularity'));
+		animePaddedDiv.append(getContentDiv('Genres: ', 'genres'));
+	}
+	
+	function getContentDiv(title, contentClass) {
+		return '<div class="mal-ext-info-content"><span class="mal-ext-info-header">' + title + ': </span><span class="mal-ext-info-' + contentClass + '" /></div>';
+	}
+
+	function addEventHandlers() {
+		animeDivs.on('click', function(event) {
+			var el = $(this);
+			var id = getId(el);
+				
+			var x = event.pageX;
+			var y = event.pageY;
+			
+			animeInfoDiv.css({
+				'left': x,
+				'top': y
+			});
+			
+			var anime = animeData[id].details;
+						
+			$('.mal-ext-info-title').text(anime.title);
+			$('.mal-ext-info-average').text(anime.members_score);
+			$('.mal-ext-info-rank').text(anime.rank);
+			$('.mal-ext-info-popularity').text(anime.popularity_rank);
+			
+			var genres = anime.genres.join(', ');
+			$('.mal-ext-info-genres').text(genres);
+			
+			animeInfoDiv.show();
+		});
 	}
 	
 })();
