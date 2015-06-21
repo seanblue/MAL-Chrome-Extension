@@ -13,6 +13,7 @@
     },
 	"content_scripts": [ {
         "js": [ "js/thirdparty/jquery-2.1.4.js", "js/content.js" ],
+		"css": [ "css/style.css" ],
         "matches": [ "http://myanimelist.net/animelist/*" ] 
     } ]
 }
