@@ -16,5 +16,5 @@
 		"css": [ "css/style.css" ],
         "matches": [ "http://myanimelist.net/animelist/*" ] 
     } ],
-	"web_accessible_resources": ["icons/info.png"]
+	"web_accessible_resources": ["icons/info.png", "icons/close.png"]
 }
