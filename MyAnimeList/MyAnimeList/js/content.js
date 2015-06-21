@@ -85,9 +85,10 @@
 		
 		animePaddedDiv.append(getContentDiv('Title', 'title'));
 		animePaddedDiv.append(getContentDiv('Average Score', 'average'));
-		animePaddedDiv.append(getContentDiv('Rank: ', 'rank'));
-		animePaddedDiv.append(getContentDiv('Popularity: ', 'popularity'));
-		animePaddedDiv.append(getContentDiv('Genres: ', 'genres'));
+		animePaddedDiv.append(getContentDiv('Rank', 'rank'));
+		animePaddedDiv.append(getContentDiv('Popularity', 'popularity'));
+		animePaddedDiv.append(getContentDiv('Favorited', 'favorited'));
+		animePaddedDiv.append(getContentDiv('Genres', 'genres'));
 	}
 	
 	function getContentDiv(title, contentClass) {
@@ -134,6 +135,7 @@
 			$('.mal-ext-popover-average').text(details.members_score);
 			$('.mal-ext-popover-rank').text(details.rank);
 			$('.mal-ext-popover-popularity').text(details.popularity_rank);
+			$('.mal-ext-popover-favorited').text(details.favorited_count);
 			
 			var genres = details.genres.join(', ');
 			$('.mal-ext-popover-genres').text(genres);
