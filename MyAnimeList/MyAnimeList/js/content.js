@@ -23,7 +23,7 @@
 
 	function wrapAnime() {
 		animeMoreSectionTables = $('[id^="more"');
-		animeMoreSectionTables.slice(0, testLimit).each(function(index, el) {
+		animeMoreSectionTables.each(function(index, el) {
 			var moreDiv = $(el);
 			var id = moreDiv.attr('id').slice(4);
 			var animeTable = moreDiv.prev();
@@ -36,7 +36,7 @@
 	
 	function loadAnime() {
 		animeDivs = $(animeGroupSelector);
-		animeDivs.each(function(index, el) {
+		animeDivs.slice(0, testLimit).each(function(index, el) {
 			var container = $(el);
 			var id = getId(container);
 			loadAnimeDetails(id, container);
