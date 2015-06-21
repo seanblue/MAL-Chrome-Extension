@@ -114,7 +114,8 @@
 	
 	function addInfoClickEvent() {
 		$('.mal-ext-info').on('click', function(event) {
-			var el = $(this).closest(animeGroupSelector);
+			var img = $(this);
+			var el = img.closest(animeGroupSelector);
 			var id = getId(el);
 			var anime = animeData[id];
 			if (typeof anime === 'undefined') {
@@ -123,8 +124,9 @@
 			
 			var details = anime.details;
 			
-			var x = event.pageX;
-			var y = event.pageY;
+			var position = img.position();
+			var x = position.left + 16;
+			var y = position.top + 8;
 			
 			animeInfoDiv.css({
 				'left': x,
