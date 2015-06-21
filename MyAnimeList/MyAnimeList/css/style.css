@@ -22,7 +22,7 @@
 	padding-bottom: 5px;
 }
 
-[id^=more] table {
+[id^=more] table, table[class^=header] {
 	margin-left: 20px;
 	width: calc(100% - 20px);
 }
