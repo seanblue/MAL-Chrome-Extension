@@ -18,6 +18,7 @@
 		setupInfoDiv();
 		addInfoIcons();
 		addInfoClickEvent();
+		addPopoverCloseEvent();
 	}
 
 	function wrapAnime() {
@@ -79,6 +80,9 @@
 	}
 	
 	function setupInfoDivContent(animePaddedDiv) {
+		var closeIconPath = chrome.extension.getURL('icons/close.png');
+		animePaddedDiv.append('<span class="mal-ext-close-popover"><img src="' + closeIconPath + '" height="12" width="12" /></span>');
+		
 		animePaddedDiv.append(getContentDiv('Title', 'title'));
 		animePaddedDiv.append(getContentDiv('Average Score', 'average'));
 		animePaddedDiv.append(getContentDiv('Rank: ', 'rank'));
@@ -135,6 +139,12 @@
 			$('.mal-ext-popover-genres').text(genres);
 			
 			animeInfoDiv.show();
+		});
+	}
+	
+	function addPopoverCloseEvent() {
+		$('.mal-ext-close-popover').on('click', function() {
+			animeInfoDiv.hide();
 		});
 	}
 	
