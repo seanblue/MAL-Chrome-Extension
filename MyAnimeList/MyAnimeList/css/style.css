@@ -45,3 +45,7 @@
 .mal-ext-hidden {
 	display: none;
 }
+
+.mal-ext-active-filter {
+	display: inherit;
+}
