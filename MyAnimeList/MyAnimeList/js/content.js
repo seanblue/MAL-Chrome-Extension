@@ -13,12 +13,14 @@
 	});
 
 	function run() {
+		runPreprocessing();
+		runAnimeInfo();
+		runFiltering();
+	}
+	
+	function runPreprocessing() {
 		wrapAnime();
 		loadAnime();
-		setupInfoDiv();
-		addInfoIcons();
-		addInfoClickEvent();
-		addPopoverCloseEvent();
 	}
 
 	function wrapAnime() {
@@ -70,16 +72,23 @@
 		}
 	}
 	
-	function setupInfoDiv() {
+	function runAnimeInfo() {
+		insertInfoDiv();
+		addInfoIcons();
+		addInfoClickEvent();
+		addPopoverCloseEvent();
+	}
+	
+	function insertInfoDiv() {
 		animeInfoDiv = $('<div class="mal-ext-popover" />');
 		animeInfoDiv.prependTo('body');
 		
 		var animePaddedDiv = $('<div class="mal-ext-popover-inner" />');
 		animeInfoDiv.append(animePaddedDiv);
-		setupInfoDivContent(animePaddedDiv);		
+		insertInfoDivContent(animePaddedDiv);		
 	}
 	
-	function setupInfoDivContent(animePaddedDiv) {
+	function insertInfoDivContent(animePaddedDiv) {
 		var closeIconPath = chrome.extension.getURL('icons/close.png');
 		animePaddedDiv.append('<span class="mal-ext-close-popover-span"><img class="mal-ext-close-popover" src="' + closeIconPath + '" height="12" width="12" /></span>');
 		
@@ -149,6 +158,41 @@
 	function addPopoverCloseEvent() {
 		$('.mal-ext-close-popover').on('click', function() {
 			animeInfoDiv.hide();
+		});
+	}
+	
+	function runFiltering() {
+		insertFilterElements();
+		addFilterClickEvents();
+	}
+
+	function insertFilterElements() {
+		var existingTd = $('#mal_cs_otherlinks');
+		existingTd.css({'width': '325px'});
+		
+		var contentTypeFilterSelect = $('<select class="mal-ext-content-type-filter" />');
+		contentTypeFilterSelect.append(getOptionTag('All'));
+		contentTypeFilterSelect.append(getOptionTag('TV'));
+		contentTypeFilterSelect.append(getOptionTag('OVA'));
+		contentTypeFilterSelect.append(getOptionTag('Movie'));
+		contentTypeFilterSelect.append(getOptionTag('Special'));
+		contentTypeFilterSelect.append(getOptionTag('ONA'));
+		contentTypeFilterSelect.append(getOptionTag('Music'));
+		
+		var filterSection = $('<td class="mal-ext-filter-section" />');
+		var contentTypeFilter = $('<span>Filter Type: </span>');
+		filterSection.append(contentTypeFilter);
+		contentTypeFilter.append(contentTypeFilterSelect);
+		existingTd.after(filterSection);
+	}
+	
+	function getOptionTag(value) {
+		return '<option value="' + value + '">' + value + '</option>';
+	}
+	
+	function addFilterClickEvents() {
+		$('.mal-ext-content-type-filter').on('change', function(event) {
+			console.log('filtering');
 		});
 	}
 	
