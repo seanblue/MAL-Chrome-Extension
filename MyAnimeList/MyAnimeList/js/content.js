@@ -10,8 +10,9 @@
 	var filterTypes = ['None', 'Type', 'Genre', 'Rating'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
-	var ratings = ['All', 'G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai']
-		
+	var ratingsValues = ['All', 'G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai']
+	var ratingsTexts = ['All', 'G', 'PG', 'PG-13', 'R', 'R+', 'Rx'];
+	
 	$(document).ready(function() {
 		run();
 	});
@@ -202,7 +203,7 @@
 		addOptions(genreFilterSelect, genres);
 		
 		var ratingFilterSelect = getFilterSelect('mal-ext-content-rating-filter');
-		addOptions(ratingFilterSelect, ratings);
+		addOptions(ratingFilterSelect, ratingsValues, ratingsTexts);
 		
 		var filterSection = $('<td class="mal-ext-filter-section" />');
 		var contentTypeFilter = $('<span>Filter: </span>');
@@ -227,14 +228,18 @@
 		return $('<select class="' + className + '" />');
 	}
 	
-	function addOptions(select, options) {
-		for (var i = 0; i < options.length; i++) {
-			select.append(getOptionTag(options[i]));
+	function addOptions(select, values, texts) {
+		if (typeof texts === 'undefined') {
+			texts = values;
+		}
+		
+		for (var i = 0; i < values.length; i++) {
+			select.append(getOptionTag(values[i], texts[i]));
 		}
 	}
 	
-	function getOptionTag(value) {
-		return '<option value="' + value + '">' + value + '</option>';
+	function getOptionTag(value, text) {
+		return '<option value="' + value + '">' + text + '</option>';
 	}
 	
 	function addFilterEvents() {
