@@ -1,5 +1,5 @@
 (function() {
-	var testLimit = 500;
+	var testLimit = 5;
 	var animeGroupClass = 'mal-ext-anime-container';
 	var animeGroupSelector = '.' + animeGroupClass;
 	var animeData = {};
@@ -171,8 +171,12 @@
 	
 	function addPopoverCloseEvent() {
 		$('.mal-ext-close-popover').on('click', function() {
-			animeInfoDiv.hide();
+			closeInfoPopover();
 		});
+	}
+	
+	function closeInfoPopover() {
+		animeInfoDiv.hide();
 	}
 	
 	function runFiltering() {
@@ -227,6 +231,7 @@
 		var genreSelect = $('.mal-ext-content-genre-filter');
 		
 		mainSelect.on('change', function(event) {
+			closeInfoPopover();
 			hideAndUpdateVisibleFilters();
 			
 			var val = $(this).val();
@@ -239,10 +244,12 @@
 		});
 		
 		typeSelect.on('change', function(event) {
+			closeInfoPopover();
 			filterAnimeByType($(this).val());
 		});
 		
 		genreSelect.on('change', function(event) {
+			closeInfoPopover();
 			filterAnimeByGenre($(this).val());
 		});
 	}
