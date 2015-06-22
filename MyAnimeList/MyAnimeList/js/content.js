@@ -7,6 +7,9 @@
 	var animeHeaderTables;
 	var animeMoreSectionTables;
 	var animeInfoDiv;
+	var filterTypes = ['None', 'Type', 'Genre'];
+	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
+	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
 		
 	$(document).ready(function() {
 		run();
@@ -170,20 +173,37 @@
 		var existingTd = $('#mal_cs_otherlinks');
 		existingTd.css({'width': '325px'});
 		
-		var contentTypeFilterSelect = $('<select class="mal-ext-content-type-filter" />');
-		contentTypeFilterSelect.append(getOptionTag('All'));
-		contentTypeFilterSelect.append(getOptionTag('TV'));
-		contentTypeFilterSelect.append(getOptionTag('OVA'));
-		contentTypeFilterSelect.append(getOptionTag('Movie'));
-		contentTypeFilterSelect.append(getOptionTag('Special'));
-		contentTypeFilterSelect.append(getOptionTag('ONA'));
-		contentTypeFilterSelect.append(getOptionTag('Music'));
+		var mainFilterSelect = getFilterSelect('mal-ext-content-main-filter');
+		addOptions(mainFilterSelect, filterTypes);
+		
+		var contentTypeFilterSelect = getFilterSelect('mal-ext-content-type-filter');
+		addOptions(contentTypeFilterSelect, mediaTypes);
+		
+		var genreFilterSelect = getFilterSelect('mal-ext-content-genre-filter');
+		addOptions(genreFilterSelect, genres);
 		
 		var filterSection = $('<td class="mal-ext-filter-section" />');
 		var contentTypeFilter = $('<span>Filter Type: </span>');
 		filterSection.append(contentTypeFilter);
-		contentTypeFilter.append(contentTypeFilterSelect);
+		
+		contentTypeFilter.append(getFilterContainer().append(mainFilterSelect));
+		contentTypeFilter.append(getFilterContainer().addClass('mal-ext-hidden').append(contentTypeFilterSelect));
+		contentTypeFilter.append(getFilterContainer().addClass('mal-ext-hidden').append(genreFilterSelect));
 		existingTd.after(filterSection);
+	}
+	
+	function getFilterContainer() {
+		return $('<span class="mal-ext-filter-container" />');
+	}
+	
+	function getFilterSelect(className) {
+		return $('<select class="' + className + '" />');
+	}
+	
+	function addOptions(select, options) {
+		for (var i = 0; i < options.length; i++) {
+			select.append(getOptionTag(options[i]));
+		}
 	}
 	
 	function getOptionTag(value) {

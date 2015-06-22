@@ -37,3 +37,11 @@
 .mal-ext-filter-section {
 	padding: 0 1em;
 }
+
+.mal-ext-filter-container {
+	padding: 0 5px;
+}
+
+.mal-ext-hidden {
+	display: none;
+}
