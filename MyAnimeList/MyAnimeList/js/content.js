@@ -1,5 +1,5 @@
 (function() {
-	var testLimit = 5;
+	var testLimit = 500;
 	var animeGroupClass = 'mal-ext-anime-container';
 	var animeGroupSelector = '.' + animeGroupClass;
 	var animeData = {};
@@ -79,6 +79,7 @@
 	function runAnimeInfo() {
 		insertInfoDiv();
 		addInfoIcons();
+		shiftNonAnimeTables();
 		addInfoClickEvent();
 		addPopoverCloseEvent();
 	}
@@ -125,6 +126,15 @@
 		return $('<td class="mal-ext-info-col" width="20" />');
 	}
 	
+	function shiftNonAnimeTables() {
+		var headerTables = $('table[class^=header]');
+		var categoryTotalTables = $('.category_totals').closest('table')
+		headerTables.add(categoryTotalTables).css({
+			'marginLeft': '20px',
+			'width': 'calc(100% - 20px)'
+		});
+	}
+	
 	function addInfoClickEvent() {
 		$('.mal-ext-info').on('click', function(event) {
 			var img = $(this);
@@ -147,7 +157,7 @@
 			});
 			
 			$('.mal-ext-popover-title').text(details.title);
-			$('.mal-ext-popover-average').text(details.members_score);
+			$('.mal-ext-popover-average').text(details.members_score.toFixed(2));
 			$('.mal-ext-popover-rank').text(details.rank);
 			$('.mal-ext-popover-popularity').text(details.popularity_rank);
 			$('.mal-ext-popover-favorited').text(details.favorited_count);
@@ -184,7 +194,7 @@
 		addOptions(genreFilterSelect, genres);
 		
 		var filterSection = $('<td class="mal-ext-filter-section" />');
-		var contentTypeFilter = $('<span>Filter Type: </span>');
+		var contentTypeFilter = $('<span>Filter: </span>');
 		filterSection.append(contentTypeFilter);
 		
 		contentTypeFilter.append(getFilterContainer().append(mainFilterSelect));
