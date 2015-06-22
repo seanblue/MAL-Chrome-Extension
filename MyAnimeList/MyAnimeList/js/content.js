@@ -1,5 +1,4 @@
 (function() {
-	var testLimit = 5;
 	var animeGroupClass = 'mal-ext-anime-container';
 	var animeGroupSelector = '.' + animeGroupClass;
 	var animeData = {};
@@ -42,11 +41,15 @@
 	
 	function loadAnime() {
 		animeDivs = $(animeGroupSelector);
-		animeDivs.slice(0, testLimit).each(function(index, el) {
+		animeDivs.slice(0, getTestLimit()).each(function(index, el) {
 			var container = $(el);
 			var id = getId(container);
 			loadAnimeDetails(id, container);
 		});
+	}
+	
+	function getTestLimit() {
+		return localStorage.testLimit;
 	}
 	
 	function getId(container) {
