@@ -7,6 +7,7 @@
 	var animeHeaderTables;
 	var animeMoreSectionTables;
 	var animeInfoDiv;
+	var activeFilterClass = 'mal-ext-active-filter';
 	var filterTypes = ['None', 'Type', 'Genre'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
@@ -166,7 +167,7 @@
 	
 	function runFiltering() {
 		insertFilterElements();
-		addFilterClickEvents();
+		addFilterEvents();
 	}
 
 	function insertFilterElements() {
@@ -210,10 +211,34 @@
 		return '<option value="' + value + '">' + value + '</option>';
 	}
 	
-	function addFilterClickEvents() {
-		$('.mal-ext-content-type-filter').on('change', function(event) {
+	function addFilterEvents() {
+		var mainSelect = $('.mal-ext-content-main-filter');
+		var typeSelect = $('.mal-ext-content-type-filter');
+		var genreSelect = $('.mal-ext-content-genre-filter');
+		
+		mainSelect.on('change', function(event) {
+			hideAndUpdateVisibleFilters();
+			
+			var val = $(this).val();
+			if (val === 'Type') {
+				showSelectedFilter(typeSelect)
+			}
+			else if (val === 'Genre') {
+				showSelectedFilter(genreSelect)
+			}
+		});
+		
+		typeSelect.on('change', function(event) {
 			console.log('filtering');
 		});
+	}
+	
+	function hideAndUpdateVisibleFilters() {
+		$('.' + activeFilterClass).removeClass(activeFilterClass).children('select').val('All').trigger('change');
+	}
+	
+	function showSelectedFilter(select) {
+		select.parent().addClass(activeFilterClass);
 	}
 	
 })();
