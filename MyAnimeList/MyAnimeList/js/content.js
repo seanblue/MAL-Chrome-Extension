@@ -7,9 +7,10 @@
 	var animeMoreSectionTables;
 	var animeInfoDiv;
 	var activeFilterClass = 'mal-ext-active-filter';
-	var filterTypes = ['None', 'Type', 'Genre'];
+	var filterTypes = ['None', 'Type', 'Genre', 'Rating'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
+	var ratings = ['All', 'G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai']
 		
 	$(document).ready(function() {
 		run();
@@ -200,14 +201,22 @@
 		var genreFilterSelect = getFilterSelect('mal-ext-content-genre-filter');
 		addOptions(genreFilterSelect, genres);
 		
+		var ratingFilterSelect = getFilterSelect('mal-ext-content-rating-filter');
+		addOptions(ratingFilterSelect, ratings);
+		
 		var filterSection = $('<td class="mal-ext-filter-section" />');
 		var contentTypeFilter = $('<span>Filter: </span>');
 		filterSection.append(contentTypeFilter);
 		
 		contentTypeFilter.append(getFilterContainer().append(mainFilterSelect));
-		contentTypeFilter.append(getFilterContainer().addClass('mal-ext-hidden').append(contentTypeFilterSelect));
-		contentTypeFilter.append(getFilterContainer().addClass('mal-ext-hidden').append(genreFilterSelect));
+		contentTypeFilter.append(getHiddenFilterContainer().append(contentTypeFilterSelect));
+		contentTypeFilter.append(getHiddenFilterContainer().append(genreFilterSelect));
+		contentTypeFilter.append(getHiddenFilterContainer().append(ratingFilterSelect));
 		existingTd.after(filterSection);
+	}
+	
+	function getHiddenFilterContainer() {
+		return getFilterContainer().addClass('mal-ext-hidden');
 	}
 	
 	function getFilterContainer() {
@@ -232,6 +241,7 @@
 		var mainSelect = $('.mal-ext-content-main-filter');
 		var typeSelect = $('.mal-ext-content-type-filter');
 		var genreSelect = $('.mal-ext-content-genre-filter');
+		var ratingSelect = $('.mal-ext-content-rating-filter');
 		
 		mainSelect.on('change', function(event) {
 			closeInfoPopover();
@@ -244,6 +254,9 @@
 			else if (val === 'Genre') {
 				showSelectedFilter(genreSelect)
 			}
+			else if (val === 'Rating') {
+				showSelectedFilter(ratingSelect)
+			}
 		});
 		
 		typeSelect.on('change', function(event) {
@@ -254,6 +267,11 @@
 		genreSelect.on('change', function(event) {
 			closeInfoPopover();
 			filterAnimeByGenre($(this).val());
+		});
+	
+		ratingSelect.on('change', function(event) {
+			closeInfoPopover();
+			filterAnimeByRating($(this).val());
 		});
 	}
 	
@@ -278,6 +296,15 @@
 		var field = 'genres';
 		var showIfTrueFunction = function(genres) {
 			return genres.indexOf(val) !== -1;
+		}
+		
+		filterAnime(field, val, showIfTrueFunction);
+	}
+	
+	function filterAnimeByRating(val) {
+		var field = 'classification';
+		var showIfTrueFunction = function(rating) {
+			return rating === val;
 		}
 		
 		filterAnime(field, val, showIfTrueFunction);
