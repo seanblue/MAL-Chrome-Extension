@@ -1,6 +1,6 @@
 (function() {
 	var testLimit = 5;
-	var animeGroupClass = 'mal-ext-container';
+	var animeGroupClass = 'mal-ext-anime-container';
 	var animeGroupSelector = '.' + animeGroupClass;
 	var animeData = {};
 	var animeDivs;
@@ -229,7 +229,11 @@
 		});
 		
 		typeSelect.on('change', function(event) {
-			console.log('filtering');
+			filterAnimeByType($(this).val());
+		});
+		
+		genreSelect.on('change', function(event) {
+			filterAnimeByGenre($(this).val());
 		});
 	}
 	
@@ -239,6 +243,41 @@
 	
 	function showSelectedFilter(select) {
 		select.parent().addClass(activeFilterClass);
+	}
+	
+	function filterAnimeByType(val) {
+		var field = 'type';
+		var showIfTrueFunction = function(type) {
+			return type === val;
+		}
+		
+		filterAnime(field, val, showIfTrueFunction);
+	}
+	
+	function filterAnimeByGenre(val) {
+		var field = 'genres';
+		var showIfTrueFunction = function(genres) {
+			return genres.indexOf(val) !== -1;
+		}
+		
+		filterAnime(field, val, showIfTrueFunction);
+	}
+	
+	function filterAnime(field, val, showIfTrueFunction) {
+		if (val === 'All') {
+			$(animeGroupSelector).show();
+			return;
+		}
+		
+		for (var key in animeData) {
+			var anime = animeData[key];
+			if (showIfTrueFunction(anime.details[field]) === true) {
+				anime.el.show();
+			}
+			else {
+				anime.el.hide();
+			}
+		}
 	}
 	
 })();
