@@ -163,9 +163,9 @@
 			
 			$('.mal-ext-popover-title').text(details.title);
 			$('.mal-ext-popover-average').text(details.members_score.toFixed(2));
-			$('.mal-ext-popover-rank').text(details.rank);
-			$('.mal-ext-popover-popularity').text(details.popularity_rank);
-			$('.mal-ext-popover-favorited').text(details.favorited_count);
+			$('.mal-ext-popover-rank').text(details.rank.toLocaleString());
+			$('.mal-ext-popover-popularity').text(details.popularity_rank.toLocaleString());
+			$('.mal-ext-popover-favorited').text(details.favorited_count.toLocaleString());
 			
 			var genres = details.genres.join(', ');
 			$('.mal-ext-popover-genres').text(genres);
