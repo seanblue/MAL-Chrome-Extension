@@ -376,15 +376,19 @@
 		}
 		
 		for (var section in animeDataBySection) {
-			var rowColor = getRowColorClass();
+			var rowColorNumber = getRowColorNumber();
 			var sectionData = animeDataBySection[section];
 			for (var i = 0; i < sectionData.order.length; i++) {
 				var id = sectionData.order[i];
 				var anime = sectionData.data[id];
+				if (typeof anime === 'undefined') {
+					continue;
+				}
+				
 				if (showIfTrueFunction(anime.details[field]) === true) {
-					updateRowColor(anime.el, rowColor);
+					updateRowColor(anime.el, rowColorNumber);
 					anime.el.show();
-					rowColor = getRowColorClass(rowColor);
+					rowColorNumber = getRowColorNumber(rowColorNumber);
 				}
 				else {
 					anime.el.hide();
@@ -393,16 +397,17 @@
 		}
 	}
 	
-	function updateRowColor(el, rowColor) {
-		el.find('td:not(".mal-ext-info-col")').removeClass('td1 td2').addClass(rowColor);
+	function updateRowColor(container, rowColorNumber) {
+		var classStart = 'mal-ext-row-color';
+		container.removeClass(classStart + '1' + ' ' + classStart + '2').addClass(classStart + rowColorNumber);
 	}
 	
-	function getRowColorClass(current) {
-		if (current === 'td1') {
-			return 'td2';
+	function getRowColorNumber(current) {
+		if (current === '1') {
+			return '2';
 		}
 		
-		return 'td1';
+		return '1';
 	}
 	
 })();

@@ -49,3 +49,13 @@
 .mal-ext-active-filter {
 	display: inherit;
 }
+
+.mal-ext-anime-container.mal-ext-row-color1 td:not(.mal-ext-info-col) {
+	/* Overrides td color for filtering and sorting */
+	background-color: #FFFFFF;
+}
+
+.mal-ext-anime-container.mal-ext-row-color2 td:not(.mal-ext-info-col) {
+	/* Overrides td color for filtering and sorting */
+	background-color: #F1F1F1;
+}
