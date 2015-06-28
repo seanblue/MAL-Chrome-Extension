@@ -1,12 +1,22 @@
 (function() {
-	var animeGroupClass = 'mal-ext-anime-container';
-	var animeGroupSelector = '.' + animeGroupClass;
+	var animeContainerClass = 'mal-ext-anime-container';
+	var animeContainerSelector = '.' + animeContainerClass;
+	var animeSectionHeaderRowClass = 'mal-ext-section-header-table';
+	var animeSectionHeaderRowSelector = '.' + animeSectionHeaderRowClass;
+	var animeSectionClass = 'mal-ext-anime-section';
+	var animeSectionSelector = '.' + animeSectionClass;
+	
+	var sectionHeaderTitleTables;
+	var sectionHeaderRowTables;
+	var sectionFooterTables;
+	
 	var animeData = {};
+	var animeDataSections = {};
 	var animeDivs;
-	var animeHeaderTables;
 	var animeMoreSectionTables;
 	var animeInfoDiv;
 	var activeFilterClass = 'mal-ext-active-filter';
+	
 	var filterTypes = ['None', 'Type', 'Genre', 'Rating'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
@@ -25,6 +35,9 @@
 	
 	function runPreprocessing() {
 		wrapAnime();
+		wrapAnimeHeadersAndFooters();
+		wrapAnimeSections();
+		setupAnimeGroups();
 		loadAnime();
 	}
 
@@ -35,14 +48,48 @@
 			var id = moreDiv.attr('id').slice(4);
 			var animeTable = moreDiv.prev();
 			animeTable.wrap(function() {
-				return '<div class="' + animeGroupClass + '" data-anime-id="' + id + '"></div>';
+				return '<div class="' + animeContainerClass + '" data-anime-id="' + id + '"></div>';
 			});
 			animeTable.parent().append(moreDiv);
 		});
+		
+		$('.table_header').closest('table').wrap('<div class="' + animeSectionHeaderRowClass + '"/>');
+	}
+	
+	function wrapAnimeHeadersAndFooters() {
+		sectionHeaderTitleTables = $('table[class*=header]').wrap('<div class="mal-ext-section-header-title"/>').parent();
+		sectionFooterTables = $('.category_totals').closest('table').wrap('<div class="mal-ext-section-footer"/>').parent();
+	}
+	
+	function wrapAnimeSections() {
+		for (var i = 0; i < sectionHeaderTitleTables.length; i++) {
+			var header = $(sectionHeaderTitleTables[i]);
+			var footer = $(sectionFooterTables[i]);
+			var sectionName = header.find('.header_title span').text();
+			var allAnimeInSection = header.nextUntil(footer, animeContainerSelector + ',' + animeSectionHeaderRowSelector)
+			
+			header.wrap(function() {
+				return '<div class="' + animeSectionClass + '" data-anime-section="' + sectionName + '"></div>';
+			});
+			
+			var section = header.parent();
+			section.append(allAnimeInSection);
+			section.append(footer);
+			
+			animeDataSections[sectionName] = {};
+		}
+	}
+	
+	function setupAnimeGroups() {
+		/* $('table[class*=header]').find('.header_title span').each(function(index, el) {
+			animeDataSections[el.textContent] = {};
+		});
+		
+		console.log(animeDataSections); */
 	}
 	
 	function loadAnime() {
-		animeDivs = $(animeGroupSelector);
+		animeDivs = $(animeContainerSelector);
 		animeDivs.slice(0, getTestLimit()).each(function(index, el) {
 			var container = $(el);
 			var id = getId(container);
@@ -117,7 +164,7 @@
 	function addInfoIcons() {
 		var infoIconPath = chrome.extension.getURL('icons/info.png');
 		
-		animeHeaderTables = $('.table_header').closest('tr')
+		var animeHeaderTables = $('.table_header').closest('tr')
 		animeHeaderTables.each(function(index, el) {
 			$(el).prepend(getInfoTd());
 		});
@@ -143,7 +190,7 @@
 	function addInfoClickEvent() {
 		$('.mal-ext-info').on('click', function(event) {
 			var img = $(this);
-			var el = img.closest(animeGroupSelector);
+			var el = img.closest(animeContainerSelector);
 			var id = getId(el);
 			var anime = animeData[id];
 			if (typeof anime === 'undefined') {
@@ -317,7 +364,7 @@
 	
 	function filterAnime(field, val, showIfTrueFunction) {
 		if (val === 'All') {
-			$(animeGroupSelector).show();
+			$(animeContainerSelector).show();
 			return;
 		}
 		
