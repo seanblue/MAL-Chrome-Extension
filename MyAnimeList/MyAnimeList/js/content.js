@@ -11,7 +11,7 @@
 	var sectionFooterTables;
 	
 	var animeData = {};
-	var animeDataSections = {};
+	var animeDataBySection = {};
 	var animeDivs;
 	var animeMoreSectionTables;
 	var animeInfoDiv;
@@ -37,7 +37,6 @@
 		wrapAnime();
 		wrapAnimeHeadersAndFooters();
 		wrapAnimeSections();
-		setupAnimeGroups();
 		loadAnime();
 	}
 
@@ -76,23 +75,22 @@
 			section.append(allAnimeInSection);
 			section.append(footer);
 			
-			animeDataSections[sectionName] = {};
+			animeDataBySection[sectionName] = {
+				order: [],
+				data: {}
+			};
 		}
 	}
-	
-	function setupAnimeGroups() {
-		/* $('table[class*=header]').find('.header_title span').each(function(index, el) {
-			animeDataSections[el.textContent] = {};
-		});
-		
-		console.log(animeDataSections); */
-	}
-	
+
 	function loadAnime() {
 		animeDivs = $(animeContainerSelector);
 		animeDivs.slice(0, getTestLimit()).each(function(index, el) {
 			var container = $(el);
 			var id = getId(container);
+			
+			var sectionName = getSectionName(el);
+			animeDataBySection[sectionName].order.push(id);
+			
 			loadAnimeDetails(id, container);
 		});
 	}
@@ -122,10 +120,18 @@
 	}
 	
 	function saveAnimeDetails(id, el, details) {
-		animeData[id] = {
+		var sectionName = getSectionName(el);
+		var data = {
 			'el': el,
 			'details': details
-		}
+		};
+		
+		animeData[id] = data
+		animeDataBySection[sectionName].data[id] = data;
+	}
+	
+	function getSectionName(el) {
+		return $(el).closest(animeSectionSelector).data('anime-section');
 	}
 	
 	function runAnimeInfo() {
@@ -364,19 +370,39 @@
 	
 	function filterAnime(field, val, showIfTrueFunction) {
 		if (val === 'All') {
-			$(animeContainerSelector).show();
-			return;
+			showIfTrueFunction = function() {
+				return true;
+			}
 		}
 		
-		for (var key in animeData) {
-			var anime = animeData[key];
-			if (showIfTrueFunction(anime.details[field]) === true) {
-				anime.el.show();
-			}
-			else {
-				anime.el.hide();
+		for (var section in animeDataBySection) {
+			var rowColor = getRowColorClass();
+			var sectionData = animeDataBySection[section];
+			for (var i = 0; i < sectionData.order.length; i++) {
+				var id = sectionData.order[i];
+				var anime = sectionData.data[id];
+				if (showIfTrueFunction(anime.details[field]) === true) {
+					updateRowColor(anime.el, rowColor);
+					anime.el.show();
+					rowColor = getRowColorClass(rowColor);
+				}
+				else {
+					anime.el.hide();
+				}
 			}
 		}
+	}
+	
+	function updateRowColor(el, rowColor) {
+		el.find('td:not(".mal-ext-info-col")').removeClass('td1 td2').addClass(rowColor);
+	}
+	
+	function getRowColorClass(current) {
+		if (current === 'td1') {
+			return 'td2';
+		}
+		
+		return 'td1';
 	}
 	
 })();
