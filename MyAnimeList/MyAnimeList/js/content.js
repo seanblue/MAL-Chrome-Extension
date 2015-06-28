@@ -6,6 +6,8 @@
 	var animeSectionClass = 'mal-ext-anime-section';
 	var animeSectionSelector = '.' + animeSectionClass;
 	
+	var userTagsField = 'user_tags';
+	
 	var sectionHeaderTitleTables;
 	var sectionFooterTables;
 	
@@ -88,7 +90,7 @@
 		animeDivs = $(animeContainerSelector);
 		animeDivs.slice(0, getTestLimit()).each(function(index, el) {
 			var container = $(el);
-			var id = getId(container);
+			var id = getAnimeId(container);
 			
 			var sectionName = getSectionName(el);
 			animeDataBySection[sectionName].order.push(id);
@@ -102,8 +104,8 @@
 		return localStorage.testLimit;
 	}
 	
-	function getId(container) {
-		return container.data('anime-id');
+	function getAnimeId(container) {
+		return $(container).closest(animeContainerSelector).data('anime-id');
 	}
 	
 	function loadAnimeDetails(id, container) {
@@ -205,8 +207,7 @@
 	function addInfoClickEvent() {
 		$('.mal-ext-info').on('click', function(event) {
 			var img = $(this);
-			var el = img.closest(animeContainerSelector);
-			var id = getId(el);
+			var id = getAnimeId(img);
 			var anime = animeData[id];
 			if (typeof anime === 'undefined') {
 				return;
@@ -248,11 +249,38 @@
 	
 	function runFiltering() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
+			addTagsToAnimeDetails();
 			insertFilterElements();
 			addFilterEvents();
 		});
 	}
 
+	function addTagsToAnimeDetails() {
+		var header = $(animeSectionHeaderRowSelector + ':first');
+		var allTd = header.find('td');
+		var tagsTd = header.find('td:contains("Tags")');
+		
+		var tagsColumnIndex = allTd.index(tagsTd);
+		if (tagsColumnIndex === -1) {
+			return;
+		}
+		
+		animeDivs.each(function(index, el) {
+			addTagsToAnimeDetailsForAnime(el, tagsColumnIndex);			
+		});
+	}
+	
+	function addTagsToAnimeDetailsForAnime(animeEl, tagsColumnIndex) {
+		var td = $(animeEl).find('table:first td:eq(' + tagsColumnIndex + ')');
+		var tags = td.find('[id^=tagLinks]').text().split(',');
+		tags = $.map(tags, function(el) {
+			return el.trim();
+		});
+		
+		var id = getAnimeId(animeEl);
+		animeData[id].details[userTagsField] = tags;
+	}
+	
 	function insertFilterElements() {
 		var existingTd = $('#mal_cs_otherlinks');
 		existingTd.css({'width': '325px'});
