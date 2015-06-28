@@ -7,7 +7,6 @@
 	var animeSectionSelector = '.' + animeSectionClass;
 	
 	var sectionHeaderTitleTables;
-	var sectionHeaderRowTables;
 	var sectionFooterTables;
 	
 	var animeData = {};
@@ -15,6 +14,9 @@
 	var animeDivs;
 	var animeMoreSectionTables;
 	var animeInfoDiv;
+	
+	var loadAnimePromises = [];
+	
 	var activeFilterClass = 'mal-ext-active-filter';
 	
 	var filterTypes = ['None', 'Type', 'Genre', 'Rating'];
@@ -91,7 +93,8 @@
 			var sectionName = getSectionName(el);
 			animeDataBySection[sectionName].order.push(id);
 			
-			loadAnimeDetails(id, container);
+			var promise = loadAnimeDetails(id, container);
+			loadAnimePromises.push(promise);
 		});
 	}
 	
@@ -104,15 +107,21 @@
 	}
 	
 	function loadAnimeDetails(id, container) {
+		var deferred = $.Deferred();
+		
 		var xhr = new XMLHttpRequest();
 		xhr.open('GET', getApiUrl(id), true);
 		xhr.onreadystatechange = function(event) {
 			if (xhr.readyState == 4) {
 				var animeDetails = JSON.parse(event.target.response);
 				saveAnimeDetails(id, container, animeDetails);
+				
+				deferred.resolve();
 			}
 		}
 		xhr.send();
+		
+		return deferred.promise();
 	}
 	
 	function getApiUrl(id) {
@@ -238,8 +247,10 @@
 	}
 	
 	function runFiltering() {
-		insertFilterElements();
-		addFilterEvents();
+		$.when.apply(undefined, loadAnimePromises).always(function() {
+			insertFilterElements();
+			addFilterEvents();
+		});
 	}
 
 	function insertFilterElements() {
