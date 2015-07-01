@@ -5,11 +5,13 @@
 	c. Popularity (popularity_rank)
 	d. Number of Favorites ('favorited_count')
 	e. Genres (genres[])
+	f. Date Aired ('start_date' and 'end_date'; myDate.toLocaleDateString(); make sure to check null for '?' such as animeid=25777)
 2. Filtering
 	a. Genre (genres[])
 	b. Type (type) ['TV', 'Movie', etc.]
 	c. Classification (classification) ['PG-13', etc. but with the description afterward]
-	d. Tag (would require page parsing).
+	d. Tag (would require page parsing)
+	e. Title (quicker than scrolling; check alternate titles)
 3. Sorting
 	a. All of the fields in the popover.
 	b. Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
