@@ -6,7 +6,7 @@
 	var animeSectionClass = 'mal-ext-anime-section';
 	var animeSectionSelector = '.' + animeSectionClass;
 	
-	var userTagsField = 'user_tags';
+	var userTagsField = 'mal_ext_user_tags';
 	
 	var sectionHeaderTitleTables;
 	var sectionFooterTables;
@@ -20,8 +20,9 @@
 	var loadAnimePromises = [];
 	
 	var activeFilterClass = 'mal-ext-active-filter';
+	var activeFilterSelector = '.' + activeFilterClass;
 	
-	var filterTypes = ['None', 'Type', 'Genre', 'Rating'];
+	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Tag'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
 	var ratingsValues = ['All', 'G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai']
@@ -297,6 +298,8 @@
 		var ratingFilterSelect = getFilterSelect('mal-ext-content-rating-filter');
 		addOptions(ratingFilterSelect, ratingsValues, ratingsTexts);
 		
+		var userTagsFilterInput = $('<input class="mal-ext-content-user-tags-filter" />');;
+		
 		var filterSection = $('<td class="mal-ext-filter-section" />');
 		var contentTypeFilter = $('<span>Filter: </span>');
 		filterSection.append(contentTypeFilter);
@@ -305,6 +308,7 @@
 		contentTypeFilter.append(getHiddenFilterContainer().append(contentTypeFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(genreFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(ratingFilterSelect));
+		contentTypeFilter.append(getHiddenFilterContainer().append(userTagsFilterInput));
 		existingTd.after(filterSection);
 	}
 	
@@ -339,6 +343,7 @@
 		var typeSelect = $('.mal-ext-content-type-filter');
 		var genreSelect = $('.mal-ext-content-genre-filter');
 		var ratingSelect = $('.mal-ext-content-rating-filter');
+		var userTagsInput = $('.mal-ext-content-user-tags-filter');
 		
 		mainSelect.on('change', function(event) {
 			closeInfoPopover();
@@ -353,6 +358,9 @@
 			}
 			else if (val === 'Rating') {
 				showSelectedFilter(ratingSelect)
+			}
+			else if (val === 'Tag') {
+				showSelectedFilter(userTagsInput)
 			}
 		});
 		
@@ -370,10 +378,23 @@
 			closeInfoPopover();
 			filterAnimeByRating($(this).val());
 		});
+	
+		var userTagsFilterTimeout;
+		userTagsInput.on('keyup', function(event) {
+			closeInfoPopover();
+			
+			var inputVal = $(this).val();
+			clearTimeout(userTagsFilterTimeout);
+			userTagsFilterTimeout = setTimeout(function() {
+				filterAnimeByUserTag(inputVal);
+			}, 500);
+		});
 	}
 	
 	function hideAndUpdateVisibleFilters() {
-		$('.' + activeFilterClass).removeClass(activeFilterClass).children('select').val('All').trigger('change');
+		var filter = $(activeFilterSelector).removeClass(activeFilterClass);
+		filter.children('select').val('All').trigger('change');
+		filter.children('input').val('').trigger('keyup');
 	}
 	
 	function showSelectedFilter(select) {
@@ -407,8 +428,24 @@
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
-	function filterAnime(field, val, showIfTrueFunction) {
-		if (val === 'All') {
+	function filterAnimeByUserTag(val) {
+		val = val.trim().toLowerCase();
+		
+		var showIfTrueFunction = function(userTags) {
+			return userTags.some(function(tag) {
+				return tag.toLowerCase().indexOf(val) !== -1;
+			});
+		}
+		
+		filterAnime(userTagsField, val, showIfTrueFunction, '');
+	}
+	
+	function filterAnime(field, val, showIfTrueFunction, showAllValue) {
+		if (typeof showAllValue === 'undefined') {
+			showAllValue = 'All';
+		}
+		
+		if (val === showAllValue) {
 			showIfTrueFunction = function() {
 				return true;
 			}
