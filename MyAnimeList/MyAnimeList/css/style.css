@@ -1,3 +1,8 @@
+#mal_cs_powered {
+	/* Don't let the control strip's rightmost td overlap with the inserted controls. */
+	position: static !important;
+}
+
 .mal-ext-popover {
 	position: absolute;
 	display: none;
