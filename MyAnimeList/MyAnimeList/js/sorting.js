@@ -1,5 +1,5 @@
 var sorting = (function() {
-	var sortingTypes = ['None', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating'];
+	var sortingTypes = ['None', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes'];
 	var ratings = actualRatings.concat(['None']);
 	var mainSortingSelect;
 	
@@ -50,6 +50,9 @@ var sorting = (function() {
 			}
 			else if (val === 'Rating') {
 				sortAnimeByRating();
+			}
+			else if (val === 'Episodes') {
+				sortAnimeByNumberOfEpisodes();
 			}
 		});
 	}
@@ -102,6 +105,14 @@ var sorting = (function() {
 		
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field, sortDescending, getValueMethod);
+		});
+	}
+	
+	function sortAnimeByNumberOfEpisodes() {
+		var field = 'episodes';
+		var sortDescending = true;
+		sortAnime(function(sectionData) {
+			return getSortedOrder(sectionData, field, sortDescending);
 		});
 	}
 	
