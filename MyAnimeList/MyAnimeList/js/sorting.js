@@ -1,5 +1,6 @@
 var sorting = (function() {
-	var sortingTypes = ['None', 'Average Score', 'Rank', 'Popularity', 'Favorited'];
+	var sortingTypes = ['None', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating'];
+	var ratings = actualRatings.concat(['None']);
 	var mainSortingSelect;
 	
 	function run() {
@@ -47,6 +48,9 @@ var sorting = (function() {
 			else if (val === 'Favorited') {
 				sortAnimeByFavorited()
 			}
+			else if (val === 'Rating') {
+				sortAnimeByRating();
+			}
 		});
 	}
 	
@@ -88,6 +92,19 @@ var sorting = (function() {
 		});
 	}
 	
+	function sortAnimeByRating() {
+		var field = 'classification';
+		var sortDescending = false;
+		
+		var getValueMethod = function(val) {
+			return ratings.indexOf(val);
+		};
+		
+		sortAnime(function(sectionData) {
+			return getSortedOrder(sectionData, field, sortDescending, getValueMethod);
+		});
+	}
+	
 	function sortAnime(sortMethod) {
 		for (var section in animeDataBySection) {
 			var rowColorNumber = getRowColorNumber();
@@ -109,7 +126,11 @@ var sorting = (function() {
 		}
 	}
 	
-	function getSortedOrder(sectionData, field, reverseSort) {
+	function getSortedOrder(sectionData, field, reverseSort, getValueMethod) {
+		getValueMethod = getValueMethod || function(val) {
+			return val;
+		};
+		
 		var sortBeforeMethod = getSortBeforeMethod(reverseSort);
 		var sortAfterMethod = getSortAfterMethod(reverseSort);
 		
@@ -117,11 +138,11 @@ var sorting = (function() {
 			var anime1 = sectionData.data[id1].details;
 			var anime2 = sectionData.data[id2].details;
 			
-			if (sortBeforeMethod(anime1, anime2, field)) {
+			if (sortBeforeMethod(anime1, anime2, field, getValueMethod)) {
 				return -1;
 			}
 			
-			if (sortAfterMethod(anime1, anime2, field)) {
+			if (sortAfterMethod(anime1, anime2, field, getValueMethod)) {
 				return 1;
 			}
 			
@@ -147,12 +168,12 @@ var sorting = (function() {
 		return reverseSort ? sortBeforeMethodNormal : sortAfterMethodNormal;
 	}
 	
-	function sortBeforeMethodNormal(anime1, anime2, field) {
-		return anime1[field] < anime2[field];
+	function sortBeforeMethodNormal(anime1, anime2, field, getValueMethod) {
+		return getValueMethod(anime1[field]) < getValueMethod(anime2[field]);
 	}
 	
-	function sortAfterMethodNormal(anime1, anime2, field) {
-		return anime1[field] > anime2[field];
+	function sortAfterMethodNormal(anime1, anime2, field, getValueMethod) {
+		return getValueMethod(anime1[field]) > getValueMethod(anime2[field]);
 	}
 	
 	return {
