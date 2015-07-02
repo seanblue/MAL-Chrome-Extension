@@ -81,7 +81,7 @@ var infoPopover = (function() {
 				'top': y
 			});
 			
-			$('.mal-ext-popover-title').text(details.title);
+			$('.mal-ext-popover-title').html(details.title);
 			$('.mal-ext-popover-aired').text(getFullAiredDate(details.start_date, details.end_date));
 			$('.mal-ext-popover-average').text(details.members_score.toFixed(2));
 			$('.mal-ext-popover-rank').text(details.rank.toLocaleString());
