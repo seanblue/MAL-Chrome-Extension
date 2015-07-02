@@ -1,6 +1,4 @@
 (function() {
-	var animeContainerClass = 'mal-ext-anime-container';
-	var animeContainerSelector = '.' + animeContainerClass;
 	var animeSectionClass = 'mal-ext-anime-section';
 	var animeSectionSelector = '.' + animeSectionClass;
 
