@@ -95,14 +95,26 @@ var preprocessing = (function() {
 	}
 	
 	function saveAnimeDetails(id, el, details) {
-		var sectionName = getSectionName(el);
+		addAdditionalDetails(details);
 		var data = {
 			'el': el,
 			'details': details
 		};
 		
 		animeData[id] = data
+		
+		var sectionName = getSectionName(el);
 		animeDataBySection[sectionName].data[id] = data;
+	}
+	
+	function addAdditionalDetails(details) {
+		var mainTitle = details.title;
+		var otherTitles = details.other_titles || {};
+		otherTitles = $.map(otherTitles, function(item) {
+			return item;
+		});
+		
+		details[allTitlesField] = [mainTitle].concat(otherTitles);
 	}
 	
 	function getSectionName(el) {
