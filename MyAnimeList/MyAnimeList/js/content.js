@@ -3,5 +3,6 @@
 		preprocessing.run();
 		infoPopover.run();
 		filtering.run();
+		sorting.run();
 	});
 })();

@@ -36,12 +36,22 @@
 	width: calc(100% - 20px);
 }
 
-#mal_cs_otherlinks {
+#mal_cs_otherlinks, .mal-ext-filter-section, .mal-ext-sorting-section{
 	border-right: 1px solid #7e7e7e;
+}
+
+#mal_cs_otherlinks {
+	width: 300px;
 }
 
 .mal-ext-filter-section {
 	padding: 0 1em;
+	width: 300px;
+}
+
+.mal-ext-sorting-section {
+	padding: 0 1em;
+	width: 275px;
 }
 
 .mal-ext-filter-container {

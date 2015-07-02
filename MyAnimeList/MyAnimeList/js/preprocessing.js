@@ -49,7 +49,9 @@ var preprocessing = (function() {
 			
 			animeDataBySection[sectionName] = {
 				order: [],
-				data: {}
+				original_order: [],
+				data: {},
+				el: section
 			};
 		}
 	}
@@ -61,7 +63,9 @@ var preprocessing = (function() {
 			var id = getAnimeId(container);
 			
 			var sectionName = getSectionName(el);
-			animeDataBySection[sectionName].order.push(id);
+			var sectionData = animeDataBySection[sectionName];
+			sectionData.order.push(id);
+			sectionData.original_order.push(id);
 			
 			var promise = loadAnimeDetails(id, container);
 			loadAnimePromises.push(promise);
@@ -98,7 +102,8 @@ var preprocessing = (function() {
 		addAdditionalDetails(details);
 		var data = {
 			'el': el,
-			'details': details
+			'details': details,
+			'visible': true
 		};
 		
 		animeData[id] = data
