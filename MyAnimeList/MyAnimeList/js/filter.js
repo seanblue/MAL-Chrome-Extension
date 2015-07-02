@@ -46,25 +46,24 @@ var filtering = (function() {
 	
 	function insertFilterElements() {
 		var existingTd = $('#mal_cs_otherlinks');
-		existingTd.css({'width': '325px'});
 		
-		var mainFilterSelect = getFilterSelect('mal-ext-content-main-filter');
+		var mainFilterSelect = getSelect('mal-ext-content-main-filter');
 		addOptions(mainFilterSelect, filterTypes);
 		
-		var contentTypeFilterSelect = getFilterSelect('mal-ext-content-type-filter');
+		var contentTypeFilterSelect = getSelect('mal-ext-content-type-filter');
 		addOptions(contentTypeFilterSelect, mediaTypes);
 		
-		var genreFilterSelect = getFilterSelect('mal-ext-content-genre-filter');
+		var genreFilterSelect = getSelect('mal-ext-content-genre-filter');
 		addOptions(genreFilterSelect, genres);
 		
-		var ratingFilterSelect = getFilterSelect('mal-ext-content-rating-filter');
+		var ratingFilterSelect = getSelect('mal-ext-content-rating-filter');
 		addOptions(ratingFilterSelect, ratingsValues, ratingsTexts);
 		
-		var titleFilterInput = getFilterInput('mal-ext-content-title-filter');
+		var titleFilterInput = getInput('mal-ext-content-title-filter');
 		
-		var userTagsFilterInput = getFilterInput('mal-ext-content-user-tags-filter');
+		var userTagsFilterInput = getInput('mal-ext-content-user-tags-filter');
 		
-		var filterSection = $('<td class="mal-ext-filter-section" />');
+		var filterSection = $('<td class="' + filteringSectionClass + '" />');
 		var contentTypeFilter = $('<span>Filter: </span>');
 		filterSection.append(contentTypeFilter);
 		
@@ -83,28 +82,6 @@ var filtering = (function() {
 	
 	function getFilterContainer() {
 		return $('<span class="mal-ext-filter-container" />');
-	}
-	
-	function getFilterSelect(className) {
-		return $('<select class="' + className + '" />');
-	}
-	
-	function getFilterInput(className) {
-		return $('<input class="' + className + '" size="15" />');
-	}
-	
-	function addOptions(select, values, texts) {
-		if (typeof texts === 'undefined') {
-			texts = values;
-		}
-		
-		for (var i = 0; i < values.length; i++) {
-			select.append(getOptionTag(values[i], texts[i]));
-		}
-	}
-	
-	function getOptionTag(value, text) {
-		return '<option value="' + value + '">' + text + '</option>';
 	}
 	
 	function addFilterEvents() {
@@ -264,7 +241,9 @@ var filtering = (function() {
 					continue;
 				}
 				
-				if (showIfTrueFunction(anime.details[field]) === true) {
+				var isVisible = showIfTrueFunction(anime.details[field]);
+				anime.visible = isVisible;
+				if (isVisible) {
 					updateRowColor(anime.el, rowColorNumber);
 					anime.el.show();
 					rowColorNumber = getRowColorNumber(rowColorNumber);
@@ -274,19 +253,6 @@ var filtering = (function() {
 				}
 			}
 		}
-	}
-	
-	function updateRowColor(container, rowColorNumber) {
-		var classStart = 'mal-ext-row-color';
-		container.removeClass(classStart + '1' + ' ' + classStart + '2').addClass(classStart + rowColorNumber);
-	}
-	
-	function getRowColorNumber(current) {
-		if (current === '1') {
-			return '2';
-		}
-		
-		return '1';
 	}
 	
 	return {
