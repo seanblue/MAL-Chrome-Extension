@@ -14,7 +14,7 @@
 	"content_scripts": [ {
         "js": [
 			"js/thirdparty/jquery-2.1.4.js",
-			"js/globals.js",
+			"js/shared.js",
 			"js/preprocessing.js",
 			"js/info-popover.js",
 			"js/filter.js",
