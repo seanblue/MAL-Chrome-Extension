@@ -1,4 +1,6 @@
 var infoPopover = (function() {
+	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	
 	function run() {
 		insertInfoDiv();
 		addInfoIcons();
@@ -21,6 +23,7 @@ var infoPopover = (function() {
 		animePaddedDiv.append('<span class="mal-ext-close-popover-span"><img class="mal-ext-close-popover" src="' + closeIconPath + '" height="12" width="12" /></span>');
 		
 		animePaddedDiv.append(getContentDiv('Title', 'title'));
+		animePaddedDiv.append(getContentDiv('Aired', 'aired'));
 		animePaddedDiv.append(getContentDiv('Average Score', 'average'));
 		animePaddedDiv.append(getContentDiv('Rank', 'rank'));
 		animePaddedDiv.append(getContentDiv('Popularity', 'popularity'));
@@ -79,6 +82,7 @@ var infoPopover = (function() {
 			});
 			
 			$('.mal-ext-popover-title').text(details.title);
+			$('.mal-ext-popover-aired').text(getFullAiredDate(details.start_date, details.end_date));
 			$('.mal-ext-popover-average').text(details.members_score.toFixed(2));
 			$('.mal-ext-popover-rank').text(details.rank.toLocaleString());
 			$('.mal-ext-popover-popularity').text(details.popularity_rank.toLocaleString());
@@ -89,6 +93,29 @@ var infoPopover = (function() {
 			
 			animeInfoDiv.show();
 		});
+	}
+	
+	function getFullAiredDate(startDate, endDate) {
+		if (startDate === endDate) {
+			// Movie, etc.
+			return getAiredDateString(startDate);
+		}
+		
+		return getAiredDateString(startDate) + ' to ' + getAiredDateString(endDate);
+	}
+	
+	function getAiredDateString(dateStr) {
+		if (!dateStr) {
+			// Unknown air date.
+			return '?';
+		}
+		else if (dateStr.length === 4 && (dateStr.startsWith('19') || dateStr.startsWith('20'))) {
+			// Only a year.
+			return dateStr;
+		}
+		
+		var date = new Date(dateStr);
+		return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
 	}
 	
 	function addPopoverCloseEvent() {
