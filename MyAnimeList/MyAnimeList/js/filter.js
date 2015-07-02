@@ -60,7 +60,7 @@ var filtering = (function() {
 		var ratingFilterSelect = getFilterSelect('mal-ext-content-rating-filter');
 		addOptions(ratingFilterSelect, ratingsValues, ratingsTexts);
 		
-		var userTagsFilterInput = $('<input class="mal-ext-content-user-tags-filter" />');;
+		var userTagsFilterInput = getFilterInput('mal-ext-content-user-tags-filter');
 		
 		var filterSection = $('<td class="mal-ext-filter-section" />');
 		var contentTypeFilter = $('<span>Filter: </span>');
@@ -84,6 +84,10 @@ var filtering = (function() {
 	
 	function getFilterSelect(className) {
 		return $('<select class="' + className + '" />');
+	}
+	
+	function getFilterInput(className) {
+		return $('<input class="' + className + '" size="15" />');
 	}
 	
 	function addOptions(select, values, texts) {
