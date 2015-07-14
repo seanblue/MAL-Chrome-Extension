@@ -12,15 +12,18 @@
 	c. Classification (classification) ['PG-13', etc. but with the description afterward]
 	d. Tag (would require page parsing)
 	e. Title (quicker than scrolling; check alternate titles)
+	f. Status
 3. Sorting
 	a. Average Score
 	b. Rank
 	c. Popularity
 	d. Number of Favorites
-	e. Start Date and End Date (how to compare year only or unknown dates?)
-	f. Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
-	g. Automatically sort alphabetically as a secondary sort.
-	h. Reverse sort.
+	e. Rating
+	f. Start Date and End Date (how to compare year only or unknown dates?)
+	g. Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
+	h. Automatically sort alphabetically as a secondary sort.
+	i. Reverse sort.
 4. Add a Chrome Extension icon which allows any of the above main features to be turned on/off. Also allow only selected fields to be shown in popover.
 
 ----------------------------------------------------------------------------
+Might have to use background page (instead of just content script) to use chrome.tabs. This appears to be necessary for a page action.

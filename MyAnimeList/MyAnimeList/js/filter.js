@@ -4,11 +4,12 @@ var filtering = (function() {
 	
 	var userTagsField = 'mal_ext_user_tags';
 
-	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Title', 'Tag'];
+	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Title', 'Tag'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
 	var ratingsValues = ['All'].concat(actualRatings);
 	var ratingsTexts = ['All', 'G', 'PG', 'PG-13', 'R', 'R+', 'Rx'];
+	var statusOptions = ['All', 'Finished Airing', 'Currently Airing', 'Not yet aired'];
 	
 	function run() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
@@ -59,6 +60,9 @@ var filtering = (function() {
 		var ratingFilterSelect = getSelect('mal-ext-content-rating-filter');
 		addOptions(ratingFilterSelect, ratingsValues, ratingsTexts);
 		
+		var statusFilterSelect = getSelect('mal-ext-content-status-filter');
+		addOptions(statusFilterSelect, statusOptions);
+		
 		var titleFilterInput = getInput('mal-ext-content-title-filter');
 		
 		var userTagsFilterInput = getInput('mal-ext-content-user-tags-filter');
@@ -71,6 +75,7 @@ var filtering = (function() {
 		contentTypeFilter.append(getHiddenFilterContainer().append(contentTypeFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(genreFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(ratingFilterSelect));
+		contentTypeFilter.append(getHiddenFilterContainer().append(statusFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(titleFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(userTagsFilterInput));
 		existingTd.after(filterSection);
@@ -89,6 +94,7 @@ var filtering = (function() {
 		var typeSelect = $('.mal-ext-content-type-filter');
 		var genreSelect = $('.mal-ext-content-genre-filter');
 		var ratingSelect = $('.mal-ext-content-rating-filter');
+		var statusSelect = $('.mal-ext-content-status-filter');
 		var titleInput = $('.mal-ext-content-title-filter');
 		var userTagsInput = $('.mal-ext-content-user-tags-filter');
 		
@@ -105,6 +111,9 @@ var filtering = (function() {
 			}
 			else if (val === 'Rating') {
 				showSelectedFilter(ratingSelect)
+			}
+			else if (val === 'Status') {
+				showSelectedFilter(statusSelect)
 			}
 			else if (val === 'Title') {
 				showSelectedFilter(titleInput)
@@ -127,6 +136,11 @@ var filtering = (function() {
 		ratingSelect.on('change', function(event) {
 			closeInfoPopover();
 			filterAnimeByRating($(this).val());
+		});
+	
+		statusSelect.on('change', function(event) {
+			closeInfoPopover();
+			filterAnimeByStatus($(this).val());
 		});
 	
 		setupTitleFilterEvent(titleInput);
@@ -171,10 +185,7 @@ var filtering = (function() {
 	
 	function filterAnimeByType(val) {
 		var field = 'type';
-		var showIfTrueFunction = function(type) {
-			return type === val;
-		}
-		
+		var showIfTrueFunction = getShowIfTrueEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
@@ -189,35 +200,40 @@ var filtering = (function() {
 	
 	function filterAnimeByRating(val) {
 		var field = 'classification';
-		var showIfTrueFunction = function(rating) {
-			return rating === val;
-		}
-		
+		var showIfTrueFunction = getShowIfTrueEqualFunction(val);
+		filterAnime(field, val, showIfTrueFunction);
+	}
+	
+	function filterAnimeByStatus(val) {
+		var field = 'status';
+		var showIfTrueFunction = getShowIfTrueEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByTitle(val) {
-		val = val.trim().toLowerCase();
-		
-		var showIfTrueFunction = function(allTitles) {
-			return allTitles.some(function(title) {
-				return title.toLowerCase().indexOf(val) !== -1;
-			});
-		}
-		
+		var showIfTrueFunction = getShowIfTrueLikeAnyFunction(val);
 		filterAnime(allTitlesField, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnimeByUserTag(val) {
-		val = val.trim().toLowerCase();
-		
-		var showIfTrueFunction = function(userTags) {
-			return userTags.some(function(tag) {
-				return tag.toLowerCase().indexOf(val) !== -1;
+		var showIfTrueFunction = getShowIfTrueLikeAnyFunction(val);
+		filterAnime(userTagsField, val, showIfTrueFunction, '');
+	}
+	
+	function getShowIfTrueEqualFunction(inputVal) {
+		var lowerInputVal = inputVal.toLowerCase();
+		return function(testVal) {
+			return testVal.toLowerCase() === lowerInputVal;
+		}
+	}
+	
+	function getShowIfTrueLikeAnyFunction(inputVal) {
+		lowerInputVal = inputVal.trim().toLowerCase();
+		return function(allTestVals) {
+			return allTestVals.some(function(testVal) {
+				return testVal.toLowerCase().indexOf(lowerInputVal) !== -1;
 			});
 		}
-		
-		filterAnime(userTagsField, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnime(field, val, showIfTrueFunction, showAllValue) {
