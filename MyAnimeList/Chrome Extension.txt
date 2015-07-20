@@ -1,29 +1,32 @@
 ** Features **
-1. Show popover with additional information.
-	a. Average Score ('members_score')
-	b. Rank (rank)
-	c. Popularity (popularity_rank)
-	d. Number of Favorites ('favorited_count')
-	e. Genres (genres[])
-	f. Date Aired ('start_date' and 'end_date'; myDate.toLocaleDateString(); make sure to check null for '?' such as animeid=25777)
-2. Filtering
-	a. Genre (genres[])
-	b. Type (type) ['TV', 'Movie', etc.]
-	c. Classification (classification) ['PG-13', etc. but with the description afterward]
-	d. Tag (would require page parsing)
-	e. Title (quicker than scrolling; check alternate titles)
-	f. Status
-3. Sorting
-	a. Average Score
-	b. Rank
-	c. Popularity
-	d. Number of Favorites
-	e. Rating
-	f. Start Date and End Date (how to compare year only or unknown dates?)
-	g. Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
-	h. Automatically sort alphabetically as a secondary sort.
-	i. Reverse sort.
-4. Add a Chrome Extension icon which allows any of the above main features to be turned on/off. Also allow only selected fields to be shown in popover.
 
-----------------------------------------------------------------------------
-Might have to use background page (instead of just content script) to use chrome.tabs. This appears to be necessary for a page action.
+['@' = not done]
+['#' = done]
+
+#1. Show popover with additional information.
+	# Title
+	# Average Score ('members_score')
+	# Rank (rank)
+	# Popularity (popularity_rank)
+	# Number of Favorites ('favorited_count')
+	# Genres (genres[])
+	# Date Aired ('start_date' and 'end_date'; myDate.toLocaleDateString(); make sure to check null for '?' such as animeid=25777)
+#2. Filtering
+	# Genre (genres[])
+	# Type (type) ['TV', 'Movie', etc.]
+	# Rating (classification) ['PG-13', etc. but with the description afterward]
+	# Tag (would require page parsing)
+	# Title (quicker than scrolling; check alternate titles)
+	# Status
+@3. Sorting
+	@ Title
+	# Average Score
+	# Rank
+	# Popularity
+	# Number of Favorites
+	# Rating
+	@ Start Date and End Date (how to compare year only or unknown dates?)
+	# Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
+	# Automatically sort alphabetically as a secondary sort.
+	@ Reverse sort (check box).
+@4. Move Filter/Sorting to area below main black bar to allow for more room and customization of styles.
