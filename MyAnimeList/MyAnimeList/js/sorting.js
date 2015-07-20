@@ -1,5 +1,5 @@
 var sorting = (function() {
-	var sortingTypes = ['None', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes'];
+	var sortingTypes = ['Default', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes'];
 	var ratings = actualRatings.concat(['None']);
 	var mainSortingSelect;
 	
@@ -33,7 +33,7 @@ var sorting = (function() {
 			closeInfoPopover();
 			
 			var val = $(this).val();
-			if (val === 'None') {
+			if (val === 'Default') {
 				sortWithInitialOrder();
 			}
 			if (val === 'Average Score') {
