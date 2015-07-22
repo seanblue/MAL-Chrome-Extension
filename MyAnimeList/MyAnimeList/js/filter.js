@@ -4,7 +4,7 @@ var filtering = (function() {
 	
 	var userTagsField = 'mal_ext_user_tags';
 
-	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Title', 'Tag'];
+	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Title', 'Synopsis', 'Tag'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
 	var ratingsValues = ['All'].concat(actualRatings);
@@ -65,6 +65,8 @@ var filtering = (function() {
 		
 		var titleFilterInput = getInput('mal-ext-content-title-filter');
 		
+		var synopsisFilterInput = getInput('mal-ext-content-synopsis-filter');
+		
 		var userTagsFilterInput = getInput('mal-ext-content-user-tags-filter');
 		
 		var filterSection = $('<td class="' + filteringSectionClass + '" />');
@@ -77,6 +79,7 @@ var filtering = (function() {
 		contentTypeFilter.append(getHiddenFilterContainer().append(ratingFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(statusFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(titleFilterInput));
+		contentTypeFilter.append(getHiddenFilterContainer().append(synopsisFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(userTagsFilterInput));
 		existingTd.after(filterSection);
 	}
@@ -96,6 +99,7 @@ var filtering = (function() {
 		var ratingSelect = $('.mal-ext-content-rating-filter');
 		var statusSelect = $('.mal-ext-content-status-filter');
 		var titleInput = $('.mal-ext-content-title-filter');
+		var synopsisInput = $('.mal-ext-content-synopsis-filter');
 		var userTagsInput = $('.mal-ext-content-user-tags-filter');
 		
 		mainSelect.on('change', function(event) {
@@ -117,6 +121,9 @@ var filtering = (function() {
 			}
 			else if (val === 'Title') {
 				showSelectedFilter(titleInput)
+			}
+			else if (val === 'Synopsis') {
+				showSelectedFilter(synopsisInput)
 			}
 			else if (val === 'Tag') {
 				showSelectedFilter(userTagsInput)
@@ -144,31 +151,31 @@ var filtering = (function() {
 		});
 	
 		setupTitleFilterEvent(titleInput);
+		setupSynopsisFilterEvent(synopsisInput);
 		setupUserTagsFilterEvent(userTagsInput);
 	}
 	
 	function setupTitleFilterEvent(titleInput) {
-		var filterTimeout;
-		titleInput.on('keyup', function(event) {
-			closeInfoPopover();
-			
-			var inputVal = $(this).val();
-			clearTimeout(filterTimeout);
-			filterTimeout = setTimeout(function() {
-				filterAnimeByTitle(inputVal);
-			}, 500);
-		});
+		setupInputFilterEvent(titleInput, filterAnimeByTitle);
+	}
+	
+	function setupSynopsisFilterEvent(synopsisInput) {
+		setupInputFilterEvent(synopsisInput, filterAnimeBySynopsis);
 	}
 	
 	function setupUserTagsFilterEvent(userTagsInput) {
+		setupInputFilterEvent(userTagsInput, filterAnimeByUserTag);
+	}
+	
+	function setupInputFilterEvent(input, callback) {
 		var filterTimeout;
-		userTagsInput.on('keyup', function(event) {
+		input.on('keyup', function(event) {
 			closeInfoPopover();
 			
 			var inputVal = $(this).val();
 			clearTimeout(filterTimeout);
 			filterTimeout = setTimeout(function() {
-				filterAnimeByUserTag(inputVal);
+				callback(inputVal);
 			}, 500);
 		});
 	}
@@ -215,6 +222,12 @@ var filtering = (function() {
 		filterAnime(allTitlesField, val, showIfTrueFunction, '');
 	}
 	
+	function filterAnimeBySynopsis(val) {
+		var field = 'synopsis';
+		var showIfTrueFunction = getShowIfTrueLikeFunction(val);
+		filterAnime(field, val, showIfTrueFunction, '');
+	}
+	
 	function filterAnimeByUserTag(val) {
 		var showIfTrueFunction = getShowIfTrueLikeAnyFunction(val);
 		filterAnime(userTagsField, val, showIfTrueFunction, '');
@@ -224,6 +237,13 @@ var filtering = (function() {
 		var lowerInputVal = inputVal.toLowerCase();
 		return function(testVal) {
 			return testVal.toLowerCase() === lowerInputVal;
+		}
+	}
+	
+	function getShowIfTrueLikeFunction(inputVal) {
+		var lowerInputVal = inputVal.toLowerCase();
+		return function(testVal) {
+			return testVal.toLowerCase().indexOf(lowerInputVal) !== -1;
 		}
 	}
 	
