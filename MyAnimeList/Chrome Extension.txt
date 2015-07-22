@@ -5,6 +5,7 @@
 
 #1. Show popover with additional information.
 	# Title
+	@ English Title (if available)
 	# Average Score ('members_score')
 	# Rank (rank)
 	# Popularity (popularity_rank)
@@ -17,6 +18,7 @@
 	# Rating (classification) ['PG-13', etc. but with the description afterward]
 	# Tag (would require page parsing)
 	# Title (quicker than scrolling; check alternate titles)
+	# Synopsis
 	# Status
 @3. Sorting
 	@ Title
