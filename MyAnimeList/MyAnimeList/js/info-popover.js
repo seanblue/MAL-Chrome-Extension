@@ -1,5 +1,6 @@
 var infoPopover = (function() {
 	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	var noEnglishTitle = '';
 	
 	function run() {
 		insertInfoDiv();
@@ -103,13 +104,33 @@ var infoPopover = (function() {
 		
 		var section = $('.mal-ext-popover-english-title');
 		var container = section.parent();
-		if (typeof otherTitles === 'undefined' || typeof otherTitles.english === 'undefined' || otherTitles.english.length === 0 || otherTitles.english[0] === mainTitle) {
+		
+		var englishTitle = getEnglishTitleIfExistsAndUnique(otherTitles, mainTitle);
+		if (englishTitle === noEnglishTitle) {
 			container.hide();
 		}
 		else {
 			section.text(otherTitles.english[0]);
 			container.show();
 		}
+	}
+	
+	function getEnglishTitleIfExistsAndUnique(otherTitles, mainTitle) {
+		if (typeof otherTitles === 'undefined') {
+			return noEnglishTitle;
+		}
+		
+		var englishTitles = otherTitles.english
+		if (typeof englishTitles === 'undefined' || englishTitles.length === 0) {
+			return noEnglishTitle;
+		}
+
+		var englishTitle = englishTitles[0];
+		if (englishTitle === mainTitle) {
+			return noEnglishTitle;
+		}
+		
+		return englishTitle;
 	}
 	
 	function getFullAiredDate(startDate, endDate) {
