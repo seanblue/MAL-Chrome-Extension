@@ -23,6 +23,7 @@ var infoPopover = (function() {
 		animePaddedDiv.append('<span class="mal-ext-close-popover-span"><img class="mal-ext-close-popover" src="' + closeIconPath + '" height="12" width="12" /></span>');
 		
 		animePaddedDiv.append(getContentDiv('Title', 'title'));
+		animePaddedDiv.append(getContentDiv('English Title', 'english-title'));
 		animePaddedDiv.append(getContentDiv('Aired', 'aired'));
 		animePaddedDiv.append(getContentDiv('Average Score', 'average'));
 		animePaddedDiv.append(getContentDiv('Rank', 'rank'));
@@ -82,6 +83,7 @@ var infoPopover = (function() {
 			});
 			
 			$('.mal-ext-popover-title').html(details.title);
+			updateEnglishTitle(details);
 			$('.mal-ext-popover-aired').text(getFullAiredDate(details.start_date, details.end_date));
 			$('.mal-ext-popover-average').text(details.members_score.toFixed(2));
 			$('.mal-ext-popover-rank').text(details.rank.toLocaleString());
@@ -93,6 +95,21 @@ var infoPopover = (function() {
 			
 			animeInfoDiv.show();
 		});
+	}
+	
+	function updateEnglishTitle(details) {
+		var mainTitle = details.title;
+		var otherTitles = details.other_titles;
+		
+		var section = $('.mal-ext-popover-english-title');
+		var container = section.parent();
+		if (typeof otherTitles === 'undefined' || typeof otherTitles.english === 'undefined' || otherTitles.english.length === 0 || otherTitles.english[0] === mainTitle) {
+			container.hide();
+		}
+		else {
+			section.text(otherTitles.english[0]);
+			container.show();
+		}
 	}
 	
 	function getFullAiredDate(startDate, endDate) {
