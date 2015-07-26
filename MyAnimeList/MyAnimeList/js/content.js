@@ -1,7 +1,7 @@
 (function() {
 	$(document).ready(function() {
-		preprocessing.run();
 		setupUI.run();
+		preprocessing.run();
 		infoPopover.run();
 		filtering.run();
 		sorting.run();
