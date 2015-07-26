@@ -1,5 +1,5 @@
 var sorting = (function() {
-	var sortingTypes = ['Default', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes'];
+	var sortingTypes = ['Default', 'Title', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes'];
 	var ratings = actualRatings.concat(['None']);
 	var mainSortingSelect;
 	var mainSortingReverseCheckbox;
@@ -39,6 +39,9 @@ var sorting = (function() {
 			if (val === 'Default') {
 				sortWithInitialOrder();
 			}
+			if (val === 'Title') {
+				sortAnimeByTitle()
+			}
 			if (val === 'Average Score') {
 				sortAnimeByAverageScore()
 			}
@@ -67,6 +70,13 @@ var sorting = (function() {
 	function sortWithInitialOrder() {
 		sortAnime(function(sectionData) {
 			return sectionData.original_order.slice();
+		});
+	}
+	
+	function sortAnimeByTitle() {
+		var field = 'title';
+		sortAnime(function(sectionData) {
+			return getSortedOrder(sectionData, field);
 		});
 	}
 	
