@@ -2,6 +2,7 @@ var sorting = (function() {
 	var sortingTypes = ['Default', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes'];
 	var ratings = actualRatings.concat(['None']);
 	var mainSortingSelect;
+	var mainSortingReverseCheckbox;
 	
 	function run() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
@@ -11,25 +12,30 @@ var sorting = (function() {
 	}
 	
 	function insertSortingElements() {
+		var sortingSection = $(sortingSectionSelector);
+		
 		mainSortingSelect = getSelect('mal-ext-content-main-sorting');
 		addOptions(mainSortingSelect, sortingTypes);
 		
-		var sortingSection = $(sortingSectionSelector);
-		var sortingSpan = $('<span>Sort: </span>');
+		var sortingSpan = getSortingContainer('Sort: ');
 		sortingSection.append(sortingSpan);
+		sortingSpan.append(mainSortingSelect);
 		
-		sortingSpan.append(getSortingContainer().append(mainSortingSelect));
+		mainSortingReverseCheckbox = $('<input type="checkbox" />');
+		var reverseSpan = getSortingContainer('Reverse Sort?: ');
+		sortingSection.append(reverseSpan);
+		reverseSpan.append(mainSortingReverseCheckbox);
 	}
 	
-	function getSortingContainer() {
-		return $('<span class="mal-ext-sorting-container" />');
+	function getSortingContainer(text) {
+		return $('<span class="mal-ext-sorting-container">' + text + '</span>');
 	}
 	
 	function addSortingEvents() {
-		mainSortingSelect.on('change', function() {
+		mainSortingSelect.add(mainSortingReverseCheckbox).on('change', function() {
 			closeInfoPopover();
 			
-			var val = $(this).val();
+			var val = mainSortingSelect.val();
 			if (val === 'Default') {
 				sortWithInitialOrder();
 			}
@@ -54,6 +60,10 @@ var sorting = (function() {
 		});
 	}
 	
+	function getReverseSort() {
+		return mainSortingReverseCheckbox.is(':checked');
+	}
+	
 	function sortWithInitialOrder() {
 		sortAnime(function(sectionData) {
 			return sectionData.original_order.slice();
@@ -62,54 +72,48 @@ var sorting = (function() {
 	
 	function sortAnimeByAverageScore() {
 		var field = 'members_score';
-		var sortDescending = true;
 		sortAnime(function(sectionData) {
-			return getSortedOrder(sectionData, field, sortDescending);
+			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByRank() {
 		var field = 'rank';
-		var sortDescending = false;
 		sortAnime(function(sectionData) {
-			return getSortedOrder(sectionData, field, sortDescending);
+			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByPopularity() {
 		var field = 'popularity_rank';
-		var sortDescending = false;
 		sortAnime(function(sectionData) {
-			return getSortedOrder(sectionData, field, sortDescending);
+			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByFavorited() {
 		var field = 'favorited_count';
-		var sortDescending = true;
 		sortAnime(function(sectionData) {
-			return getSortedOrder(sectionData, field, sortDescending);
+			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByRating() {
 		var field = 'classification';
-		var sortDescending = false;
 		
 		var getValueMethod = function(val) {
 			return ratings.indexOf(val);
 		};
 		
 		sortAnime(function(sectionData) {
-			return getSortedOrder(sectionData, field, sortDescending, getValueMethod);
+			return getSortedOrder(sectionData, field, getValueMethod);
 		});
 	}
 	
 	function sortAnimeByNumberOfEpisodes() {
 		var field = 'episodes';
-		var sortDescending = true;
 		sortAnime(function(sectionData) {
-			return getSortedOrder(sectionData, field, sortDescending);
+			return getSortedOrder(sectionData, field);
 		});
 	}
 	
@@ -134,10 +138,12 @@ var sorting = (function() {
 		}
 	}
 	
-	function getSortedOrder(sectionData, field, reverseSort, getValueMethod) {
+	function getSortedOrder(sectionData, field, getValueMethod) {
 		getValueMethod = getValueMethod || function(val) {
 			return val;
 		};
+		
+		var reverseSort = getReverseSort();
 		
 		var sortBeforeMethod = getSortBeforeMethod(reverseSort);
 		var sortAfterMethod = getSortAfterMethod(reverseSort);
