@@ -13,6 +13,7 @@
 			"js/thirdparty/jquery-2.1.4.js",
 			"js/shared.js",
 			"js/preprocessing.js",
+			"js/setup-ui.js",
 			"js/info-popover.js",
 			"js/filter.js",
 			"js/sorting.js",

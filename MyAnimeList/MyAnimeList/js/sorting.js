@@ -11,17 +11,14 @@ var sorting = (function() {
 	}
 	
 	function insertSortingElements() {
-		var filterSection = $(filteringSectionSelector);
-		
 		mainSortingSelect = getSelect('mal-ext-content-main-sorting');
 		addOptions(mainSortingSelect, sortingTypes);
 		
-		var sortingSection = $('<td class="mal-ext-sorting-section" />');
+		var sortingSection = $(sortingSectionSelector);
 		var sortingSpan = $('<span>Sort: </span>');
 		sortingSection.append(sortingSpan);
 		
 		sortingSpan.append(getSortingContainer().append(mainSortingSelect));
-		filterSection.after(sortingSection);
 	}
 	
 	function getSortingContainer() {
