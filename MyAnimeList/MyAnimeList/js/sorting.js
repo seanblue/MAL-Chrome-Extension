@@ -3,6 +3,7 @@ var sorting = (function() {
 	var ratings = actualRatings.concat(['None']);
 	var mainSortingSelect;
 	var mainSortingReverseCheckbox;
+	var reverseSortingSpan;
 	
 	function run() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
@@ -22,13 +23,21 @@ var sorting = (function() {
 		sortingSpan.append(mainSortingSelect);
 		
 		mainSortingReverseCheckbox = $('<input type="checkbox" />');
-		var reverseSpan = getSortingContainer('Reverse Sort?: ');
-		sortingSection.append(reverseSpan);
-		reverseSpan.append(mainSortingReverseCheckbox);
+		reverseSortingSpan = getSortingContainer('Reverse Sort?: ').hide();
+		sortingSection.append(reverseSortingSpan);
+		reverseSortingSpan.append(mainSortingReverseCheckbox);
 	}
 	
 	function getSortingContainer(text) {
 		return $('<span class="mal-ext-sorting-container">' + text + '</span>');
+	}
+	
+	function hideReverseSorting() {
+		reverseSortingSpan.hide();
+	}
+	
+	function showReverseSorting() {
+		reverseSortingSpan.show();
 	}
 	
 	function addSortingEvents() {
@@ -37,27 +46,35 @@ var sorting = (function() {
 			
 			var val = mainSortingSelect.val();
 			if (val === 'Default') {
+				hideReverseSorting()
 				sortWithInitialOrder();
 			}
 			if (val === 'Title') {
+				showReverseSorting();
 				sortAnimeByTitle()
 			}
 			if (val === 'Average Score') {
+				showReverseSorting();
 				sortAnimeByAverageScore()
 			}
 			else if (val === 'Rank') {
+				showReverseSorting();
 				sortAnimeByRank()
 			}
 			else if (val === 'Popularity') {
+				showReverseSorting();
 				sortAnimeByPopularity()
 			}
 			else if (val === 'Favorited') {
+				showReverseSorting();
 				sortAnimeByFavorited()
 			}
 			else if (val === 'Rating') {
+				showReverseSorting();
 				sortAnimeByRating();
 			}
 			else if (val === 'Episodes') {
+				showReverseSorting();
 				sortAnimeByNumberOfEpisodes();
 			}
 		});
