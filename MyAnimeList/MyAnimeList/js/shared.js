@@ -10,7 +10,10 @@ var loadingSectionClass = 'mal-ext-loading-section';
 var loadingSectionSelector = '.' + loadingSectionClass;
 var loadingStatusClass = 'mal-ext-loading-status';
 var loadingStatusSelector = '.' + loadingStatusClass;
+var animeSectionClass = 'mal-ext-anime-section';
+var animeSectionSelector = '.' + animeSectionClass;
 
+var userTagsField = 'mal_ext_user_tags';
 var allTitlesField = 'mal_ext_all_titles';
 
 var actualRatings = ['G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai'];

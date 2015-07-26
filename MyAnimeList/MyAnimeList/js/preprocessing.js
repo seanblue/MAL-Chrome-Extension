@@ -1,58 +1,25 @@
 var preprocessing = (function() {
-	var animeSectionClass = 'mal-ext-anime-section';
-	var animeSectionSelector = '.' + animeSectionClass;
-
-	var sectionHeaderTitleTables;
-	var sectionFooterTables;
 	var limitedAnimeDivs;
 	var totalAnimeToLoad;
 	var animeLoadedSoFar = 0;
 	var loadingInterval;
 	
 	function run() {
-		wrapAnime();
-		wrapAnimeHeadersAndFooters();
-		wrapAnimeSections();
+		setupAnimeDataSections();
 		setAnimeDivsAndCount();
 		handleLoadingStatus();
 		loadAnime();
 		handleClearLoadingStatus();
-	}
-
-	function wrapAnime() {
-		var animeMoreSectionTables = $('[id^="more"');
-		animeMoreSectionTables.each(function(index, el) {
-			var moreDiv = $(el);
-			var id = moreDiv.attr('id').slice(4);
-			var animeTable = moreDiv.prev();
-			animeTable.wrap(function() {
-				return '<div class="' + animeContainerClass + '" data-anime-id="' + id + '"></div>';
-			});
-			animeTable.parent().append(moreDiv);
-		});
 		
-		$('.table_header').closest('table').wrap('<div class="' + animeSectionHeaderRowClass + '"/>');
+		$.when.apply(undefined, loadAnimePromises).always(function() {
+			addTagsToAnimeDetails();
+		});
 	}
 	
-	function wrapAnimeHeadersAndFooters() {
-		sectionHeaderTitleTables = $('table[class*=header]').wrap('<div class="mal-ext-section-header-title"/>').parent();
-		sectionFooterTables = $('.category_totals').closest('table').wrap('<div class="mal-ext-section-footer"/>').parent();
-	}
-	
-	function wrapAnimeSections() {
-		for (var i = 0; i < sectionHeaderTitleTables.length; i++) {
-			var header = $(sectionHeaderTitleTables[i]);
-			var footer = $(sectionFooterTables[i]);
-			var sectionName = header.find('.header_title span').text();
-			var allAnimeInSection = header.nextUntil(footer, animeContainerSelector + ',' + animeSectionHeaderRowSelector)
-			
-			header.wrap(function() {
-				return '<div class="' + animeSectionClass + '" data-anime-section="' + sectionName + '"></div>';
-			});
-			
-			var section = header.parent();
-			section.append(allAnimeInSection);
-			section.append(footer);
+	function setupAnimeDataSections() {
+		$(animeSectionSelector).each(function (index, el) {
+			var section = $(el);
+			var sectionName = section.data('anime-section');
 			
 			animeDataBySection[sectionName] = {
 				order: [],
@@ -60,9 +27,9 @@ var preprocessing = (function() {
 				data: {},
 				el: section
 			};
-		}
+		});
 	}
-	
+
 	function handleLoadingStatus() {
 		loadingInterval = setInterval(function() {
 			updateLoadedStatus();
@@ -81,6 +48,38 @@ var preprocessing = (function() {
 		loadingStatusEl.text(animeLoadedSoFar + '/' + totalAnimeToLoad);
 	}
 
+	function addTagsToAnimeDetails() {
+		var header = $(animeSectionHeaderRowSelector + ':first');
+		var allTd = header.find('td');
+		var tagsTd = header.find('td:contains("Tags")');
+		
+		var tagsColumnIndex = allTd.index(tagsTd);
+		if (tagsColumnIndex === -1) {
+			return;
+		}
+		
+		animeDivs.each(function(index, el) {
+			addTagsToAnimeDetailsForAnime(el, tagsColumnIndex);			
+		});
+	}
+	
+	function addTagsToAnimeDetailsForAnime(animeEl, tagsColumnIndex) {
+		var td = $(animeEl).find('table:first td:eq(' + tagsColumnIndex + ')');
+		var tags = td.find('[id^=tagLinks]').text().split(',');
+		tags = $.map(tags, function(el) {
+			return el.trim();
+		});
+		
+		var id = getAnimeId(animeEl);
+		var anime = animeData[id];
+		if (typeof anime === 'undefined') {
+			// If not within test limit, no data is loaded.
+			return;
+		}
+		
+		anime.details[userTagsField] = tags;
+	}
+	
 	function setAnimeDivsAndCount() {
 		animeDivs = $(animeContainerSelector);
 		limitedAnimeDivs = animeDivs.slice(0, getTestLimit());
