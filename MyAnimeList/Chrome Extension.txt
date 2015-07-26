@@ -21,7 +21,7 @@
 	# Synopsis
 	# Status
 @3. Sorting
-	@ Title
+	# Title
 	# Average Score
 	# Rank
 	# Popularity
