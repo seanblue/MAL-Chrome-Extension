@@ -1,4 +1,6 @@
 var preprocessing = (function() {
+	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	
 	var limitedAnimeDivs;
 	var totalAnimeToLoad;
 	var animeLoadedSoFar = 0;
@@ -143,6 +145,11 @@ var preprocessing = (function() {
 	}
 	
 	function addAdditionalDetails(details) {
+		addAllTitlesDetails(details);
+		addParsedAiredDateDetails(details);
+	}
+	
+	function addAllTitlesDetails(details) {
 		var mainTitle = details.title;
 		var otherTitles = details.other_titles || {};
 		otherTitles = $.map(otherTitles, function(item) {
@@ -150,6 +157,39 @@ var preprocessing = (function() {
 		});
 		
 		details[allTitlesField] = [mainTitle].concat(otherTitles);
+	}
+	
+	function addParsedAiredDateDetails(details) {
+		details[parsedStartDateField] = getParsedAiredDateDetails(details.start_date);
+		details[parsedEndDateField] = getParsedAiredDateDetails(details.end_date);
+	}
+	
+	function getParsedAiredDateDetails(dateStr) {
+		var displayField = 'display_name';
+		var sortField = 'sort_value';
+		var dateDetails = {};
+		
+		if (!dateStr) {
+			// Unknown air date.
+			dateDetails[displayField] = '?'
+			dateDetails[sortField] = '9999-99-99'
+		}
+		else if (dateStr.length === 4 && (dateStr.startsWith('19') || dateStr.startsWith('20'))) {
+			// Only a year.
+			dateDetails[displayField] = dateStr;
+			dateDetails[sortField] = dateStr + '-99-99'
+		}
+		else {
+			var date = new Date(dateStr);
+			var month = date.getMonth();
+			var day = date.getDate();
+			var year = date.getFullYear();
+			
+			dateDetails[displayField] = months[month] + ' ' + day + ', ' + year;
+			dateDetails[sortField] = year + '-' + month + '-' + day;
+		}
+		
+		return dateDetails;
 	}
 	
 	function getSectionName(el) {

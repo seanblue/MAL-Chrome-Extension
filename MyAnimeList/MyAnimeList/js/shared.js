@@ -15,6 +15,8 @@ var animeSectionSelector = '.' + animeSectionClass;
 
 var userTagsField = 'mal_ext_user_tags';
 var allTitlesField = 'mal_ext_all_titles';
+var parsedStartDateField = 'mal_ext_parsed_start_date';
+var parsedEndDateField = 'mal_ext_parsed_end_date';
 
 var actualRatings = ['G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai'];
 

@@ -1,5 +1,4 @@
 var infoPopover = (function() {
-	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	var noEnglishTitle = '';
 	
 	function run() {
@@ -85,7 +84,7 @@ var infoPopover = (function() {
 			
 			$('.mal-ext-popover-title').html(details.title);
 			updateEnglishTitle(details);
-			$('.mal-ext-popover-aired').text(getFullAiredDate(details.start_date, details.end_date));
+			$('.mal-ext-popover-aired').text(getFullAiredDate(details[parsedStartDateField], details[parsedEndDateField]));
 			$('.mal-ext-popover-average').text(details.members_score.toFixed(2));
 			$('.mal-ext-popover-rank').text(details.rank.toLocaleString());
 			$('.mal-ext-popover-popularity').text(details.popularity_rank.toLocaleString());
@@ -133,27 +132,20 @@ var infoPopover = (function() {
 		return englishTitle;
 	}
 	
-	function getFullAiredDate(startDate, endDate) {
+	function getFullAiredDate(startDateObj, endDateObj) {
+		var startDate = getAiredDateString(startDateObj);
+		var endDate = getAiredDateString(endDateObj);
+		
 		if (startDate === endDate) {
 			// Movie, etc.
-			return getAiredDateString(startDate);
+			return startDate;
 		}
 		
-		return getAiredDateString(startDate) + ' to ' + getAiredDateString(endDate);
+		return startDate + ' to ' + endDate;
 	}
 	
-	function getAiredDateString(dateStr) {
-		if (!dateStr) {
-			// Unknown air date.
-			return '?';
-		}
-		else if (dateStr.length === 4 && (dateStr.startsWith('19') || dateStr.startsWith('20'))) {
-			// Only a year.
-			return dateStr;
-		}
-		
-		var date = new Date(dateStr);
-		return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+	function getAiredDateString(dateObj) {
+		return dateObj.display_name;
 	}
 	
 	function addPopoverCloseEvent() {
