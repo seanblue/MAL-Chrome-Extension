@@ -2,8 +2,6 @@ var filtering = (function() {
 	var activeFilterClass = 'mal-ext-active-filter';
 	var activeFilterSelector = '.' + activeFilterClass;
 	
-	var userTagsField = 'mal_ext_user_tags';
-
 	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Title', 'Synopsis', 'Tag'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
@@ -13,42 +11,9 @@ var filtering = (function() {
 	
 	function run() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
-			addTagsToAnimeDetails();
 			insertFilterElements();
 			addFilterEvents();
 		});
-	}
-	
-	function addTagsToAnimeDetails() {
-		var header = $(animeSectionHeaderRowSelector + ':first');
-		var allTd = header.find('td');
-		var tagsTd = header.find('td:contains("Tags")');
-		
-		var tagsColumnIndex = allTd.index(tagsTd);
-		if (tagsColumnIndex === -1) {
-			return;
-		}
-		
-		animeDivs.each(function(index, el) {
-			addTagsToAnimeDetailsForAnime(el, tagsColumnIndex);			
-		});
-	}
-	
-	function addTagsToAnimeDetailsForAnime(animeEl, tagsColumnIndex) {
-		var td = $(animeEl).find('table:first td:eq(' + tagsColumnIndex + ')');
-		var tags = td.find('[id^=tagLinks]').text().split(',');
-		tags = $.map(tags, function(el) {
-			return el.trim();
-		});
-		
-		var id = getAnimeId(animeEl);
-		var anime = animeData[id];
-		if (typeof anime === 'undefined') {
-			// If not within test limit, no data is loaded.
-			return;
-		}
-		
-		anime.details[userTagsField] = tags;
 	}
 	
 	function insertFilterElements() {
