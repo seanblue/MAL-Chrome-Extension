@@ -144,6 +144,10 @@ var preprocessing = (function() {
 		animeDataBySection[sectionName].data[id] = data;
 	}
 	
+	function getSectionName(el) {
+		return $(el).closest(animeSectionSelector).data('anime-section');
+	}
+	
 	function addAdditionalDetails(details) {
 		addAllTitlesDetails(details);
 		addParsedAiredDateDetails(details);
@@ -186,14 +190,18 @@ var preprocessing = (function() {
 			var year = date.getFullYear();
 			
 			dateDetails[displayField] = months[month] + ' ' + day + ', ' + year;
-			dateDetails[sortField] = year + '-' + month + '-' + day;
+			dateDetails[sortField] = year + '-' + padDate(month) + '-' + padDate(day);
 		}
 		
 		return dateDetails;
 	}
 	
-	function getSectionName(el) {
-		return $(el).closest(animeSectionSelector).data('anime-section');
+	function padDate(value) {
+		if (value < 10) {
+			return '0' + value;
+		}
+		
+		return value;
 	}
 	
 	return {
