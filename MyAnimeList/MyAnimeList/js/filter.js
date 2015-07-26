@@ -42,7 +42,13 @@ var filtering = (function() {
 		});
 		
 		var id = getAnimeId(animeEl);
-		animeData[id].details[userTagsField] = tags;
+		var anime = animeData[id];
+		if (typeof anime === 'undefined') {
+			// If not within test limit, no data is loaded.
+			return;
+		}
+		
+		anime.details[userTagsField] = tags;
 	}
 	
 	function insertFilterElements() {
