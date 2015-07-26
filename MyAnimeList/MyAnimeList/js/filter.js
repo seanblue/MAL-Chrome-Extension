@@ -46,8 +46,6 @@ var filtering = (function() {
 	}
 	
 	function insertFilterElements() {
-		var existingTd = $('#mal_cs_otherlinks');
-		
 		var mainFilterSelect = getSelect('mal-ext-content-main-filter');
 		addOptions(mainFilterSelect, filterTypes);
 		
@@ -69,7 +67,7 @@ var filtering = (function() {
 		
 		var userTagsFilterInput = getInput('mal-ext-content-user-tags-filter');
 		
-		var filterSection = $('<td class="' + filteringSectionClass + '" />');
+		var filterSection = $(filteringSectionSelector);
 		var contentTypeFilter = $('<span>Filter: </span>');
 		filterSection.append(contentTypeFilter);
 		
@@ -81,7 +79,6 @@ var filtering = (function() {
 		contentTypeFilter.append(getHiddenFilterContainer().append(titleFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(synopsisFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(userTagsFilterInput));
-		existingTd.after(filterSection);
 	}
 	
 	function getHiddenFilterContainer() {

@@ -4,6 +4,8 @@ var animeSectionHeaderRowClass = 'mal-ext-section-header-table';
 var animeSectionHeaderRowSelector = '.' + animeSectionHeaderRowClass;
 var filteringSectionClass = 'mal-ext-filter-section';
 var filteringSectionSelector = '.' + filteringSectionClass;
+var sortingSectionClass = 'mal-ext-sorting-section';
+var sortingSectionSelector = '.' + sortingSectionClass;
 
 var allTitlesField = 'mal_ext_all_titles';
 
