@@ -31,7 +31,9 @@
 	# Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
 	# Automatically sort alphabetically as a secondary sort.
 	@ Reverse sort (check box).
-@4. New Section
+#4. New Section
 	# Move Filter/Sorting to area below main black bar to allow for more room and customization of styles.
-	@ Add text "Loading anime data..." while api calls are being made so that users know that it is still running.
-		@ Could show "x of y" anime loaded.
+	# Add text "Loading anime data..." while api calls are being made so that users know that it is still running.
+		# Could show "x of y" anime loaded.
+		
+@ TEMP addTagsToAnimeDetails should be moved to preprocessing.

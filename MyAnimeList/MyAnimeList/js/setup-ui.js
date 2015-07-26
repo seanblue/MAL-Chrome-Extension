@@ -11,15 +11,22 @@ var setupUI = (function() {
 	}
 	
 	function getExtMainContent() {
-		var tds = $(getSectionCells());
-		var tr = $('<tr />').append(tds);
+		var tr = $('<tr />').append(getFilteringTd()).append(getSortingTd()).append(getLoadingTd());
 		var tbody = $('<tbody />').append(tr);
 		
 		return $('<table id="mal-ext-main-content" />').append(tbody);
 	}
 	
-	function getSectionCells() {
-		return '<td class="' + filteringSectionClass + '" /><td class="' + sortingSectionClass + '" /><td>';
+	function getFilteringTd() {
+		return $('<td class="' + filteringSectionClass + '" />');
+	}
+	
+	function getSortingTd() {
+		return $('<td class="' + sortingSectionClass + '" />');
+	}
+	
+	function getLoadingTd() {
+		return $('<td class="' + loadingSectionClass + '" />').append('<span>Loading anime... </span>').append('<span class="' + loadingStatusClass + '" />');
 	}
 
 	return {

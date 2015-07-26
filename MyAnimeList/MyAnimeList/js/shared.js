@@ -6,6 +6,10 @@ var filteringSectionClass = 'mal-ext-filter-section';
 var filteringSectionSelector = '.' + filteringSectionClass;
 var sortingSectionClass = 'mal-ext-sorting-section';
 var sortingSectionSelector = '.' + sortingSectionClass;
+var loadingSectionClass = 'mal-ext-loading-section';
+var loadingSectionSelector = '.' + loadingSectionClass;
+var loadingStatusClass = 'mal-ext-loading-status';
+var loadingStatusSelector = '.' + loadingStatusClass;
 
 var allTitlesField = 'mal_ext_all_titles';
 

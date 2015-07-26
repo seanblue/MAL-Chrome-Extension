@@ -4,12 +4,19 @@ var preprocessing = (function() {
 
 	var sectionHeaderTitleTables;
 	var sectionFooterTables;
+	var limitedAnimeDivs;
+	var totalAnimeToLoad;
+	var animeLoadedSoFar = 0;
+	var loadingInterval;
 	
 	function run() {
 		wrapAnime();
 		wrapAnimeHeadersAndFooters();
 		wrapAnimeSections();
+		setAnimeDivsAndCount();
+		handleLoadingStatus();
 		loadAnime();
+		handleClearLoadingStatus();
 	}
 
 	function wrapAnime() {
@@ -55,10 +62,33 @@ var preprocessing = (function() {
 			};
 		}
 	}
+	
+	function handleLoadingStatus() {
+		loadingInterval = setInterval(function() {
+			updateLoadedStatus();
+		}, 1000);
+	}
+	
+	function handleClearLoadingStatus() {
+		$.when.apply(undefined, loadAnimePromises).always(function() {
+			clearInterval(loadingInterval);
+			$(loadingSectionSelector).children().hide();
+		});
+	}
+	
+	function updateLoadedStatus() {
+		var loadingStatusEl = $(loadingStatusSelector);
+		loadingStatusEl.text(animeLoadedSoFar + '/' + totalAnimeToLoad);
+	}
+
+	function setAnimeDivsAndCount() {
+		animeDivs = $(animeContainerSelector);
+		limitedAnimeDivs = animeDivs.slice(0, getTestLimit());
+		totalAnimeToLoad = limitedAnimeDivs.length;
+	}
 
 	function loadAnime() {
-		animeDivs = $(animeContainerSelector);
-		animeDivs.slice(0, getTestLimit()).each(function(index, el) {
+		limitedAnimeDivs.each(function(index, el) {
 			var container = $(el);
 			var id = getAnimeId(container);
 			
@@ -86,6 +116,7 @@ var preprocessing = (function() {
 				var animeDetails = JSON.parse(event.target.response);
 				saveAnimeDetails(id, container, animeDetails);
 				
+				animeLoadedSoFar++;
 				deferred.resolve();
 			}
 		}
