@@ -27,7 +27,7 @@
 	# Popularity
 	# Number of Favorites
 	# Rating
-	@ Start Date and End Date (how to compare year only or unknown dates?)
+	# Start Date and End Date
 	# Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
 	# Automatically sort alphabetically as a secondary sort.
 	# Reverse sort (check box).

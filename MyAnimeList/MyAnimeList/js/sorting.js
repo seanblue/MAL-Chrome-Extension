@@ -1,5 +1,5 @@
 var sorting = (function() {
-	var sortingTypes = ['Default', 'Title', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes'];
+	var sortingTypes = ['Default', 'Title', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes', 'Start Date', 'End Date'];
 	var ratings = actualRatings.concat(['None']);
 	var mainSortingSelect;
 	var mainSortingReverseCheckbox;
@@ -77,6 +77,14 @@ var sorting = (function() {
 				showReverseSorting();
 				sortAnimeByNumberOfEpisodes();
 			}
+			else if (val === 'Start Date') {
+				showReverseSorting();
+				sortAnimeByStartDate();
+			}
+			else if (val === 'End Date') {
+				showReverseSorting();
+				sortAnimeByEndDate();
+			}
 		});
 	}
 	
@@ -141,6 +149,24 @@ var sorting = (function() {
 		var field = 'episodes';
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
+		});
+	}
+	
+	function sortAnimeByStartDate() {
+		sortAnimeByDate(parsedStartDateField);
+	}
+	
+	function sortAnimeByEndDate() {
+		sortAnimeByDate(parsedEndDateField);
+	}
+	
+	function sortAnimeByDate(field) {
+		var getValueMethod = function(dateObj) {
+			return dateObj.sort_value;
+		};
+		
+		sortAnime(function(sectionData) {
+			return getSortedOrder(sectionData, field, getValueMethod);
 		});
 	}
 	
