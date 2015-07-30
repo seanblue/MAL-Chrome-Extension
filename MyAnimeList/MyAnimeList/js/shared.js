@@ -68,3 +68,17 @@ function getRowColorNumber(current) {
 	
 	return '1';
 }
+
+function updateAllSectionCounts() {
+	for (var section in animeDataBySection) {
+		var sectionData = animeDataBySection[section];
+		updateSectionCount(sectionData);
+	}
+}
+
+function updateSectionCount(sectionData) {
+	var sectionCountEl = sectionData.el.find('.mal-ext-section-visible-count');
+	var sectionTotalCount = sectionData.originalOrder.length;
+	var sectionVisibleCount = sectionTotalCount - sectionData.totalHidden;
+	sectionCountEl.text('(showing ' + sectionVisibleCount + ' of ' + sectionTotalCount + ')');
+}

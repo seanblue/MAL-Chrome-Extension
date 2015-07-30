@@ -84,3 +84,8 @@
 	/* Overrides td color for filtering and sorting */
 	background-color: #F1F1F1;
 }
+
+.mal-ext-section-visible-count {
+	padding-left: 5px;
+	font-size: 0.8em;
+}

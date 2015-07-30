@@ -94,7 +94,7 @@ var sorting = (function() {
 	
 	function sortWithInitialOrder() {
 		sortAnime(function(sectionData) {
-			return sectionData.original_order.slice();
+			return sectionData.originalOrder.slice();
 		});
 	}
 	

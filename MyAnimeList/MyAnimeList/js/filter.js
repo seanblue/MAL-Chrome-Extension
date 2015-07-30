@@ -238,6 +238,8 @@ var filtering = (function() {
 		for (var section in animeDataBySection) {
 			var rowColorNumber = getRowColorNumber();
 			var sectionData = animeDataBySection[section];
+			
+			var sectionHiddenCount = 0;
 			for (var i = 0; i < sectionData.order.length; i++) {
 				var id = sectionData.order[i];
 				var anime = sectionData.data[id];
@@ -253,10 +255,15 @@ var filtering = (function() {
 					rowColorNumber = getRowColorNumber(rowColorNumber);
 				}
 				else {
+					sectionHiddenCount++;
 					anime.el.hide();
 				}
 			}
+			
+			sectionData.totalHidden = sectionHiddenCount;
 		}
+		
+		updateAllSectionCounts();
 	}
 	
 	return {

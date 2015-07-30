@@ -11,15 +11,20 @@
 	# Popularity (popularity_rank)
 	# Number of Favorites ('favorited_count')
 	# Genres (genres[])
-	# Date Aired ('start_date' and 'end_date'; myDate.toLocaleDateString(); make sure to check null for '?' such as animeid=25777)
+	# Date Aired ('start_date' and 'end_date')
+	@ Show total number of user votes in parentheses after average score (need to add to API)
 #2. Filtering
 	# Genre (genres[])
 	# Type (type) ['TV', 'Movie', etc.]
 	# Rating (classification) ['PG-13', etc. but with the description afterward]
 	# Tag (would require page parsing)
+		@ Don't show Tag option if there is no Tags column on the page.
 	# Title (quicker than scrolling; check alternate titles)
 	# Synopsis
 	# Status
+	# Display "showing x of y" in parentheses after section headers ("Watching", etc.)
+	# Update row colors to alternate when filtered.
+	@ Update row numbers (first column) when filtered.
 @3. Sorting
 	# Title
 	# Average Score
@@ -28,7 +33,7 @@
 	# Number of Favorites
 	# Rating
 	# Start Date and End Date
-	# Number of episodes ('episodes') [currently only sorts on total episodes watched, so it's useless in "Plan to Watch"]
+	# Number of episodes ('episodes')
 	# Automatically sort alphabetically as a secondary sort.
 	# Reverse sort (check box).
 #4. New Section
