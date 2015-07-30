@@ -15,6 +15,7 @@ var preprocessing = (function() {
 		
 		$.when.apply(undefined, loadAnimePromises).always(function() {
 			addTagsToAnimeDetails();
+			updateAllSectionCounts();
 		});
 	}
 	
@@ -25,9 +26,10 @@ var preprocessing = (function() {
 			
 			animeDataBySection[sectionName] = {
 				order: [],
-				original_order: [],
+				originalOrder: [],
 				data: {},
-				el: section
+				el: section,
+				totalHidden: 0
 			};
 		});
 	}
@@ -96,7 +98,7 @@ var preprocessing = (function() {
 			var sectionName = getSectionName(el);
 			var sectionData = animeDataBySection[sectionName];
 			sectionData.order.push(id);
-			sectionData.original_order.push(id);
+			sectionData.originalOrder.push(id);
 			
 			var promise = loadAnimeDetails(id, container);
 			loadAnimePromises.push(promise);

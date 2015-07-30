@@ -52,6 +52,11 @@ var setupUI = (function() {
 	
 	function wrapAnimeHeadersAndFooters() {
 		sectionHeaderTitleTables = $('table[class*=header]').wrap('<div class="mal-ext-section-header-title"/>').parent();
+		for (var i = 0; i < sectionHeaderTitleTables.length; i++) {
+			var header = $(sectionHeaderTitleTables[i]);
+			header.find('.header_title').append('<span class="mal-ext-section-visible-count" />');
+		}
+		
 		sectionFooterTables = $('.category_totals').closest('table').wrap('<div class="mal-ext-section-footer"/>').parent();
 	}
 	
