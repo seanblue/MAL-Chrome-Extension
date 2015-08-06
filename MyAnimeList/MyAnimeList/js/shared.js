@@ -25,6 +25,7 @@ var animeDataBySection = {};
 var animeDivs;
 var animeInfoDiv;
 var loadAnimePromises = [];
+var hasTagsColumn = false;
 
 function getAnimeId(container) {
 	return $(container).closest(animeContainerSelector).data('anime-id');
