@@ -11,9 +11,16 @@ var filtering = (function() {
 	
 	function run() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
+			updateFilterTypes();
 			insertFilterElements();
 			addFilterEvents();
 		});
+	}
+	
+	function updateFilterTypes() {
+		if (!hasTagsColumn) {
+			filterTypes = filterTypes.splice(0, filterTypes.indexOf('Tag'));
+		}
 	}
 	
 	function insertFilterElements() {

@@ -62,6 +62,7 @@ var preprocessing = (function() {
 			return;
 		}
 		
+		hasTagsColumn = true;
 		animeDivs.each(function(index, el) {
 			addTagsToAnimeDetailsForAnime(el, tagsColumnIndex);			
 		});
