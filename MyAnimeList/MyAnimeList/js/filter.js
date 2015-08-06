@@ -247,6 +247,7 @@ var filtering = (function() {
 			var sectionData = animeDataBySection[section];
 			
 			var sectionHiddenCount = 0;
+			var orderNumber = 1;
 			for (var i = 0; i < sectionData.order.length; i++) {
 				var id = sectionData.order[i];
 				var anime = sectionData.data[id];
@@ -258,8 +259,11 @@ var filtering = (function() {
 				anime.visible = isVisible;
 				if (isVisible) {
 					updateRowColor(anime.el, rowColorNumber);
+					updateRowNumber(anime.orderTd, orderNumber);
 					anime.el.show();
+					
 					rowColorNumber = getRowColorNumber(rowColorNumber);
+					orderNumber++;
 				}
 				else {
 					sectionHiddenCount++;

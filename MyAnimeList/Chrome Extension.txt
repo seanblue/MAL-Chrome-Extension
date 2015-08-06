@@ -1,3 +1,8 @@
+** Bugs **
+API splits English title by comma even though there should only be one english title.
+Causes an issue for http://myanimelist.net/anime/14741/Chuunibyou_demo_Koi_ga_Shitai! 
+Also http://myanimelist.net/anime/19815/No_Game_No_Life
+
 ** Features **
 
 ['@' = not done]
@@ -18,13 +23,13 @@
 	# Type (type) ['TV', 'Movie', etc.]
 	# Rating (classification) ['PG-13', etc. but with the description afterward]
 	# Tag (would require page parsing)
-		@ Don't show Tag option if there is no Tags column on the page.
+		# Don't show Tag option if there is no Tags column on the page.
 	# Title (quicker than scrolling; check alternate titles)
 	# Synopsis
 	# Status
 	# Display "showing x of y" in parentheses after section headers ("Watching", etc.)
 	# Update row colors to alternate when filtered.
-	@ Update row numbers (first column) when filtered.
+	# Update row numbers (first column) when filtered.
 @3. Sorting
 	# Title
 	# Average Score

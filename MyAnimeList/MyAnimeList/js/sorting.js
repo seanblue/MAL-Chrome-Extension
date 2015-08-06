@@ -177,6 +177,7 @@ var sorting = (function() {
 			var sectionHeader = sectionData.el.find(animeSectionHeaderRowSelector);
 			
 			sectionData.order =  sortMethod(sectionData);
+			var orderNumber = 1;
 			for (var i = 0; i < sectionData.order.length; i++) {
 				var id = sectionData.order[i];
 				var anime = sectionData.data[id];
@@ -185,7 +186,10 @@ var sorting = (function() {
 				
 				if (anime.visible) {
 					updateRowColor(anime.el, rowColorNumber);
+					updateRowNumber(anime.orderTd, orderNumber);
+					
 					rowColorNumber = getRowColorNumber(rowColorNumber);
+					orderNumber++;
 				}
 			}
 		}

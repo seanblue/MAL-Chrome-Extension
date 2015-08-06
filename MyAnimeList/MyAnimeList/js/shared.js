@@ -70,6 +70,10 @@ function getRowColorNumber(current) {
 	return '1';
 }
 
+function updateRowNumber(td, val) {
+	td.text(val);
+}
+
 function updateAllSectionCounts() {
 	for (var section in animeDataBySection) {
 		var sectionData = animeDataBySection[section];

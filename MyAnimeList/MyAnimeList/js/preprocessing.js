@@ -135,8 +135,11 @@ var preprocessing = (function() {
 	
 	function saveAnimeDetails(id, el, details) {
 		addAdditionalDetails(details);
+		
+		var orderTd = $(el.find('td')[1]);
 		var data = {
 			'el': el,
+			'orderTd': orderTd,
 			'details': details,
 			'visible': true
 		};
