@@ -24,7 +24,9 @@ Also http://myanimelist.net/anime/19815/No_Game_No_Life
 	# Rating (classification) ['PG-13', etc. but with the description afterward]
 	# Tag (would require page parsing)
 		# Don't show Tag option if there is no Tags column on the page.
+		# Add comma separated search to show if any of the requested tags is present.
 	# Title (quicker than scrolling; check alternate titles)
+		# Add comma separated search to show if any of the requested titles is present.
 	# Synopsis
 	# Status
 	# Display "showing x of y" in parentheses after section headers ("Watching", etc.)
