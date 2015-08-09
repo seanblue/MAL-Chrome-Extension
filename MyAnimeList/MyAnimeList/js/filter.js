@@ -167,7 +167,7 @@ var filtering = (function() {
 	
 	function filterAnimeByType(val) {
 		var field = 'type';
-		var showIfTrueFunction = getShowIfTrueEqualFunction(val);
+		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
@@ -182,53 +182,76 @@ var filtering = (function() {
 	
 	function filterAnimeByRating(val) {
 		var field = 'classification';
-		var showIfTrueFunction = getShowIfTrueEqualFunction(val);
+		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByStatus(val) {
 		var field = 'status';
-		var showIfTrueFunction = getShowIfTrueEqualFunction(val);
+		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByTitle(val) {
-		var showIfTrueFunction = getShowIfTrueLikeAnyFunction(val);
+		var showIfTrueFunction = getShowIfTrueAnyValueInListIsLikeAnyFunction(val);
 		filterAnime(allTitlesField, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnimeBySynopsis(val) {
 		var field = 'synopsis';
-		var showIfTrueFunction = getShowIfTrueLikeFunction(val);
+		var showIfTrueFunction = getShowIfTrueValueIsLikeFunction(val);
 		filterAnime(field, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnimeByUserTag(val) {
-		var showIfTrueFunction = getShowIfTrueLikeAnyFunction(val);
+		var showIfTrueFunction = getShowIfTrueAnyValueInListIsLikeAnyFunction(val);
 		filterAnime(userTagsField, val, showIfTrueFunction, '');
 	}
 	
-	function getShowIfTrueEqualFunction(inputVal) {
+	function getShowIfTrueValueIsEqualFunction(inputVal) {
 		var lowerInputVal = inputVal.toLowerCase();
 		return function(testVal) {
 			return testVal.toLowerCase() === lowerInputVal;
-		}
+		};
 	}
 	
-	function getShowIfTrueLikeFunction(inputVal) {
+	function getShowIfTrueValueIsLikeFunction(inputVal) {
 		var lowerInputVal = inputVal.toLowerCase();
 		return function(testVal) {
 			return testVal.toLowerCase().indexOf(lowerInputVal) !== -1;
-		}
+		};
 	}
 	
-	function getShowIfTrueLikeAnyFunction(inputVal) {
-		lowerInputVal = inputVal.trim().toLowerCase();
+	function getShowIfTrueValueIsLikeAnyFunction(inputVal) {
+		var lowerInputVal = inputVal.trim().toLowerCase();
 		return function(allTestVals) {
 			return allTestVals.some(function(testVal) {
 				return testVal.toLowerCase().indexOf(lowerInputVal) !== -1;
 			});
-		}
+		};
+	}
+	
+	function getShowIfTrueAnyValueInListIsLikeAnyFunction(inputVal) {
+		var valList = getListFromValue(inputVal);
+		
+		// Get test functions for every one of the possible values.
+		var funcs = $.map(valList, function(val) {
+			return getShowIfTrueValueIsLikeAnyFunction(val);
+		});
+		
+		return function(allTestVals) {
+			// Test each of the functions against the given test values.
+			return funcs.some(function(func) {
+				return func(allTestVals);
+			});
+		};
+	}
+	
+	function getListFromValue(val) {
+		var valList = val.split(',');
+		return $.grep(valList, function(item) {
+			return item.trim() !== '';
+		});
 	}
 	
 	function filterAnime(field, val, showIfTrueFunction, showAllValue) {
@@ -236,7 +259,7 @@ var filtering = (function() {
 			showAllValue = 'All';
 		}
 		
-		if (val === showAllValue) {
+		if (val.trim() === showAllValue) {
 			showIfTrueFunction = function() {
 				return true;
 			}
