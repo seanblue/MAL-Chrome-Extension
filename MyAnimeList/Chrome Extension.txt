@@ -1,14 +1,14 @@
 ** Bugs **
-API splits English title by comma even though there should only be one english title.
-Causes an issue for http://myanimelist.net/anime/14741/Chuunibyou_demo_Koi_ga_Shitai! 
-Also http://myanimelist.net/anime/19815/No_Game_No_Life
+# API splits English title by comma even though there should only be one english title.
+	Causes an issue for http://myanimelist.net/anime/14741/Chuunibyou_demo_Koi_ga_Shitai! 
+	Also http://myanimelist.net/anime/19815/No_Game_No_Life
 
 ** Features **
 
 ['@' = not done]
 ['#' = done]
 
-#1. Show popover with additional information.
+@1. Show popover with additional information.
 	# Title
 	# English Title (if available)
 	# Average Score ('members_score')
@@ -40,6 +40,7 @@ Also http://myanimelist.net/anime/19815/No_Game_No_Life
 	# Number of Favorites
 	# Rating
 	# Start Date and End Date
+	@ Number of votes (need to add to API)
 	# Number of episodes ('episodes')
 	# Automatically sort alphabetically as a secondary sort.
 	# Reverse sort (check box).
