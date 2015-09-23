@@ -85,8 +85,8 @@ var infoPopover = (function() {
 			$('.mal-ext-popover-title').html(details.title);
 			updateEnglishTitle(details);
 			$('.mal-ext-popover-aired').text(getFullAiredDate(details[parsedStartDateField], details[parsedEndDateField]));
-			$('.mal-ext-popover-average').text(details.members_score.toFixed(2));
-			$('.mal-ext-popover-rank').text(details.rank.toLocaleString());
+			$('.mal-ext-popover-average').text(getMemberScore(details));
+			$('.mal-ext-popover-rank').text(getRank(details));
 			$('.mal-ext-popover-popularity').text(details.popularity_rank.toLocaleString());
 			$('.mal-ext-popover-favorited').text(details.favorited_count.toLocaleString());
 			
@@ -146,6 +146,28 @@ var infoPopover = (function() {
 	
 	function getAiredDateString(dateObj) {
 		return dateObj.display_name;
+	}
+	
+	function getMemberScore(details) {
+		var memberScore = details.members_score;
+		if (invalidScore(memberScore)) {
+			return 'N/A';
+		}
+		
+		return memberScore.toFixed(2);
+	}
+	
+	function getRank(details) {
+		var rank = details.rank;
+		if (invalidScore(rank)) {
+			return 'N/A';
+		}
+		
+		return rank.toLocaleString()
+	}
+	
+	function invalidScore(value) {
+		return value === null || typeof value === 'undefined' || value === 0;
 	}
 	
 	function addPopoverCloseEvent() {
