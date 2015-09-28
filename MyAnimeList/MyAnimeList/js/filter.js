@@ -10,10 +10,12 @@ var filtering = (function() {
 	var statusOptions = ['All', 'Finished Airing', 'Currently Airing', 'Not yet aired'];
 	
 	function run() {
-		$.when.apply(undefined, loadAnimePromises).always(function() {
-			updateFilterTypes();
-			insertFilterElements();
-			addFilterEvents();
+		apiTestPromise.always(function() {
+			$.when.apply(undefined, loadAnimePromises).always(function() {
+				updateFilterTypes();
+				insertFilterElements();
+				addFilterEvents();
+			});
 		});
 	}
 	

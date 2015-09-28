@@ -9,13 +9,13 @@ var preprocessing = (function() {
 	function run() {
 		setupAnimeDataSections();
 		setAnimeDivsAndCount();
-		handleLoadingStatus();
-		loadAnime();
-		handleClearLoadingStatus();
+		loadAnimeIfPossible();
 		
-		$.when.apply(undefined, loadAnimePromises).always(function() {
-			addTagsToAnimeDetails();
-			updateAllSectionCounts();
+		apiTestPromise.always(function() {
+			$.when.apply(undefined, loadAnimePromises).always(function() {
+				addTagsToAnimeDetails();
+				updateAllSectionCounts();
+			});
 		});
 	}
 	
@@ -90,6 +90,48 @@ var preprocessing = (function() {
 		limitedAnimeDivs = animeDivs.slice(0, getTestLimit());
 		totalAnimeToLoad = limitedAnimeDivs.length;
 	}
+	
+	function loadAnimeIfPossible() {
+		apiTestPromise = runApiTest();
+		
+		apiTestPromise.done(function() {
+			handleLoadingStatus();
+			loadAnime();
+			handleClearLoadingStatus();
+		}).fail(function() {
+			handleApiUnavailable();
+		});
+	}
+	
+	function runApiTest() {
+		return makeApiCall(1, function(deferred, event) {
+			if (event.target.status === 200) {
+				deferred.resolve();
+			}
+			else {
+				deferred.reject();
+			}
+		});
+	}
+	
+	function makeApiCall(id, onReadyCallback) {
+		var deferred = $.Deferred();
+		
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', getApiUrl(id), true);
+		xhr.onreadystatechange = function(event) {
+			if (xhr.readyState == 4) {
+				onReadyCallback(deferred, event);
+			}
+		}
+		xhr.send();
+		
+		return deferred.promise();
+	}
+	
+	function handleApiUnavailable() {
+		$(loadingSectionSelector).html('<span>Anime data could not be updated</span>');
+	}
 
 	function loadAnime() {
 		limitedAnimeDivs.each(function(index, el) {
@@ -111,22 +153,13 @@ var preprocessing = (function() {
 	}
 	
 	function loadAnimeDetails(id, container) {
-		var deferred = $.Deferred();
-		
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET', getApiUrl(id), true);
-		xhr.onreadystatechange = function(event) {
-			if (xhr.readyState == 4) {
-				var animeDetails = JSON.parse(event.target.response);
-				saveAnimeDetails(id, container, animeDetails);
-				
-				animeLoadedSoFar++;
-				deferred.resolve();
-			}
-		}
-		xhr.send();
-		
-		return deferred.promise();
+		return makeApiCall(id, function(deferred, event) {
+			var animeDetails = JSON.parse(event.target.response);
+			saveAnimeDetails(id, container, animeDetails);
+			
+			animeLoadedSoFar++;
+			deferred.resolve();
+		});
 	}
 	
 	function getApiUrl(id) {
