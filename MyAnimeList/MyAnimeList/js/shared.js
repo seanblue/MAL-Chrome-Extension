@@ -90,3 +90,9 @@ function updateSectionCount(sectionData) {
 	var sectionVisibleCount = sectionTotalCount - sectionData.totalHidden;
 	sectionCountEl.text('(showing ' + sectionVisibleCount + ' of ' + sectionTotalCount + ')');
 }
+
+function runAfterAnimeDataLoaded(callback) {
+	apiTestPromise.always(function() {
+		$.when.apply(undefined, loadAnimePromises).always(callback);
+	});
+}
