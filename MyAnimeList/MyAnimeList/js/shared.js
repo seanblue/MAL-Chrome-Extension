@@ -24,7 +24,10 @@ var animeData = {};
 var animeDataBySection = {};
 var animeDivs;
 var animeInfoDiv;
+
+var apiTestPromise;
 var loadAnimePromises = [];
+
 var hasTagsColumn = false;
 
 function getAnimeId(container) {
