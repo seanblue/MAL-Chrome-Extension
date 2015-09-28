@@ -8,6 +8,24 @@
 ['@' = not done]
 ['#' = done]
 
+@ Use chrome.storage.local (permission "storage") to so that data can still be loaded even if the API is down.
+	- How should this be handled to take new data if updated, but not copy over bad data?
+	- Also add check that xhr.status or event.target.status is 200 before trying to save data.
+	- Could instead do a general API check, using a single specific anime.
+		- This allows me not to not break and set a flag inside the anime loading loop if 500 error by knowing ahead of time.
+		- This allows me to replace the "Loading anime data" text with something like "Anime data could not be loaded".
+	- Could use jQuery.extend so that if new data fields are corrupted with nulls, they would not replace good data.
+		- Only undefined values are ignored (despite what jQuery docs say), so would need to replace null with undefined for this to work.
+	- Will likely need to figure out how to work with 'animeData' and 'animeDataBySection' for local storage.
+		- Probably don't want to save by section since that can change between loads.
+		- If only 'animeData' is saved, would need to do the mapping to 'animeDataBySection' entirely afterward, separate from the loading, even if API is down.
+		- The additional details ('addAdditionalDetails()') probably shouldn't be saved locally.
+	- Also store the date that the anime data was retrieved. That way, if the data can't be retrieved, the UI can indicate how old the data being used is.
+
+@ See if function addTagsToAnimeDetails can be modified to iterate over each anime rather than the divs, so that the undefined check for test limit isn't necessary.
+
+@ Styles: Look into settings page where the user can select the style of the anime page. That way, the rows and popover can be colored accordingly.
+		
 @1. Show popover with additional information.
 	# Title
 	# English Title (if available)
