@@ -11,11 +11,9 @@ var preprocessing = (function() {
 		setAnimeDivsAndCount();
 		loadAnimeIfPossible();
 		
-		apiTestPromise.always(function() {
-			$.when.apply(undefined, loadAnimePromises).always(function() {
-				addTagsToAnimeDetails();
-				updateAllSectionCounts();
-			});
+		runAfterAnimeDataLoaded(function() {
+			addTagsToAnimeDetails();
+			updateAllSectionCounts();
 		});
 	}
 	
@@ -32,24 +30,6 @@ var preprocessing = (function() {
 				totalHidden: 0
 			};
 		});
-	}
-
-	function handleLoadingStatus() {
-		loadingInterval = setInterval(function() {
-			updateLoadedStatus();
-		}, 1000);
-	}
-	
-	function handleClearLoadingStatus() {
-		$.when.apply(undefined, loadAnimePromises).always(function() {
-			clearInterval(loadingInterval);
-			$(loadingSectionSelector).children().hide();
-		});
-	}
-	
-	function updateLoadedStatus() {
-		var loadingStatusEl = $(loadingStatusSelector);
-		loadingStatusEl.text(animeLoadedSoFar + '/' + totalAnimeToLoad);
 	}
 
 	function addTagsToAnimeDetails() {
@@ -131,6 +111,24 @@ var preprocessing = (function() {
 	
 	function handleApiUnavailable() {
 		$(loadingSectionSelector).html('<span>Anime data could not be updated</span>');
+	}
+
+	function handleLoadingStatus() {
+		loadingInterval = setInterval(function() {
+			updateLoadedStatus();
+		}, 1000);
+	}
+	
+	function handleClearLoadingStatus() {
+		$.when.apply(undefined, loadAnimePromises).always(function() {
+			clearInterval(loadingInterval);
+			$(loadingSectionSelector).children().hide();
+		});
+	}
+	
+	function updateLoadedStatus() {
+		var loadingStatusEl = $(loadingStatusSelector);
+		loadingStatusEl.text(animeLoadedSoFar + '/' + totalAnimeToLoad);
 	}
 
 	function loadAnime() {

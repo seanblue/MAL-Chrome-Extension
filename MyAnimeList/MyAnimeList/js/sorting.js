@@ -6,11 +6,9 @@ var sorting = (function() {
 	var reverseSortingSpan;
 	
 	function run() {
-		apiTestPromise.always(function() {
-			$.when.apply(undefined, loadAnimePromises).always(function() {
-				insertSortingElements();
-				addSortingEvents();
-			});
+		runAfterAnimeDataLoaded(function() {
+			insertSortingElements();
+			addSortingEvents();
 		});
 	}
 	
