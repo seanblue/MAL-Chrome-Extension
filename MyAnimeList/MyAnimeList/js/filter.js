@@ -2,12 +2,15 @@ var filtering = (function() {
 	var activeFilterClass = 'mal-ext-active-filter';
 	var activeFilterSelector = '.' + activeFilterClass;
 	
-	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Title', 'Synopsis', 'Tag'];
+	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Title', 'Synopsis', 'Tag', 'Date'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
 	var ratingsValues = ['All'].concat(actualRatings);
 	var ratingsTexts = ['All', 'G', 'PG', 'PG-13', 'R', 'R+', 'Rx'];
 	var statusOptions = ['All', 'Finished Airing', 'Currently Airing', 'Not yet aired'];
+	
+	var startDateInput;
+	var endDateInput;
 	
 	function run() {
 		runAfterAnimeDataLoaded(function() {
@@ -45,6 +48,8 @@ var filtering = (function() {
 		
 		var userTagsFilterInput = getInput('mal-ext-content-user-tags-filter');
 		
+		var dateInputSection = getDateInputSection();
+		
 		var filterSection = $(filteringSectionSelector);
 		var contentTypeFilter = $('<span>Filter: </span>');
 		filterSection.append(contentTypeFilter);
@@ -57,8 +62,29 @@ var filtering = (function() {
 		contentTypeFilter.append(getHiddenFilterContainer().append(titleFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(synopsisFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(userTagsFilterInput));
+		contentTypeFilter.append(getHiddenFilterContainer().append(dateInputSection));
+	}
+		
+	function getInput(className, inputType) {
+		inputType = inputType || 'text'
+		return $('<input type="' + inputType + '" class="' + className + '" size="15" />');
+	}
+
+	function getDateInput(className) {
+		return getInput(className, 'date');
 	}
 	
+	function getDateInputSection() {
+		startDateInput = getDateInput('mal-ext-content-start-date-filter');
+		endDateInput = getDateInput('mal-ext-content-end-date-filter');
+		
+		return $('<span />')
+			.addClass('mal-ext-content-date-filter-section')
+			.append(startDateInput)
+			.append('<span> – </span>')
+			.append(endDateInput);
+	}
+
 	function getHiddenFilterContainer() {
 		return getFilterContainer().addClass('mal-ext-hidden');
 	}
@@ -76,6 +102,7 @@ var filtering = (function() {
 		var titleInput = $('.mal-ext-content-title-filter');
 		var synopsisInput = $('.mal-ext-content-synopsis-filter');
 		var userTagsInput = $('.mal-ext-content-user-tags-filter');
+		var dateInputSection = $('.mal-ext-content-date-filter-section');
 		
 		mainSelect.on('change', function(event) {
 			closeInfoPopover();
@@ -103,6 +130,9 @@ var filtering = (function() {
 			else if (val === 'Tag') {
 				showSelectedFilter(userTagsInput)
 			}
+			else if (val === 'Date') {
+				showSelectedFilter(dateInputSection)
+			}
 		});
 		
 		typeSelect.on('change', function(event) {
@@ -128,6 +158,7 @@ var filtering = (function() {
 		setupTitleFilterEvent(titleInput);
 		setupSynopsisFilterEvent(synopsisInput);
 		setupUserTagsFilterEvent(userTagsInput);
+		setupDateFilterEvent();
 	}
 	
 	function setupTitleFilterEvent(titleInput) {
@@ -142,9 +173,16 @@ var filtering = (function() {
 		setupInputFilterEvent(userTagsInput, filterAnimeByUserTag);
 	}
 	
-	function setupInputFilterEvent(input, callback) {
+	function setupDateFilterEvent() {
+		var eventType = 'change';
+		setupInputFilterEvent(startDateInput, filterAnimeByDate, eventType);
+		setupInputFilterEvent(endDateInput, filterAnimeByDate, eventType);
+	}
+	
+	function setupInputFilterEvent(input, callback, eventType) {
+		eventType = eventType || 'keyup'
 		var filterTimeout;
-		input.on('keyup', function(event) {
+		input.on(eventType, function(event) {
 			closeInfoPopover();
 			
 			var inputVal = $(this).val();
@@ -208,6 +246,56 @@ var filtering = (function() {
 		filterAnime(userTagsField, val, showIfTrueFunction, '');
 	}
 	
+	function filterAnimeByDate() {
+		var startDateInputVal = startDateInput.val();
+		var endDateInputVal = endDateInput.val();
+		
+		var testFunction = getDateFilterTestFunction(startDateInputVal, endDateInputVal);
+		
+		var showIfTrueFunction = function(startDateTestValGroup, endDateTestValGroup) {
+			var startDateTestVal = startDateTestValGroup.sort_value;
+			var endDateTestVal = endDateTestValGroup.sort_value;
+			
+			return testFunction(startDateTestVal, endDateTestVal);
+		};
+		
+		filterAnime([parsedStartDateField, parsedEndDateField], [startDateInputVal, endDateInputVal], showIfTrueFunction, '');
+	}
+	
+	function getDateFilterTestFunction(startDateInputVal, endDateInputVal) {
+		if (startDateInputVal === '' && endDateInputVal === '') {
+			return function() {
+				return true;
+			};
+		}
+		
+		if (startDateInputVal > endDateInputVal) {
+			return function() {
+				return false;
+			};
+		}
+		
+		var startDateTestFunction = function(startDateTestVal, endDateTestVal) {
+			return endDateTestVal > startDateInputVal;
+		};
+	
+		var endDateTestFunction = function(startDateTestVal, endDateTestVal) {
+			return startDateTestVal < endDateInputVal;
+		};
+		
+		if (startDateInputVal === '') {
+			return endDateTestFunction;
+		}
+	
+		if (endDateInputVal === '') {
+			return startDateTestFunction;
+		}
+		
+		return function(startDateTestVal, endDateTestVal) {
+			return startDateTestFunction(startDateTestVal, endDateTestVal) && endDateTestFunction(startDateTestVal, endDateTestVal);
+		};
+	}
+	
 	function getShowIfTrueValueIsEqualFunction(inputVal) {
 		var lowerInputVal = inputVal.toLowerCase();
 		return function(testVal) {
@@ -254,12 +342,20 @@ var filtering = (function() {
 		});
 	}
 	
-	function filterAnime(field, val, showIfTrueFunction, showAllValue) {
+	function filterAnime(fields, inputVals, showIfTrueFunction, showAllValue) {
+		if (typeof fields === 'string') {
+			fields = [fields];
+		}
+		
+		if (typeof inputVals === 'string') {
+			inputVals = [inputVals];
+		}
+		
 		if (typeof showAllValue === 'undefined') {
 			showAllValue = 'All';
 		}
 		
-		if (val.trim() === showAllValue) {
+		if (everyEqualsVal(inputVals, showAllValue)) {
 			showIfTrueFunction = function() {
 				return true;
 			}
@@ -278,7 +374,11 @@ var filtering = (function() {
 					continue;
 				}
 				
-				var isVisible = showIfTrueFunction(anime.details[field]);
+				var fieldValues = fields.map(function(field) {
+					return anime.details[field];
+				});
+				
+				var isVisible = showIfTrueFunction.apply(null, fieldValues);
 				anime.visible = isVisible;
 				if (isVisible) {
 					updateRowColor(anime.el, rowColorNumber);
@@ -298,6 +398,12 @@ var filtering = (function() {
 		}
 		
 		updateAllSectionCounts();
+	}
+	
+	function everyEqualsVal(valList, compareVal) {
+		return valList.every(function(val) {
+			return val.trim() === compareVal;
+		});
 	}
 	
 	return {

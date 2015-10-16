@@ -48,6 +48,10 @@
 	# Display "showing x of y" in parentheses after section headers ("Watching", etc.)
 	# Update row colors to alternate when filtered.
 	# Update row numbers (first column) when filtered.
+	# Start and end dates (use the parsed date field's sortField) (use date type inputs)
+		# Start - X
+		# X - End
+		# Start - End
 @3. Sorting
 	# Title
 	# Average Score

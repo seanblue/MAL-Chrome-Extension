@@ -42,10 +42,6 @@ function getSelect(className) {
 	return $('<select class="' + className + '" />');
 }
 
-function getInput(className) {
-	return $('<input class="' + className + '" size="15" />');
-}
-
 function addOptions(select, values, texts) {
 	if (typeof texts === 'undefined') {
 		texts = values;
