@@ -269,12 +269,6 @@ var filtering = (function() {
 			};
 		}
 		
-		if (startDateInputVal > endDateInputVal) {
-			return function() {
-				return false;
-			};
-		}
-		
 		var startDateTestFunction = function(startDateTestVal, endDateTestVal) {
 			return endDateTestVal >= startDateInputVal;
 		};
@@ -289,6 +283,13 @@ var filtering = (function() {
 	
 		if (endDateInputVal === '') {
 			return startDateTestFunction;
+		}
+		
+		if (startDateInputVal > endDateInputVal) {
+			// Both dates are set and start date is after end date.
+			return function() {
+				return false;
+			};
 		}
 		
 		return function(startDateTestVal, endDateTestVal) {
