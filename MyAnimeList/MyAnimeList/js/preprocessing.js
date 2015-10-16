@@ -222,12 +222,12 @@ var preprocessing = (function() {
 		}
 		else {
 			var date = new Date(dateStr);
-			var month = date.getMonth();
+			var month = date.getMonth(); // zero-based
 			var day = date.getDate();
 			var year = date.getFullYear();
 			
 			dateDetails[displayField] = months[month] + ' ' + day + ', ' + year;
-			dateDetails[sortField] = year + '-' + padDate(month) + '-' + padDate(day);
+			dateDetails[sortField] = year + '-' + padDate(month + 1) + '-' + padDate(day);
 		}
 		
 		return dateDetails;
