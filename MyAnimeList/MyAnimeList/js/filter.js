@@ -276,11 +276,11 @@ var filtering = (function() {
 		}
 		
 		var startDateTestFunction = function(startDateTestVal, endDateTestVal) {
-			return endDateTestVal > startDateInputVal;
+			return endDateTestVal >= startDateInputVal;
 		};
 	
 		var endDateTestFunction = function(startDateTestVal, endDateTestVal) {
-			return startDateTestVal < endDateInputVal;
+			return startDateTestVal <= endDateInputVal;
 		};
 		
 		if (startDateInputVal === '') {
