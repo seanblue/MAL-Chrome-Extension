@@ -122,7 +122,7 @@ var preprocessing = (function() {
 	function handleClearLoadingStatus() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
 			clearInterval(loadingInterval);
-			$(loadingSectionSelector).children().hide();
+			$(loadingSectionSelector).html('<span>Anime data was updated at ' + (new Date()).toLocaleTimeString() + '</span>');
 		});
 	}
 	
