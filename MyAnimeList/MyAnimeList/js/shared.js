@@ -30,12 +30,15 @@ var loadAnimePromises = [];
 
 var hasTagsColumn = false;
 
+var popoverAnimeId = null;
+
 function getAnimeId(container) {
 	return $(container).closest(animeContainerSelector).data('anime-id');
 }
 
 function closeInfoPopover() {
 	animeInfoDiv.hide();
+	popoverAnimeId = null;
 }
 
 function getSelect(className) {
