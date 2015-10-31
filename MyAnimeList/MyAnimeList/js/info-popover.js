@@ -66,35 +66,46 @@ var infoPopover = (function() {
 		$('.mal-ext-info').on('click', function(event) {
 			var img = $(this);
 			var id = getAnimeId(img);
-			var anime = animeData[id];
-			if (typeof anime === 'undefined') {
-				return;
+			
+			if (id === popoverAnimeId) {
+				closeInfoPopover();
 			}
-			
-			var details = anime.details;
-			
-			var position = img.position();
-			var x = position.left + 16;
-			var y = position.top + 8;
-			
-			animeInfoDiv.css({
-				'left': x,
-				'top': y
-			});
-			
-			$('.mal-ext-popover-title').html(details.title);
-			updateEnglishTitle(details);
-			$('.mal-ext-popover-aired').text(getFullAiredDate(details[parsedStartDateField], details[parsedEndDateField]));
-			$('.mal-ext-popover-average').text(getMemberScore(details));
-			$('.mal-ext-popover-rank').text(getRank(details));
-			$('.mal-ext-popover-popularity').text(details.popularity_rank.toLocaleString());
-			$('.mal-ext-popover-favorited').text(details.favorited_count.toLocaleString());
-			
-			var genres = details.genres.join(', ');
-			$('.mal-ext-popover-genres').text(genres);
-			
-			animeInfoDiv.show();
+			else {
+				showInfoPopover(img, id);
+			}
 		});
+	}
+	
+	function showInfoPopover(img, id) {
+		var anime = animeData[id];
+		if (typeof anime === 'undefined') {
+			return;
+		}
+		
+		var details = anime.details;
+		
+		var position = img.position();
+		var x = position.left + 16;
+		var y = position.top + 8;
+		
+		animeInfoDiv.css({
+			'left': x,
+			'top': y
+		});
+		
+		$('.mal-ext-popover-title').html(details.title);
+		updateEnglishTitle(details);
+		$('.mal-ext-popover-aired').text(getFullAiredDate(details[parsedStartDateField], details[parsedEndDateField]));
+		$('.mal-ext-popover-average').text(getMemberScore(details));
+		$('.mal-ext-popover-rank').text(getRank(details));
+		$('.mal-ext-popover-popularity').text(details.popularity_rank.toLocaleString());
+		$('.mal-ext-popover-favorited').text(details.favorited_count.toLocaleString());
+		
+		var genres = details.genres.join(', ');
+		$('.mal-ext-popover-genres').text(genres);
+		
+		popoverAnimeId = id;
+		animeInfoDiv.show();
 	}
 	
 	function updateEnglishTitle(details) {
