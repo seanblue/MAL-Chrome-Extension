@@ -195,8 +195,8 @@ var filtering = (function() {
 	
 	function hideAndUpdateVisibleFilters() {
 		var filter = $(activeFilterSelector).removeClass(activeFilterClass);
-		filter.children('select').val('All').trigger('change');
-		filter.children('input').val('').trigger('keyup');
+		filter.find('select').val('All').trigger('change');
+		filter.find('input').val('').trigger('keyup').trigger('change');
 	}
 	
 	function showSelectedFilter(select) {
