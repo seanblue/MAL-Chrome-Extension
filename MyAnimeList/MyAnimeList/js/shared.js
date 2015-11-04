@@ -17,6 +17,7 @@ var userTagsField = 'mal_ext_user_tags';
 var allTitlesField = 'mal_ext_all_titles';
 var parsedStartDateField = 'mal_ext_parsed_start_date';
 var parsedEndDateField = 'mal_ext_parsed_end_date';
+var priorityField = 'mal_ext_priority';
 
 var actualRatings = ['G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai'];
 
@@ -29,6 +30,7 @@ var apiTestPromise;
 var loadAnimePromises = [];
 
 var hasTagsColumn = false;
+var hasPriorityColumn = false;
 
 var popoverAnimeId = null;
 

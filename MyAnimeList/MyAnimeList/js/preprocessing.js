@@ -12,48 +12,58 @@ var preprocessing = (function() {
 		loadAnimeIfPossible();
 		
 		runAfterAnimeDataLoaded(function() {
-			addTagsToAnimeDetails();
+			addUIDataToAnimeDetails();
 			updateAllSectionCounts();
 		});
 	}
 	
 	function setupAnimeDataSections() {
+		hasTagsColumn = false;
+		hasPriorityColumn = false;
+		
 		$(animeSectionSelector).each(function (index, el) {
 			var section = $(el);
 			var sectionName = section.data('anime-section');
+			var header = section.find(animeSectionHeaderRowSelector);
+			var tagsColumnIndex = getColumnHeaderIndex(header, 'Tags');
+			var priorityColumnIndex = getColumnHeaderIndex(header, 'Priority');
+			
+			hasTagsColumn = hasTagsColumn || (tagsColumnIndex > 0)
+			hasPriorityColumn = hasPriorityColumn || (priorityColumnIndex > 0)
 			
 			animeDataBySection[sectionName] = {
 				order: [],
 				originalOrder: [],
 				data: {},
 				el: section,
+				tagsColumnIndex: tagsColumnIndex,
+				priorityColumnIndex: priorityColumnIndex,
 				totalHidden: 0
 			};
 		});
 	}
 
-	function addTagsToAnimeDetails() {
-		var header = $(animeSectionHeaderRowSelector + ':first');
+	function getColumnHeaderIndex(header, columnName) {
 		var allTd = header.find('td');
-		var tagsTd = header.find('td:contains("Tags")');
+		var columnTd = header.find('td:contains("' + columnName + '")');
 		
-		var tagsColumnIndex = allTd.index(tagsTd);
-		if (tagsColumnIndex === -1) {
-			return;
-		}
-		
-		hasTagsColumn = true;
+		return allTd.index(columnTd) + 1;
+	}
+	
+	function addUIDataToAnimeDetails() {
 		animeDivs.each(function(index, el) {
-			addTagsToAnimeDetailsForAnime(el, tagsColumnIndex);			
+			var sectionName = getSectionName(el);
+			var sectionData = animeDataBySection[sectionName];
+			
+			addTagsToAnimeDetailsForAnime(el, sectionData.tagsColumnIndex);
+			addPriorityToAnimeDetailsForAnime(el, sectionData.priorityColumnIndex);			
 		});
 	}
 	
 	function addTagsToAnimeDetailsForAnime(animeEl, tagsColumnIndex) {
-		var td = $(animeEl).find('table:first td:eq(' + tagsColumnIndex + ')');
-		var tags = td.find('[id^=tagLinks]').text().split(',');
-		tags = $.map(tags, function(el) {
-			return el.trim();
-		});
+		if (!hasTagsColumn) {
+			return;
+		}
 		
 		var id = getAnimeId(animeEl);
 		var anime = animeData[id];
@@ -62,7 +72,35 @@ var preprocessing = (function() {
 			return;
 		}
 		
+		var td = getTdForColumnIndex(animeEl, tagsColumnIndex);
+		var tags = td.find('[id^=tagLinks]').text().split(',');
+		tags = $.map(tags, function(el) {
+			return el.trim();
+		});
+		
 		anime.details[userTagsField] = tags;
+	}
+	
+	function addPriorityToAnimeDetailsForAnime(animeEl, priorityColumnIndex) {
+		if (!hasPriorityColumn) {
+			return;
+		}
+		
+		var id = getAnimeId(animeEl);
+		var anime = animeData[id];
+		if (typeof anime === 'undefined') {
+			// If not within test limit, no data is loaded.
+			return;
+		}
+		
+		var td = getTdForColumnIndex(animeEl, priorityColumnIndex);
+		var priority = td.text();
+		
+		anime.details[priorityField] = priority;
+	}
+	
+	function getTdForColumnIndex(animeEl, columnIndex) {
+		return $(animeEl).find('table:first td:eq(' + columnIndex + ')');
 	}
 	
 	function setAnimeDivsAndCount() {
