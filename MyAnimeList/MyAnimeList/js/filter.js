@@ -2,12 +2,13 @@ var filtering = (function() {
 	var activeFilterClass = 'mal-ext-active-filter';
 	var activeFilterSelector = '.' + activeFilterClass;
 	
-	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Title', 'Synopsis', 'Tag', 'Date'];
+	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Priority', 'Title', 'Synopsis', 'Tag', 'Date'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
 	var ratingsValues = ['All'].concat(actualRatings);
 	var ratingsTexts = ['All', 'G', 'PG', 'PG-13', 'R', 'R+', 'Rx'];
 	var statusOptions = ['All', 'Finished Airing', 'Currently Airing', 'Not yet aired'];
+	var priorityOptions = ['All', 'Low', 'Medium', 'High'];
 	
 	var startDateInput;
 	var endDateInput;
@@ -22,8 +23,16 @@ var filtering = (function() {
 	
 	function updateFilterTypes() {
 		if (!hasTagsColumn) {
-			filterTypes = filterTypes.splice(0, filterTypes.indexOf('Tag'));
+			removeFilterType('Tag');
 		}
+		
+		if (!hasPriorityColumn) {
+			removeFilterType('Priority');
+		}
+	}
+	
+	function removeFilterType(name) {
+		filterTypes.splice(filterTypes.indexOf(name), 1);
 	}
 	
 	function insertFilterElements() {
@@ -42,6 +51,9 @@ var filtering = (function() {
 		var statusFilterSelect = getSelect('mal-ext-content-status-filter');
 		addOptions(statusFilterSelect, statusOptions);
 		
+		var priorityFilterSelect = getSelect('mal-ext-content-priority-filter');
+		addOptions(priorityFilterSelect, priorityOptions);
+		
 		var titleFilterInput = getInput('mal-ext-content-title-filter');
 		
 		var synopsisFilterInput = getInput('mal-ext-content-synopsis-filter');
@@ -59,6 +71,7 @@ var filtering = (function() {
 		contentTypeFilter.append(getHiddenFilterContainer().append(genreFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(ratingFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(statusFilterSelect));
+		contentTypeFilter.append(getHiddenFilterContainer().append(priorityFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(titleFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(synopsisFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(userTagsFilterInput));
@@ -99,6 +112,7 @@ var filtering = (function() {
 		var genreSelect = $('.mal-ext-content-genre-filter');
 		var ratingSelect = $('.mal-ext-content-rating-filter');
 		var statusSelect = $('.mal-ext-content-status-filter');
+		var prioritySelect = $('.mal-ext-content-priority-filter');
 		var titleInput = $('.mal-ext-content-title-filter');
 		var synopsisInput = $('.mal-ext-content-synopsis-filter');
 		var userTagsInput = $('.mal-ext-content-user-tags-filter');
@@ -120,6 +134,9 @@ var filtering = (function() {
 			}
 			else if (val === 'Status') {
 				showSelectedFilter(statusSelect)
+			}
+			else if (val === 'Priority') {
+				showSelectedFilter(prioritySelect)
 			}
 			else if (val === 'Title') {
 				showSelectedFilter(titleInput)
@@ -153,6 +170,11 @@ var filtering = (function() {
 		statusSelect.on('change', function(event) {
 			closeInfoPopover();
 			filterAnimeByStatus($(this).val());
+		});
+	
+		prioritySelect.on('change', function(event) {
+			closeInfoPopover();
+			filterAnimeByPriority($(this).val());
 		});
 	
 		setupTitleFilterEvent(titleInput);
@@ -228,6 +250,11 @@ var filtering = (function() {
 		var field = 'status';
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
+	}
+	
+	function filterAnimeByPriority(val) {
+		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
+		filterAnime(priorityField, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByTitle(val) {
