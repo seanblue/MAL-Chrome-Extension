@@ -11,9 +11,7 @@
 # Run an API test before trying to load all anime data.
 
 @ Use chrome.storage.local (permission "storage") to so that data can still be loaded even if the API is down.
-	- How should this be handled to take new data if updated, but not copy over bad data?
-	- Could use jQuery.extend so that if new data fields are corrupted with nulls, they would not replace good data.
-		- Only undefined values are ignored (despite what jQuery docs say), so would need to replace null with undefined for this to work.
+	- This is "all or nothing". Don't bother trying to stop individual fields from being corrupted. 
 	- Will likely need to figure out how to work with 'animeData' and 'animeDataBySection' for local storage.
 		- Probably don't want to save by section since that can change between loads.
 		- If only 'animeData' is saved, would need to do the mapping to 'animeDataBySection' entirely afterward, separate from the loading, even if API is down.
@@ -45,6 +43,7 @@
 		# Add comma separated search to show if any of the requested titles is present.
 	# Synopsis
 	# Status
+	# Priority
 	# Display "showing x of y" in parentheses after section headers ("Watching", etc.)
 	# Update row colors to alternate when filtered.
 	# Update row numbers (first column) when filtered.
@@ -64,7 +63,3 @@
 	# Number of episodes ('episodes')
 	# Automatically sort alphabetically as a secondary sort.
 	# Reverse sort (check box).
-#4. New Section
-	# Move Filter/Sorting to area below main black bar to allow for more room and customization of styles.
-	# Add text "Loading anime data..." while api calls are being made so that users know that it is still running.
-		# Could show "x of y" anime loaded.
