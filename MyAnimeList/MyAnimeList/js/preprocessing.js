@@ -224,8 +224,13 @@ var preprocessing = (function() {
 	}
 	
 	function addAdditionalDetails(details) {
+		addCaseInsensitiveTitleDetails(details);
 		addAllTitlesDetails(details);
 		addParsedAiredDateDetails(details);
+	}
+	
+	function addCaseInsensitiveTitleDetails(details) {
+		details[caseInsensitiveTitleField] = details.title.toLowerCase();
 	}
 	
 	function addAllTitlesDetails(details) {

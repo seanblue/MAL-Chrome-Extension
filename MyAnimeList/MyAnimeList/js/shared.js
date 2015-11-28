@@ -14,6 +14,7 @@ var animeSectionClass = 'mal-ext-anime-section';
 var animeSectionSelector = '.' + animeSectionClass;
 
 var userTagsField = 'mal_ext_user_tags';
+var caseInsensitiveTitleField = 'mal_ext_case_insensitive_title';
 var allTitlesField = 'mal_ext_all_titles';
 var parsedStartDateField = 'mal_ext_parsed_start_date';
 var parsedEndDateField = 'mal_ext_parsed_end_date';
