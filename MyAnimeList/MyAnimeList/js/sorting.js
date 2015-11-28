@@ -99,7 +99,7 @@ var sorting = (function() {
 	}
 	
 	function sortAnimeByTitle() {
-		var field = 'title';
+		var field = caseInsensitiveTitleField;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});
@@ -205,6 +205,7 @@ var sorting = (function() {
 		var sortBeforeMethod = getSortBeforeMethod(reverseSort);
 		var sortAfterMethod = getSortAfterMethod(reverseSort);
 		
+		var tieBreakField = caseInsensitiveTitleField;
 		sectionData.order.sort(function(id1, id2) {
 			var anime1 = sectionData.data[id1].details;
 			var anime2 = sectionData.data[id2].details;
@@ -217,11 +218,11 @@ var sorting = (function() {
 				return 1;
 			}
 			
-			if (anime1.title < anime2.title) {
+			if (anime1[tieBreakField] < anime2[tieBreakField]) {
 				return -1;
 			}
 			
-			if (anime1.title > anime2.title) {
+			if (anime1[tieBreakField] > anime2[tieBreakField]) {
 				return 1;
 			}
 			
