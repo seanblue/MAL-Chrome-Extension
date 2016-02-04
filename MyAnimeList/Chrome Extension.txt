@@ -21,7 +21,8 @@
 @ See if function addTagsToAnimeDetails can be modified to iterate over each anime rather than the divs, so that the undefined check for test limit isn't necessary.
 
 @ Styles: Look into settings page where the user can select the style of the anime page. That way, the rows and popover can be colored accordingly.
-		
+@ Sections: Allow collapsing of sections (Watching, etc.). Use a +/- after the section header.
+	
 @1. Show popover with additional information.
 	# Title
 	# English Title (if available)

@@ -94,7 +94,7 @@ var preprocessing = (function() {
 		}
 		
 		var td = getTdForColumnIndex(animeEl, priorityColumnIndex);
-		var priority = td.text();
+		var priority = td.text().trim();
 		
 		anime.details[priorityField] = priority;
 	}
