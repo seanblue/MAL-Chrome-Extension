@@ -230,7 +230,8 @@ var preprocessing = (function() {
 	}
 	
 	function addCaseInsensitiveTitleDetails(details) {
-		details[caseInsensitiveTitleField] = details.title.toLowerCase();
+		var title = details.title;
+		details[caseInsensitiveTitleField] = (typeof title === 'undefined') ? '' : title.toLowerCase();
 	}
 	
 	function addAllTitlesDetails(details) {
