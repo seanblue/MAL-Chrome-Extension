@@ -227,6 +227,7 @@ var preprocessing = (function() {
 		addCaseInsensitiveTitleDetails(details);
 		addAllTitlesDetails(details);
 		addParsedAiredDateDetails(details);
+		fixTypeDetails(details);
 	}
 	
 	function addCaseInsensitiveTitleDetails(details) {
@@ -283,6 +284,10 @@ var preprocessing = (function() {
 		}
 		
 		return value;
+	}
+	
+	function fixTypeDetails(details) {
+		details.type = details.type || '';
 	}
 	
 	return {
