@@ -4,6 +4,7 @@ var preprocessing = (function() {
 	var limitedAnimeDivs;
 	var totalAnimeToLoad;
 	var animeLoadedSoFar = 0;
+	var animeFailedToLoad = 0;
 	var loadingInterval;
 	var maxLoadRetries = 5;
 	
@@ -162,7 +163,13 @@ var preprocessing = (function() {
 	function handleClearLoadingStatus() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
 			clearInterval(loadingInterval);
-			$(loadingSectionSelector).html('<span>Anime data was updated at ' + (new Date()).toLocaleTimeString() + '</span>');
+			
+			if (animeFailedToLoad == 0) {
+				$(loadingSectionSelector).html('<span>Anime data was updated at ' + (new Date()).toLocaleTimeString() + '</span>');
+			}
+			else {
+				$(loadingSectionSelector).html('<span>Failed to load ' + animeFailedToLoad + ' anime. Try to reload the page.</span>');
+			}
 		});
 	}
 	
@@ -217,6 +224,7 @@ var preprocessing = (function() {
 			makeApiCall(id, loadAnimeDetailsCallback, deferred, attemptNumber + 1);
 		}
 		else {
+			animeFailedToLoad++;
 			deferred.resolve();
 		}
 	}
