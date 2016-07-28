@@ -5,6 +5,7 @@ var preprocessing = (function() {
 	var totalAnimeToLoad;
 	var animeLoadedSoFar = 0;
 	var loadingInterval;
+	var maxLoadRetries = 5;
 	
 	function run() {
 		setupAnimeDataSections();
@@ -132,14 +133,15 @@ var preprocessing = (function() {
 		});
 	}
 	
-	function makeApiCall(id, onReadyCallback) {
-		var deferred = $.Deferred();
+	function makeApiCall(id, onReadyCallback, deferred, attemptNumber) {
+		var deferred = deferred || $.Deferred();
+		attemptNumber = attemptNumber || 1;
 		
 		var xhr = new XMLHttpRequest();
 		xhr.open('GET', getApiUrl(id), true);
 		xhr.onreadystatechange = function(event) {
 			if (xhr.readyState == 4) {
-				onReadyCallback(deferred, event);
+				onReadyCallback(deferred, event, attemptNumber);
 			}
 		}
 		xhr.send();
@@ -189,13 +191,34 @@ var preprocessing = (function() {
 	}
 	
 	function loadAnimeDetails(id, container) {
-		return makeApiCall(id, function(deferred, event) {
-			var animeDetails = JSON.parse(event.target.response);
-			saveAnimeDetails(id, container, animeDetails);
-			
-			animeLoadedSoFar++;
+		var loadAnimeDetailsCallback = function(deferred, event, attemptNumber) {
+			if (event.target.status === 200) {
+				loadAnimeDetailsSuccessCallback(deferred, event, id, container);
+			}
+			else {
+				loadAnimeDetailsFailureCallback(deferred, id, attemptNumber, loadAnimeDetailsCallback);
+			}
+		};
+		
+		return makeApiCall(id, loadAnimeDetailsCallback);
+	}
+	
+	function loadAnimeDetailsSuccessCallback(deferred, event, id, container) {
+		var animeDetails = JSON.parse(event.target.response);
+		saveAnimeDetails(id, container, animeDetails);
+		
+		animeLoadedSoFar++;
+		deferred.resolve();
+	}
+	
+	function loadAnimeDetailsFailureCallback(deferred, id, attemptNumber, loadAnimeDetailsCallback) {
+		if (attemptNumber <= maxLoadRetries) {
+			setTimeout(function() {}, 100); // Timeout to reduce throttling.
+			makeApiCall(id, loadAnimeDetailsCallback, deferred, attemptNumber + 1);
+		}
+		else {
 			deferred.resolve();
-		});
+		}
 	}
 	
 	function getApiUrl(id) {
