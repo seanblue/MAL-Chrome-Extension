@@ -3,7 +3,7 @@
     "name": "MyAnimeList Enhancements",
     "version": "1.0",
     "description": "Enhancements for anime list page.",
-    "permissions": [ "http://myanimelist.net/animelist/*", "http://umal-api.coreyjustinroberts.com/" ],
+    "permissions": [ "http://myanimelist.net/animelist/*", "https://myanimelist.net/animelist/*", "http://umal-api.coreyjustinroberts.com/" ],
     "icons": {
 		"48": "icons/icon-48.png",
 		"128": "icons/icon-128.png"
@@ -20,7 +20,7 @@
 			"js/content.js"
 		],
 		"css": [ "css/style.css" ],
-        "matches": [ "http://myanimelist.net/animelist/*" ] 
+        "matches": [ "http://myanimelist.net/animelist/*", "https://myanimelist.net/animelist/*" ] 
     } ],
 	"web_accessible_resources": ["icons/info.png", "icons/close.png"]
 }
