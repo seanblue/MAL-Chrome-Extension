@@ -33,7 +33,14 @@ var loadAnimePromises = [];
 var hasTagsColumn = false;
 var hasPriorityColumn = false;
 
+var apiIsAvailable = false;
+var animeFailedToLoad = 0;
+
 var popoverAnimeId = null;
+
+function allAnimeSuccessfullyLoaded() {
+	return apiIsAvailable && animeFailedToLoad === 0;
+}
 
 function getAnimeId(container) {
 	return $(container).closest(animeContainerSelector).data('anime-id');
@@ -95,6 +102,9 @@ function updateSectionCount(sectionData) {
 
 function runAfterAnimeDataLoaded(callback) {
 	apiTestPromise.always(function() {
-		$.when.apply(undefined, loadAnimePromises).always(callback);
+		$.when.apply(undefined, loadAnimePromises).always(function() {
+			if (allAnimeSuccessfullyLoaded())
+				callback();
+		});
 	});
 }

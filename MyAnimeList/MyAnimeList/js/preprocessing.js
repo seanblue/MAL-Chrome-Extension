@@ -4,7 +4,6 @@ var preprocessing = (function() {
 	var limitedAnimeDivs;
 	var totalAnimeToLoad;
 	var animeLoadedSoFar = 0;
-	var animeFailedToLoad = 0;
 	var loadingInterval;
 	var maxLoadRetries = 5;
 	
@@ -115,6 +114,8 @@ var preprocessing = (function() {
 		apiTestPromise = runApiTest();
 		
 		apiTestPromise.done(function() {
+			apiIsAvailable = true;
+			
 			handleLoadingStatus();
 			loadAnime();
 			handleClearLoadingStatus();
@@ -163,7 +164,7 @@ var preprocessing = (function() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
 			clearInterval(loadingInterval);
 			
-			if (animeFailedToLoad == 0) {
+			if (allAnimeSuccessfullyLoaded()) {
 				$(loadingSectionSelector).html('<span>Anime data was updated at ' + (new Date()).toLocaleTimeString() + '</span>');
 			}
 			else {
