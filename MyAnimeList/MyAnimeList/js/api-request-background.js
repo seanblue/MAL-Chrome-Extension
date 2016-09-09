@@ -10,12 +10,7 @@
 		
 		xhr.onreadystatechange = function(event) {
 			if (xhr.readyState == 4) {
-				callback({
-					target: {
-						status: event.target.status,
-						response: event.target.response
-					}
-				});
+				callback(getApiResponse(event));
 			}
 		}
 		
@@ -25,5 +20,15 @@
 	
 	function getApiUrl(id) {
 		return 'http://umal-api.coreyjustinroberts.com/1.1/anime/' + id;
+	}
+	
+	function getApiResponse(event) {
+		var success = (event.target.status === 200);
+		var response = success ? JSON.parse(event.target.response) : {};
+			
+		return {
+			success: success,
+			response: response
+		};
 	}
 })();
