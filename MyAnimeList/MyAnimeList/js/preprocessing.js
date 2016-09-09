@@ -12,7 +12,7 @@ var preprocessing = (function() {
 		setAnimeDivsAndCount();
 		loadAnimeIfPossible();
 		
-		runAfterAnimeDataLoaded(function() {
+		runAfterAllAnimeDataSuccessfullyLoaded(function() {
 			addUIDataToAnimeDetails();
 			updateAllSectionCounts();
 		});
