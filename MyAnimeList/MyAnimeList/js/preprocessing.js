@@ -124,8 +124,8 @@ var preprocessing = (function() {
 	}
 	
 	function runApiTest() {
-		return makeApiCall(1, function(deferred, event) {
-			if (event.success) {
+		return makeApiCall(1, function(deferred, apiResponse) {
+			if (apiResponse.success) {
 				deferred.resolve();
 			}
 			else {
@@ -142,8 +142,8 @@ var preprocessing = (function() {
 			type: 'apirequest',
 			id: id
 		},
-		function(event) {
-			onReadyCallback(deferred, event, attemptNumber);
+		function(apiResponse) {
+			onReadyCallback(deferred, apiResponse, attemptNumber);
 		});
 		
 		return deferred.promise();
@@ -197,9 +197,9 @@ var preprocessing = (function() {
 	}
 	
 	function loadAnimeDetails(id, container) {
-		var loadAnimeDetailsCallback = function(deferred, event, attemptNumber) {
-			if (event.success) {
-				loadAnimeDetailsSuccessCallback(deferred, event, id, container);
+		var loadAnimeDetailsCallback = function(deferred, apiResponse, attemptNumber) {
+			if (apiResponse.success) {
+				loadAnimeDetailsSuccessCallback(deferred, apiResponse, id, container);
 			}
 			else {
 				loadAnimeDetailsFailureCallback(deferred, id, attemptNumber, loadAnimeDetailsCallback);
@@ -209,8 +209,8 @@ var preprocessing = (function() {
 		return makeApiCall(id, loadAnimeDetailsCallback);
 	}
 	
-	function loadAnimeDetailsSuccessCallback(deferred, event, id, container) {
-		var animeDetails = event.response;
+	function loadAnimeDetailsSuccessCallback(deferred, apiResponse, id, container) {
+		var animeDetails = apiResponse.response;
 		saveAnimeDetails(id, container, animeDetails);
 		
 		animeLoadedSoFar++;
