@@ -138,14 +138,12 @@ var preprocessing = (function() {
 		var deferred = deferred || $.Deferred();
 		attemptNumber = attemptNumber || 1;
 		
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET', getApiUrl(id), true);
-		xhr.onreadystatechange = function(event) {
-			if (xhr.readyState == 4) {
-				onReadyCallback(deferred, event, attemptNumber);
-			}
-		}
-		xhr.send();
+		chrome.runtime.sendMessage({
+			url: getApiUrl(id)
+		},
+		function(event) {
+			onReadyCallback(deferred, event, attemptNumber);
+		});
 		
 		return deferred.promise();
 	}

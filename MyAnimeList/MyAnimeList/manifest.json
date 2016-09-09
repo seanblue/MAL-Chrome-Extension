@@ -22,5 +22,9 @@
 		"css": [ "css/style.css" ],
         "matches": [ "http://myanimelist.net/animelist/*", "https://myanimelist.net/animelist/*" ] 
     } ],
+    "background": {
+        "scripts": ["js/api-request-background.js"],
+        "persistent": false
+    },
 	"web_accessible_resources": ["icons/info.png", "icons/close.png"]
 }
