@@ -139,7 +139,8 @@ var preprocessing = (function() {
 		attemptNumber = attemptNumber || 1;
 		
 		chrome.runtime.sendMessage({
-			url: getApiUrl(id)
+			type: 'apirequest',
+			id: id
 		},
 		function(event) {
 			onReadyCallback(deferred, event, attemptNumber);
@@ -227,9 +228,7 @@ var preprocessing = (function() {
 		}
 	}
 	
-	function getApiUrl(id) {
-		return 'http://umal-api.coreyjustinroberts.com/1.1/anime/' + id;
-	}
+	
 	
 	function saveAnimeDetails(id, el, details) {
 		addAdditionalDetails(details);
