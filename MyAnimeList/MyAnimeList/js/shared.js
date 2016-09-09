@@ -100,7 +100,7 @@ function updateSectionCount(sectionData) {
 	sectionCountEl.text('(showing ' + sectionVisibleCount + ' of ' + sectionTotalCount + ')');
 }
 
-function runAfterAnimeDataLoaded(callback) {
+function runAfterAllAnimeDataSuccessfullyLoaded(callback) {
 	apiTestPromise.always(function() {
 		$.when.apply(undefined, loadAnimePromises).always(function() {
 			if (allAnimeSuccessfullyLoaded())

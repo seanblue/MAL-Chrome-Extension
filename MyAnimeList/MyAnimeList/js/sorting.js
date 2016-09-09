@@ -6,7 +6,7 @@ var sorting = (function() {
 	var reverseSortingSpan;
 	
 	function run() {
-		runAfterAnimeDataLoaded(function() {
+		runAfterAllAnimeDataSuccessfullyLoaded(function() {
 			insertSortingElements();
 			addSortingEvents();
 		});

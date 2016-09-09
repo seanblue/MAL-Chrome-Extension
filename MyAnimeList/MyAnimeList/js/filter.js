@@ -14,7 +14,7 @@ var filtering = (function() {
 	var endDateInput;
 	
 	function run() {
-		runAfterAnimeDataLoaded(function() {
+		runAfterAllAnimeDataSuccessfullyLoaded(function() {
 			updateFilterTypes();
 			insertFilterElements();
 			addFilterEvents();
