@@ -125,7 +125,7 @@ var preprocessing = (function() {
 	
 	function runApiTest() {
 		return makeApiCall(1, function(deferred, event) {
-			if (event.target.status === 200) {
+			if (event.success) {
 				deferred.resolve();
 			}
 			else {
@@ -198,7 +198,7 @@ var preprocessing = (function() {
 	
 	function loadAnimeDetails(id, container) {
 		var loadAnimeDetailsCallback = function(deferred, event, attemptNumber) {
-			if (event.target.status === 200) {
+			if (event.success) {
 				loadAnimeDetailsSuccessCallback(deferred, event, id, container);
 			}
 			else {
@@ -210,7 +210,7 @@ var preprocessing = (function() {
 	}
 	
 	function loadAnimeDetailsSuccessCallback(deferred, event, id, container) {
-		var animeDetails = JSON.parse(event.target.response);
+		var animeDetails = event.response;
 		saveAnimeDetails(id, container, animeDetails);
 		
 		animeLoadedSoFar++;
