@@ -190,7 +190,7 @@ var preprocessing = (function() {
 			sectionData.order.push(id);
 			sectionData.originalOrder.push(id);
 			
-			var promise = loadAnimeDetails(id, container);
+			var promise = loadAnimeDetails(id, container, index);
 			loadAnimePromises.push(promise);
 		});
 	}
@@ -199,7 +199,7 @@ var preprocessing = (function() {
 		return localStorage.testLimit;
 	}
 	
-	function loadAnimeDetails(id, container) {
+	function loadAnimeDetails(id, container, requestNumber) {
 		var loadAnimeDetailsCallback = function(deferred, apiResponse, attemptNumber) {
 			if (apiResponse.success) {
 				loadAnimeDetailsSuccessCallback(deferred, apiResponse, id, container);
@@ -211,7 +211,9 @@ var preprocessing = (function() {
 		
 		var deferred = $.Deferred();
 		
-		makeApiCall(id, loadAnimeDetailsCallback, deferred);
+		setTimeout(function() {
+			makeApiCall(id, loadAnimeDetailsCallback, deferred);
+		}, 100 * requestNumber);
 		
 		return deferred.promise();
 	}
