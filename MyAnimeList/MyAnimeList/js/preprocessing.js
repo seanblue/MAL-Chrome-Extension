@@ -125,18 +125,22 @@ var preprocessing = (function() {
 	}
 	
 	function runApiTest() {
-		return makeApiCall(1, function(deferred, apiResponse) {
-			if (apiResponse.success) {
-				deferred.resolve();
-			}
-			else {
-				deferred.reject();
-			}
-		});
+		var deferred = $.Deferred();
+		makeApiCall(1, apiTestCallback, deferred);
+		
+		return deferred.promise();
+	}
+	
+	function apiTestCallback(deferred, apiResponse) {
+		if (apiResponse.success) {
+			deferred.resolve();
+		}
+		else {
+			deferred.reject();
+		}
 	}
 	
 	function makeApiCall(id, onReadyCallback, deferred, attemptNumber) {
-		var deferred = deferred || $.Deferred();
 		attemptNumber = attemptNumber || 1;
 		
 		chrome.runtime.sendMessage({
@@ -146,8 +150,6 @@ var preprocessing = (function() {
 		function(apiResponse) {
 			onReadyCallback(deferred, apiResponse, attemptNumber);
 		});
-		
-		return deferred.promise();
 	}
 	
 	function handleApiUnavailable() {
@@ -207,7 +209,11 @@ var preprocessing = (function() {
 			}
 		};
 		
-		return makeApiCall(id, loadAnimeDetailsCallback);
+		var deferred = $.Deferred();
+		
+		makeApiCall(id, loadAnimeDetailsCallback, deferred);
+		
+		return deferred.promise();
 	}
 	
 	function loadAnimeDetailsSuccessCallback(deferred, apiResponse, id, container) {
