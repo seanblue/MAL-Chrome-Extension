@@ -223,12 +223,21 @@ var preprocessing = (function() {
 			setTimeout(function() {
 				// Timeout to reduce throttling.
 				makeApiCall(id, loadAnimeDetailsCallback, deferred, attemptNumber + 1);
-			}, 100);
+			}, getRetryTimeoutTime(attemptNumber));
 		}
 		else {
 			animeFailedToLoad++;
 			deferred.resolve();
 		}
+	}
+	
+	function getRetryTimeoutTime(attemptNumber) {
+		return (1500 + (10 * attemptNumber)^2) * getRetryRandomFactor(0.9, 1.1);
+	}
+	
+	function getRetryRandomFactor(min, max) {
+		// Used to fluctuate the random factor to decrease consecutive failures by the same request.
+		return Math.random() * (max - min) + min;
 	}
 	
 	function saveAnimeDetails(id, el, details) {
