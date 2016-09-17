@@ -220,16 +220,16 @@ var preprocessing = (function() {
 	
 	function loadAnimeDetailsFailureCallback(deferred, id, attemptNumber, loadAnimeDetailsCallback) {
 		if (attemptNumber <= maxLoadRetries) {
-			setTimeout(function() {}, 100); // Timeout to reduce throttling.
-			makeApiCall(id, loadAnimeDetailsCallback, deferred, attemptNumber + 1);
+			setTimeout(function() {
+				// Timeout to reduce throttling.
+				makeApiCall(id, loadAnimeDetailsCallback, deferred, attemptNumber + 1);
+			}, 100);
 		}
 		else {
 			animeFailedToLoad++;
 			deferred.resolve();
 		}
 	}
-	
-	
 	
 	function saveAnimeDetails(id, el, details) {
 		addAdditionalDetails(details);
