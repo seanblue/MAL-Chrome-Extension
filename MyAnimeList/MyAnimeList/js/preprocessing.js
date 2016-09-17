@@ -5,7 +5,7 @@ var preprocessing = (function() {
 	var totalAnimeToLoad;
 	var animeLoadedSoFar = 0;
 	var loadingInterval;
-	var maxLoadRetries = 5;
+	var maxLoadRetries = 7;
 	
 	function run() {
 		setupAnimeDataSections();
