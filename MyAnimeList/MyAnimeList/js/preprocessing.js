@@ -167,7 +167,8 @@ var preprocessing = (function() {
 			clearInterval(loadingInterval);
 			
 			if (allAnimeSuccessfullyLoaded()) {
-				$(loadingSectionSelector).html('<span>Anime data was updated at ' + (new Date()).toLocaleTimeString() + '</span>');
+				var now = new Date();
+				$(loadingSectionSelector).html('<span>Last updated ' + now.toLocaleDateString() + ' at ' + now.toLocaleTimeString() + '</span>');
 			}
 			else {
 				$(loadingSectionSelector).html('<span>Failed to load ' + animeFailedToLoad + ' anime. Try to reload the page.</span>');
