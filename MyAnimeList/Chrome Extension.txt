@@ -8,6 +8,8 @@
 ['@' = not done]
 ['#' = done]
 
+@ Add link when API data fails to load to only reload those failed entries.
+
 # Run an API test before trying to load all anime data.
 
 @ Use chrome.storage.local (permission "storage") to so that data can still be loaded even if the API is down.

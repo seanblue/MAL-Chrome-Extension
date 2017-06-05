@@ -5,7 +5,7 @@ var preprocessing = (function() {
 	var totalAnimeToLoad;
 	var animeLoadedSoFar = 0;
 	var loadingInterval;
-	var maxLoadRetries = 7;
+	var maxLoadRetries = 9;
 	
 	function run() {
 		setupAnimeDataSections();
@@ -240,8 +240,17 @@ var preprocessing = (function() {
 		}
 	}
 	
+	// 1 => 2750
+	// 2 => 3000
+	// 3 => 3500
+	// 4 => 4500
+	// 5 => 6500
+	// 6 => 10500
+	// 7 => 18500
+	// 8 => 34500
+	// 9 => 66500
 	function getRetryTimeoutTime(attemptNumber) {
-		return (1500 + (10 * attemptNumber)^2) * getRetryRandomFactor(0.9, 1.1);
+		return (2500 + 250*(2^(attemptNumber-1))) * getRetryRandomFactor(0.9, 1.1);
 	}
 	
 	function getRetryRandomFactor(min, max) {
