@@ -260,7 +260,6 @@ var preprocessing = (function() {
 	
 	function saveAnimeDetails(id, el, apiDetails) {
 		var localDetails = mapApiToLocalDetails(apiDetails);
-		addAdditionalDetails(localDetails);
 		
 		var orderTd = $(el.find('td')[1]);
 		var data = {
@@ -278,7 +277,7 @@ var preprocessing = (function() {
 	
 	function mapApiToLocalDetails(apiDetails) {
 		var localDetails = {};
-		localDetails['type'] = apiDetails['type'];
+		localDetails['type'] = apiDetails['type'] || '';
 		localDetails['genres'] = apiDetails['genres'];
 		localDetails['classification'] = apiDetails['classification'];
 		localDetails['status'] = apiDetails['status'];
@@ -295,6 +294,7 @@ var preprocessing = (function() {
 		localDetails['end_date'] = apiDetails['end_date'];
 		localDetails['title'] = apiDetails['title'];
 		
+		addAdditionalDetails(localDetails);
 		return localDetails;
 	}
 	
@@ -306,7 +306,6 @@ var preprocessing = (function() {
 		addCaseInsensitiveTitleDetails(details);
 		addAllTitlesDetails(details);
 		addParsedAiredDateDetails(details);
-		fixTypeDetails(details);
 	}
 	
 	function addCaseInsensitiveTitleDetails(details) {
@@ -363,10 +362,6 @@ var preprocessing = (function() {
 		}
 		
 		return value;
-	}
-	
-	function fixTypeDetails(details) {
-		details.type = details.type || '';
 	}
 	
 	return {
