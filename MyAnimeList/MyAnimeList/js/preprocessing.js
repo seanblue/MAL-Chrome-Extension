@@ -258,14 +258,15 @@ var preprocessing = (function() {
 		return Math.random() * (max - min) + min;
 	}
 	
-	function saveAnimeDetails(id, el, details) {
-		addAdditionalDetails(details);
+	function saveAnimeDetails(id, el, apiDetails) {
+		var localDetails = mapApiToLocalDetails(apiDetails);
+		addAdditionalDetails(localDetails);
 		
 		var orderTd = $(el.find('td')[1]);
 		var data = {
 			'el': el,
 			'orderTd': orderTd,
-			'details': details,
+			'details': localDetails,
 			'visible': true
 		};
 		
@@ -273,6 +274,28 @@ var preprocessing = (function() {
 		
 		var sectionName = getSectionName(el);
 		animeDataBySection[sectionName].data[id] = data;
+	}
+	
+	function mapApiToLocalDetails(apiDetails) {
+		var localDetails = {};
+		localDetails['type'] = apiDetails['type'];
+		localDetails['genres'] = apiDetails['genres'];
+		localDetails['classification'] = apiDetails['classification'];
+		localDetails['status'] = apiDetails['status'];
+		localDetails['synopsis'] = apiDetails['synopsis'];
+		localDetails['members_score'] = apiDetails['members_score'];
+		localDetails['rank'] = apiDetails['rank'];
+		localDetails['popularity_rank'] = apiDetails['popularity_rank'];
+		localDetails['favorited_count'] = apiDetails['favorited_count'];
+		localDetails['episodes'] = apiDetails['episodes'];
+		
+		// Temp
+		localDetails['other_titles'] = apiDetails['other_titles'];
+		localDetails['start_date'] = apiDetails['start_date'];
+		localDetails['end_date'] = apiDetails['end_date'];
+		localDetails['title'] = apiDetails['title'];
+		
+		return localDetails;
 	}
 	
 	function getSectionName(el) {
