@@ -1,6 +1,4 @@
-var infoPopover = (function() {
-	var noEnglishTitle = '';
-	
+var infoPopover = (function() {	
 	function run() {
 		insertInfoDiv();
 		addInfoIcons();
@@ -115,32 +113,14 @@ var infoPopover = (function() {
 		var section = $('.mal-ext-popover-english-title');
 		var container = section.parent();
 		
-		var englishTitle = getEnglishTitleIfExistsAndUnique(otherTitles, mainTitle);
-		if (englishTitle === noEnglishTitle) {
+		var englishTitle = details.english_title;
+		if (englishTitle === null) {
 			container.hide();
 		}
 		else {
-			section.text(otherTitles.english[0]);
+			section.text(englishTitle);
 			container.show();
 		}
-	}
-	
-	function getEnglishTitleIfExistsAndUnique(otherTitles, mainTitle) {
-		if (typeof otherTitles === 'undefined') {
-			return noEnglishTitle;
-		}
-		
-		var englishTitles = otherTitles.english
-		if (typeof englishTitles === 'undefined' || englishTitles.length === 0) {
-			return noEnglishTitle;
-		}
-
-		var englishTitle = englishTitles[0];
-		if (englishTitle === mainTitle) {
-			return noEnglishTitle;
-		}
-		
-		return englishTitle;
 	}
 	
 	function getFullAiredDate(startDateObj, endDateObj) {

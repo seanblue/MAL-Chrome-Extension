@@ -292,15 +292,51 @@ var preprocessing = (function() {
 		localDetails['favorited_count'] = getFavoritedCount(apiDetails);
 		localDetails['episodes'] = getEpisodeCount(apiDetails);
 		
-		localDetails['other_titles'] = apiDetails['other_titles'];
-		localDetails['title'] = apiDetails['title'];
+		setTitleDetails(localDetails, apiDetails);
 		
-		localDetails[caseInsensitiveTitleField] = getCaseInsensitiveTitle(apiDetails);
-		localDetails[allTitlesField] = getAllTitles(apiDetails);
 		localDetails[parsedStartDateField] = getStartDate(apiDetails);
 		localDetails[parsedEndDateField] = getEndDate(apiDetails);
 		
 		return localDetails;
+	}
+	
+	function setTitleDetails(localDetails, apiDetails) {
+		var mainTitle = apiDetails.title;
+		var otherTitles = apiDetails.other_titles;
+		
+		localDetails['title'] = mainTitle;
+		localDetails[caseInsensitiveTitleField] = getCaseInsensitiveTitle(mainTitle);
+		localDetails['english_title'] = getEnglishTitle(mainTitle, otherTitles);
+		localDetails[allTitlesField] = getTitlesList(mainTitle, otherTitles);
+	}
+	
+	function getCaseInsensitiveTitle(mainTitle) {
+		return (typeof mainTitle === 'undefined') ? '' : mainTitle.toLowerCase();
+	}
+	
+	function getTitlesList(mainTitle, otherTitles) {
+		var otherTitlesList = otherTitles || {};
+		otherTitlesList = $.map(otherTitlesList, function(item) {
+			return item;
+		});
+		
+		return [mainTitle].concat(otherTitlesList);
+	}
+	
+	function getEnglishTitle(mainTitle, otherTitles) {
+		var englishTitles = otherTitles.english
+		if (typeof englishTitles === 'undefined' || englishTitles.length === 0) {
+			// Doesn't exist.
+			return null;
+		}
+
+		var englishTitle = englishTitles[0];
+		if (englishTitle === mainTitle) {
+			// Not unique.
+			return null;
+		}
+		
+		return englishTitle;
 	}
 	
 	function getType(apiDetails) {
@@ -341,21 +377,6 @@ var preprocessing = (function() {
 	
 	function getEpisodeCount(apiDetails) {
 		return apiDetails['episodes'];
-	}
-	
-	function getCaseInsensitiveTitle(apiDetails) {
-		var title = apiDetails.title;
-		return (typeof title === 'undefined') ? '' : title.toLowerCase();
-	}
-	
-	function getAllTitles(apiDetails) {
-		var mainTitle = apiDetails.title;
-		var otherTitles = apiDetails.other_titles || {};
-		otherTitles = $.map(otherTitles, function(item) {
-			return item;
-		});
-		
-		return [mainTitle].concat(otherTitles);
 	}
 	
 	function getStartDate(apiDetails) {
