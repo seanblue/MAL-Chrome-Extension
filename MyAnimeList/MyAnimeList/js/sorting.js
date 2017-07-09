@@ -153,11 +153,11 @@ var sorting = (function() {
 	}
 	
 	function sortAnimeByStartDate() {
-		sortAnimeByDate(parsedStartDateField);
+		sortAnimeByDate(fieldStartDate);
 	}
 	
 	function sortAnimeByEndDate() {
-		sortAnimeByDate(parsedEndDateField);
+		sortAnimeByDate(fieldEndDate);
 	}
 	
 	function sortAnimeByDate(field) {

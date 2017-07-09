@@ -93,7 +93,7 @@ var infoPopover = (function() {
 		
 		$('.mal-ext-popover-title').html(details[fieldMainTitle]);
 		updateEnglishTitle(details);
-		$('.mal-ext-popover-aired').text(getFullAiredDate(details[parsedStartDateField], details[parsedEndDateField]));
+		$('.mal-ext-popover-aired').text(getFullAiredDate(details[fieldStartDate], details[fieldEndDate]));
 		$('.mal-ext-popover-average').text(getMemberScore(details));
 		$('.mal-ext-popover-rank').text(getRank(details));
 		$('.mal-ext-popover-popularity').text(details[fieldPopularityRank].toLocaleString());

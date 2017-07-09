@@ -79,7 +79,7 @@ var preprocessing = (function() {
 			return el.trim();
 		});
 		
-		anime.details[userTagsField] = tags;
+		anime.details[fieldUserTags] = tags;
 	}
 	
 	function addPriorityToAnimeDetailsForAnime(animeEl, priorityColumnIndex) {
@@ -97,7 +97,7 @@ var preprocessing = (function() {
 		var td = getTdForColumnIndex(animeEl, priorityColumnIndex);
 		var priority = td.text().trim();
 		
-		anime.details[priorityField] = priority;
+		anime.details[fieldUserPriority] = priority;
 	}
 	
 	function getTdForColumnIndex(animeEl, columnIndex) {
@@ -294,8 +294,8 @@ var preprocessing = (function() {
 		
 		setTitleDetails(localDetails, apiDetails);
 		
-		localDetails[parsedStartDateField] = getStartDate(apiDetails);
-		localDetails[parsedEndDateField] = getEndDate(apiDetails);
+		localDetails[fieldStartDate] = getStartDate(apiDetails);
+		localDetails[fieldEndDate] = getEndDate(apiDetails);
 		
 		return localDetails;
 	}

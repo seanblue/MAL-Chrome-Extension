@@ -1,3 +1,10 @@
+Railgun conversion notes:
+* Permission for consuming railgun's website.
+* title --> name
+* other_titles --> other_names
+* Start and End Dates are in a different format that is consistent. For example: "2009-10-03T00:00:00Z". Just parse that directly instead of creating a new Date (still need to handle null).
+
+
 ** Bugs **
 # API splits English title by comma even though there should only be one english title.
 	Causes an issue for http://myanimelist.net/anime/14741/Chuunibyou_demo_Koi_ga_Shitai! 

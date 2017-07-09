@@ -30,10 +30,10 @@ var fieldPopularityRank = 'popularity_rank';
 var fieldFavoritedCount = 'favorited_count';
 var fieldEpisodeCount = 'episode_count';
 
-var userTagsField = 'user_tags';
-var parsedStartDateField = 'start_date_data';
-var parsedEndDateField = 'end_date_data';
-var priorityField = 'user_priority';
+var fieldUserTags = 'user_tags';
+var fieldStartDate = 'start_date_data';
+var fieldEndDate = 'end_date_data';
+var fieldUserPriority = 'user_priority';
 // END FIELDS
 
 var actualRatings = ['G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai'];
