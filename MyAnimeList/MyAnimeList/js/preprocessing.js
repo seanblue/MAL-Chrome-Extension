@@ -275,18 +275,22 @@ var preprocessing = (function() {
 		animeDataBySection[sectionName].data[id] = data;
 	}
 	
+	function getSectionName(el) {
+		return $(el).closest(animeSectionSelector).data('anime-section');
+	}
+	
 	function mapApiToLocalDetails(apiDetails) {
 		var localDetails = {};
-		localDetails['type'] = apiDetails['type'] || '';
-		localDetails['genres'] = apiDetails['genres'];
-		localDetails['classification'] = apiDetails['classification'];
-		localDetails['status'] = apiDetails['status'];
-		localDetails['synopsis'] = apiDetails['synopsis'];
-		localDetails['members_score'] = apiDetails['members_score'];
-		localDetails['rank'] = apiDetails['rank'];
-		localDetails['popularity_rank'] = apiDetails['popularity_rank'];
-		localDetails['favorited_count'] = apiDetails['favorited_count'];
-		localDetails['episodes'] = apiDetails['episodes'];
+		localDetails['type'] = getType(apiDetails);
+		localDetails['genres'] = getGenres(apiDetails);
+		localDetails['classification'] = getClassification(apiDetails);
+		localDetails['status'] = getStatus(apiDetails);
+		localDetails['synopsis'] = getSynopsis(apiDetails);
+		localDetails['members_score'] = getMembersScore(apiDetails);
+		localDetails['rank'] = getRank(apiDetails);
+		localDetails['popularity_rank'] = getPopularityRank(apiDetails);
+		localDetails['favorited_count'] = getFavoritedCount(apiDetails);
+		localDetails['episodes'] = getEpisodeCount(apiDetails);
 		
 		// Temp
 		localDetails['other_titles'] = apiDetails['other_titles'];
@@ -298,8 +302,44 @@ var preprocessing = (function() {
 		return localDetails;
 	}
 	
-	function getSectionName(el) {
-		return $(el).closest(animeSectionSelector).data('anime-section');
+	function getType(apiDetails) {
+		return apiDetails['type'] || '';
+	}
+	
+	function getGenres(apiDetails) {
+		return apiDetails['genres'];
+	}
+	
+	function getClassification(apiDetails) {
+		return apiDetails['classification'];
+	}
+	
+	function getStatus(apiDetails) {
+		return apiDetails['status'];
+	}
+	
+	function getSynopsis(apiDetails) {
+		return apiDetails['synopsis'];
+	}
+	
+	function getMembersScore(apiDetails) {
+		return apiDetails['members_score'];
+	}
+	
+	function getRank(apiDetails) {
+		return apiDetails['rank'];
+	}
+	
+	function getPopularityRank(apiDetails) {
+		return apiDetails['popularity_rank'];
+	}
+	
+	function getFavoritedCount(apiDetails) {
+		return apiDetails['favorited_count'];
+	}
+	
+	function getEpisodeCount(apiDetails) {
+		return apiDetails['episodes'];
 	}
 	
 	function addAdditionalDetails(details) {
