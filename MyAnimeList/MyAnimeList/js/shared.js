@@ -19,6 +19,17 @@ var fieldCaseInsensitiveTitle = 'case_insensitive_title';
 var fieldEnglishTitle = 'english_title';
 var fieldAllTitles = 'all_titles';
 
+var fieldAnimeType = 'type';
+var fieldGenres = 'genres';
+var fieldClassification = 'classification';
+var fieldStatus = 'status';
+var fieldSynopsis = 'synopsis';
+var fieldMemberScore = 'members_score';
+var fieldRank = 'rank';
+var fieldPopularityRank = 'popularity_rank';
+var fieldFavoritedCount = 'favorited_count';
+var fieldEpisodeCount = 'episode_count';
+
 var userTagsField = 'mal_ext_user_tags';
 var parsedStartDateField = 'mal_ext_parsed_start_date';
 var parsedEndDateField = 'mal_ext_parsed_end_date';

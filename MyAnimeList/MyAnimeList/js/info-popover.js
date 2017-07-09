@@ -96,10 +96,10 @@ var infoPopover = (function() {
 		$('.mal-ext-popover-aired').text(getFullAiredDate(details[parsedStartDateField], details[parsedEndDateField]));
 		$('.mal-ext-popover-average').text(getMemberScore(details));
 		$('.mal-ext-popover-rank').text(getRank(details));
-		$('.mal-ext-popover-popularity').text(details.popularity_rank.toLocaleString());
-		$('.mal-ext-popover-favorited').text(details.favorited_count.toLocaleString());
+		$('.mal-ext-popover-popularity').text(details[fieldPopularityRank].toLocaleString());
+		$('.mal-ext-popover-favorited').text(details[fieldFavoritedCount].toLocaleString());
 		
-		var genres = details.genres.join(', ');
+		var genres = details[fieldGenres].join(', ');
 		$('.mal-ext-popover-genres').text(genres);
 		
 		popoverAnimeId = id;
@@ -137,7 +137,7 @@ var infoPopover = (function() {
 	}
 	
 	function getMemberScore(details) {
-		var memberScore = details.members_score;
+		var memberScore = details[fieldMemberScore];
 		if (invalidScore(memberScore)) {
 			return 'N/A';
 		}
@@ -146,7 +146,7 @@ var infoPopover = (function() {
 	}
 	
 	function getRank(details) {
-		var rank = details.rank;
+		var rank = details[fieldRank];
 		if (invalidScore(rank)) {
 			return 'N/A';
 		}

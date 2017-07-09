@@ -281,16 +281,16 @@ var preprocessing = (function() {
 	
 	function mapApiToLocalDetails(apiDetails) {
 		var localDetails = {};
-		localDetails['type'] = getType(apiDetails);
-		localDetails['genres'] = getGenres(apiDetails);
-		localDetails['classification'] = getClassification(apiDetails);
-		localDetails['status'] = getStatus(apiDetails);
-		localDetails['synopsis'] = getSynopsis(apiDetails);
-		localDetails['members_score'] = getMembersScore(apiDetails);
-		localDetails['rank'] = getRank(apiDetails);
-		localDetails['popularity_rank'] = getPopularityRank(apiDetails);
-		localDetails['favorited_count'] = getFavoritedCount(apiDetails);
-		localDetails['episodes'] = getEpisodeCount(apiDetails);
+		localDetails[fieldAnimeType] = getType(apiDetails);
+		localDetails[fieldGenres] = getGenres(apiDetails);
+		localDetails[fieldClassification] = getClassification(apiDetails);
+		localDetails[fieldStatus] = getStatus(apiDetails);
+		localDetails[fieldSynopsis] = getSynopsis(apiDetails);
+		localDetails[fieldMemberScore] = getMembersScore(apiDetails);
+		localDetails[fieldRank] = getRank(apiDetails);
+		localDetails[fieldPopularityRank] = getPopularityRank(apiDetails);
+		localDetails[fieldFavoritedCount] = getFavoritedCount(apiDetails);
+		localDetails[fieldEpisodeCount] = getEpisodeCount(apiDetails);
 		
 		setTitleDetails(localDetails, apiDetails);
 		

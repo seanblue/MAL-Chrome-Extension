@@ -226,13 +226,13 @@ var filtering = (function() {
 	}
 	
 	function filterAnimeByType(val) {
-		var field = 'type';
+		var field = fieldAnimeType;
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByGenre(val) {
-		var field = 'genres';
+		var field = fieldGenres;
 		var showIfTrueFunction = function(genres) {
 			return genres.indexOf(val) !== -1;
 		}
@@ -241,13 +241,13 @@ var filtering = (function() {
 	}
 	
 	function filterAnimeByRating(val) {
-		var field = 'classification';
+		var field = fieldClassification;
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByStatus(val) {
-		var field = 'status';
+		var field = fieldStatus;
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
@@ -263,7 +263,7 @@ var filtering = (function() {
 	}
 	
 	function filterAnimeBySynopsis(val) {
-		var field = 'synopsis';
+		var field = fieldSynopsis;
 		var showIfTrueFunction = getShowIfTrueValueIsLikeFunction(val);
 		filterAnime(field, val, showIfTrueFunction, '');
 	}
