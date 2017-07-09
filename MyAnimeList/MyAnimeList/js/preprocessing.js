@@ -304,10 +304,10 @@ var preprocessing = (function() {
 		var mainTitle = apiDetails.title;
 		var otherTitles = apiDetails.other_titles;
 		
-		localDetails['title'] = mainTitle;
-		localDetails[caseInsensitiveTitleField] = getCaseInsensitiveTitle(mainTitle);
-		localDetails['english_title'] = getEnglishTitle(mainTitle, otherTitles);
-		localDetails[allTitlesField] = getTitlesList(mainTitle, otherTitles);
+		localDetails[fieldMainTitle] = mainTitle;
+		localDetails[fieldCaseInsensitiveTitle] = getCaseInsensitiveTitle(mainTitle);
+		localDetails[fieldEnglishTitle] = getEnglishTitle(mainTitle, otherTitles);
+		localDetails[fieldAllTitles] = getTitlesList(mainTitle, otherTitles);
 	}
 	
 	function getCaseInsensitiveTitle(mainTitle) {

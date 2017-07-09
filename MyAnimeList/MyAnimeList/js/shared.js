@@ -13,12 +13,17 @@ var loadingStatusSelector = '.' + loadingStatusClass;
 var animeSectionClass = 'mal-ext-anime-section';
 var animeSectionSelector = '.' + animeSectionClass;
 
+// FIELDS
+var fieldMainTitle = 'title';
+var fieldCaseInsensitiveTitle = 'case_insensitive_title';
+var fieldEnglishTitle = 'english_title';
+var fieldAllTitles = 'all_titles';
+
 var userTagsField = 'mal_ext_user_tags';
-var caseInsensitiveTitleField = 'mal_ext_case_insensitive_title';
-var allTitlesField = 'mal_ext_all_titles';
 var parsedStartDateField = 'mal_ext_parsed_start_date';
 var parsedEndDateField = 'mal_ext_parsed_end_date';
 var priorityField = 'mal_ext_priority';
+// END FIELDS
 
 var actualRatings = ['G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai'];
 
