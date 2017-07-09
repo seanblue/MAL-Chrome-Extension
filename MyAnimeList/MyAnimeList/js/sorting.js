@@ -99,7 +99,7 @@ var sorting = (function() {
 	}
 	
 	function sortAnimeByTitle() {
-		var field = caseInsensitiveTitleField;
+		var field = fieldCaseInsensitiveTitle;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});
@@ -205,7 +205,7 @@ var sorting = (function() {
 		var sortBeforeMethod = getSortBeforeMethod(reverseSort);
 		var sortAfterMethod = getSortAfterMethod(reverseSort);
 		
-		var tieBreakField = caseInsensitiveTitleField;
+		var tieBreakField = fieldCaseInsensitiveTitle;
 		sectionData.order.sort(function(id1, id2) {
 			var anime1 = sectionData.data[id1].details;
 			var anime2 = sectionData.data[id2].details;

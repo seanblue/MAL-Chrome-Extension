@@ -91,7 +91,7 @@ var infoPopover = (function() {
 			'top': y
 		});
 		
-		$('.mal-ext-popover-title').html(details.title);
+		$('.mal-ext-popover-title').html(details[fieldMainTitle]);
 		updateEnglishTitle(details);
 		$('.mal-ext-popover-aired').text(getFullAiredDate(details[parsedStartDateField], details[parsedEndDateField]));
 		$('.mal-ext-popover-average').text(getMemberScore(details));
@@ -107,13 +107,10 @@ var infoPopover = (function() {
 	}
 	
 	function updateEnglishTitle(details) {
-		var mainTitle = details.title;
-		var otherTitles = details.other_titles;
-		
 		var section = $('.mal-ext-popover-english-title');
 		var container = section.parent();
 		
-		var englishTitle = details.english_title;
+		var englishTitle = details[fieldEnglishTitle];
 		if (englishTitle === null) {
 			container.hide();
 		}

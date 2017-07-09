@@ -259,7 +259,7 @@ var filtering = (function() {
 	
 	function filterAnimeByTitle(val) {
 		var showIfTrueFunction = getShowIfTrueAnyValueInListIsLikeAnyFunction(val);
-		filterAnime(allTitlesField, val, showIfTrueFunction, '');
+		filterAnime(fieldAllTitles, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnimeBySynopsis(val) {
