@@ -254,7 +254,7 @@ var filtering = (function() {
 	
 	function filterAnimeByPriority(val) {
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
-		filterAnime(priorityField, val, showIfTrueFunction);
+		filterAnime(fieldUserPriority, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByTitle(val) {
@@ -270,7 +270,7 @@ var filtering = (function() {
 	
 	function filterAnimeByUserTag(val) {
 		var showIfTrueFunction = getShowIfTrueAnyValueInListIsLikeAnyFunction(val);
-		filterAnime(userTagsField, val, showIfTrueFunction, '');
+		filterAnime(fieldUserTags, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnimeByDate() {
@@ -286,7 +286,7 @@ var filtering = (function() {
 			return testFunction(startDateTestVal, endDateTestVal);
 		};
 		
-		filterAnime([parsedStartDateField, parsedEndDateField], [startDateInputVal, endDateInputVal], showIfTrueFunction, '');
+		filterAnime([fieldStartDate, fieldEndDate], [startDateInputVal, endDateInputVal], showIfTrueFunction, '');
 	}
 	
 	function getDateFilterTestFunction(startDateInputVal, endDateInputVal) {
