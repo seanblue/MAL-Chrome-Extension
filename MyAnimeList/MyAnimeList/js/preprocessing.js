@@ -292,13 +292,14 @@ var preprocessing = (function() {
 		localDetails['favorited_count'] = getFavoritedCount(apiDetails);
 		localDetails['episodes'] = getEpisodeCount(apiDetails);
 		
-		// Temp
 		localDetails['other_titles'] = apiDetails['other_titles'];
-		localDetails['start_date'] = apiDetails['start_date'];
-		localDetails['end_date'] = apiDetails['end_date'];
 		localDetails['title'] = apiDetails['title'];
 		
-		addAdditionalDetails(localDetails);
+		localDetails[caseInsensitiveTitleField] = getCaseInsensitiveTitle(apiDetails);
+		localDetails[allTitlesField] = getAllTitles(apiDetails);
+		localDetails[parsedStartDateField] = getStartDate(apiDetails);
+		localDetails[parsedEndDateField] = getEndDate(apiDetails);
+		
 		return localDetails;
 	}
 	
@@ -342,30 +343,27 @@ var preprocessing = (function() {
 		return apiDetails['episodes'];
 	}
 	
-	function addAdditionalDetails(details) {
-		addCaseInsensitiveTitleDetails(details);
-		addAllTitlesDetails(details);
-		addParsedAiredDateDetails(details);
+	function getCaseInsensitiveTitle(apiDetails) {
+		var title = apiDetails.title;
+		return (typeof title === 'undefined') ? '' : title.toLowerCase();
 	}
 	
-	function addCaseInsensitiveTitleDetails(details) {
-		var title = details.title;
-		details[caseInsensitiveTitleField] = (typeof title === 'undefined') ? '' : title.toLowerCase();
-	}
-	
-	function addAllTitlesDetails(details) {
-		var mainTitle = details.title;
-		var otherTitles = details.other_titles || {};
+	function getAllTitles(apiDetails) {
+		var mainTitle = apiDetails.title;
+		var otherTitles = apiDetails.other_titles || {};
 		otherTitles = $.map(otherTitles, function(item) {
 			return item;
 		});
 		
-		details[allTitlesField] = [mainTitle].concat(otherTitles);
+		return [mainTitle].concat(otherTitles);
 	}
 	
-	function addParsedAiredDateDetails(details) {
-		details[parsedStartDateField] = getParsedAiredDateDetails(details.start_date);
-		details[parsedEndDateField] = getParsedAiredDateDetails(details.end_date);
+	function getStartDate(apiDetails) {
+		return getParsedAiredDateDetails(apiDetails.start_date);
+	}
+	
+	function getEndDate(apiDetails) {
+		return getParsedAiredDateDetails(apiDetails.end_date);
 	}
 	
 	function getParsedAiredDateDetails(dateStr) {
