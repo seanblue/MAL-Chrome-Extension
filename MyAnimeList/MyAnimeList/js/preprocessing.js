@@ -301,8 +301,8 @@ var preprocessing = (function() {
 	}
 	
 	function setTitleDetails(localDetails, apiDetails) {
-		var mainTitle = apiDetails.title;
-		var otherTitles = apiDetails.other_titles;
+		var mainTitle = apiDetails.name;
+		var otherTitles = apiDetails.other_names;
 		
 		localDetails[fieldMainTitle] = mainTitle;
 		localDetails[fieldCaseInsensitiveTitle] = getCaseInsensitiveTitle(mainTitle);
@@ -360,19 +360,19 @@ var preprocessing = (function() {
 	}
 	
 	function getMembersScore(apiDetails) {
-		return apiDetails['members_score'];
+		return apiDetails.stats['score'];
 	}
 	
 	function getRank(apiDetails) {
-		return apiDetails['rank'];
+		return apiDetails.stats['rank'];
 	}
 	
 	function getPopularityRank(apiDetails) {
-		return apiDetails['popularity_rank'];
+		return apiDetails.stats['popularity_rank'];
 	}
 	
 	function getFavoritedCount(apiDetails) {
-		return apiDetails['favorited_count'];
+		return apiDetails.stats['favorited_count'];
 	}
 	
 	function getEpisodeCount(apiDetails) {
