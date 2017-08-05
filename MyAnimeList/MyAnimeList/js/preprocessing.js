@@ -397,19 +397,12 @@ var preprocessing = (function() {
 			dateDetails[displayField] = '?'
 			dateDetails[sortField] = '9999-99-99'
 		}
-		else if (dateStr.length === 4 && (dateStr.startsWith('19') || dateStr.startsWith('20'))) {
-			// Only a year.
-			dateDetails[displayField] = dateStr;
-			dateDetails[sortField] = dateStr + '-99-99'
-		}
 		else {
-			var date = new Date(dateStr);
-			var month = date.getMonth(); // zero-based
-			var day = date.getDate();
-			var year = date.getFullYear();
+			var date = dateStr.substring(0, 10);
+			var [year, month, day] = date.split('-');
 			
-			dateDetails[displayField] = months[month] + ' ' + day + ', ' + year;
-			dateDetails[sortField] = year + '-' + padDate(month + 1) + '-' + padDate(day);
+			dateDetails[displayField] = `${months[month - 1]} ${day}, ${year}`;
+			dateDetails[sortField] = date;
 		}
 		
 		return dateDetails;
