@@ -1,6 +1,3 @@
 TODO
 
 * Add link when API data fails to load to only reload those failed entries.
-* Add 'Number of Votes'
-	- Popover
-	- Sorting.
