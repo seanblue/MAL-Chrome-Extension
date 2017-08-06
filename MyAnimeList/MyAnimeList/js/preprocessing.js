@@ -291,6 +291,7 @@ var preprocessing = (function() {
 		localDetails[fieldPopularityRank] = getPopularityRank(apiDetails);
 		localDetails[fieldFavoritedCount] = getFavoritedCount(apiDetails);
 		localDetails[fieldEpisodeCount] = getEpisodeCount(apiDetails);
+		localDetails[fieldStudios] = getStudios(apiDetails);
 		
 		setTitleDetails(localDetails, apiDetails);
 		
@@ -377,6 +378,10 @@ var preprocessing = (function() {
 	
 	function getEpisodeCount(apiDetails) {
 		return apiDetails['episodes'];
+	}
+	
+	function getStudios(apiDetails) {
+		return apiDetails['studios'].map(d => d.name);
 	}
 	
 	function getStartDate(apiDetails) {
