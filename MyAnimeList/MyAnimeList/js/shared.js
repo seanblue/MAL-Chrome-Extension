@@ -29,6 +29,7 @@ var fieldRank = 'rank';
 var fieldPopularityRank = 'popularity_rank';
 var fieldFavoritedCount = 'favorited_count';
 var fieldEpisodeCount = 'episode_count';
+var fieldStudios = 'studio_list';
 
 var fieldUserTags = 'user_tags';
 var fieldStartDate = 'start_date_data';
