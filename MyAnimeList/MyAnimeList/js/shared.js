@@ -25,6 +25,7 @@ var fieldClassification = 'classification';
 var fieldStatus = 'status';
 var fieldSynopsis = 'synopsis';
 var fieldMemberScore = 'members_score';
+var fieldNumberOfVotes = 'number_of_votes';
 var fieldRank = 'rank';
 var fieldPopularityRank = 'popularity_rank';
 var fieldFavoritedCount = 'favorited_count';

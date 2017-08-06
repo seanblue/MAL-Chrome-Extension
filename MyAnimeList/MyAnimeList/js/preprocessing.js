@@ -287,6 +287,7 @@ var preprocessing = (function() {
 		localDetails[fieldStatus] = getStatus(apiDetails);
 		localDetails[fieldSynopsis] = getSynopsis(apiDetails);
 		localDetails[fieldMemberScore] = getMembersScore(apiDetails);
+		localDetails[fieldNumberOfVotes] = getNumberOfVotes(apiDetails);
 		localDetails[fieldRank] = getRank(apiDetails);
 		localDetails[fieldPopularityRank] = getPopularityRank(apiDetails);
 		localDetails[fieldFavoritedCount] = getFavoritedCount(apiDetails);
@@ -362,6 +363,10 @@ var preprocessing = (function() {
 	
 	function getMembersScore(apiDetails) {
 		return apiDetails.stats['score'];
+	}
+	
+	function getNumberOfVotes(apiDetails) {
+		return apiDetails.stats['score_count'];
 	}
 	
 	function getRank(apiDetails) {
