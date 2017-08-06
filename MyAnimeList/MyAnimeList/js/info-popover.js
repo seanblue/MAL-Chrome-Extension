@@ -146,7 +146,9 @@ var infoPopover = (function() {
 			return 'N/A';
 		}
 		
-		return memberScore.toFixed(2);
+		var numberOfVotes = details[fieldNumberOfVotes].toLocaleString();
+		
+		return `${memberScore.toFixed(2)} (${numberOfVotes} votes)`;
 	}
 	
 	function getRank(details) {
