@@ -226,13 +226,13 @@ var filtering = (function() {
 	}
 	
 	function filterAnimeByType(val) {
-		var field = 'type';
+		var field = fieldAnimeType;
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByGenre(val) {
-		var field = 'genres';
+		var field = fieldGenres;
 		var showIfTrueFunction = function(genres) {
 			return genres.indexOf(val) !== -1;
 		}
@@ -241,36 +241,36 @@ var filtering = (function() {
 	}
 	
 	function filterAnimeByRating(val) {
-		var field = 'classification';
+		var field = fieldClassification;
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByStatus(val) {
-		var field = 'status';
+		var field = fieldStatus;
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
 		filterAnime(field, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByPriority(val) {
 		var showIfTrueFunction = getShowIfTrueValueIsEqualFunction(val);
-		filterAnime(priorityField, val, showIfTrueFunction);
+		filterAnime(fieldUserPriority, val, showIfTrueFunction);
 	}
 	
 	function filterAnimeByTitle(val) {
 		var showIfTrueFunction = getShowIfTrueAnyValueInListIsLikeAnyFunction(val);
-		filterAnime(allTitlesField, val, showIfTrueFunction, '');
+		filterAnime(fieldAllTitles, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnimeBySynopsis(val) {
-		var field = 'synopsis';
+		var field = fieldSynopsis;
 		var showIfTrueFunction = getShowIfTrueValueIsLikeFunction(val);
 		filterAnime(field, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnimeByUserTag(val) {
 		var showIfTrueFunction = getShowIfTrueAnyValueInListIsLikeAnyFunction(val);
-		filterAnime(userTagsField, val, showIfTrueFunction, '');
+		filterAnime(fieldUserTags, val, showIfTrueFunction, '');
 	}
 	
 	function filterAnimeByDate() {
@@ -286,7 +286,7 @@ var filtering = (function() {
 			return testFunction(startDateTestVal, endDateTestVal);
 		};
 		
-		filterAnime([parsedStartDateField, parsedEndDateField], [startDateInputVal, endDateInputVal], showIfTrueFunction, '');
+		filterAnime([fieldStartDate, fieldEndDate], [startDateInputVal, endDateInputVal], showIfTrueFunction, '');
 	}
 	
 	function getDateFilterTestFunction(startDateInputVal, endDateInputVal) {

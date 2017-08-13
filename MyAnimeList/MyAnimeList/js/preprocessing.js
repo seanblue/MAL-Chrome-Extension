@@ -79,7 +79,7 @@ var preprocessing = (function() {
 			return el.trim();
 		});
 		
-		anime.details[userTagsField] = tags;
+		anime.details[fieldUserTags] = tags;
 	}
 	
 	function addPriorityToAnimeDetailsForAnime(animeEl, priorityColumnIndex) {
@@ -97,7 +97,7 @@ var preprocessing = (function() {
 		var td = getTdForColumnIndex(animeEl, priorityColumnIndex);
 		var priority = td.text().trim();
 		
-		anime.details[priorityField] = priority;
+		anime.details[fieldUserPriority] = priority;
 	}
 	
 	function getTdForColumnIndex(animeEl, columnIndex) {
@@ -258,14 +258,14 @@ var preprocessing = (function() {
 		return Math.random() * (max - min) + min;
 	}
 	
-	function saveAnimeDetails(id, el, details) {
-		addAdditionalDetails(details);
+	function saveAnimeDetails(id, el, apiDetails) {
+		var localDetails = mapApiToLocalDetails(apiDetails);
 		
 		var orderTd = $(el.find('td')[1]);
 		var data = {
 			'el': el,
 			'orderTd': orderTd,
-			'details': details,
+			'details': localDetails,
 			'visible': true
 		};
 		
@@ -279,31 +279,112 @@ var preprocessing = (function() {
 		return $(el).closest(animeSectionSelector).data('anime-section');
 	}
 	
-	function addAdditionalDetails(details) {
-		addCaseInsensitiveTitleDetails(details);
-		addAllTitlesDetails(details);
-		addParsedAiredDateDetails(details);
-		fixTypeDetails(details);
+	function mapApiToLocalDetails(apiDetails) {
+		var localDetails = {};
+		localDetails[fieldAnimeType] = getType(apiDetails);
+		localDetails[fieldGenres] = getGenres(apiDetails);
+		localDetails[fieldClassification] = getClassification(apiDetails);
+		localDetails[fieldStatus] = getStatus(apiDetails);
+		localDetails[fieldSynopsis] = getSynopsis(apiDetails);
+		localDetails[fieldMemberScore] = getMembersScore(apiDetails);
+		localDetails[fieldRank] = getRank(apiDetails);
+		localDetails[fieldPopularityRank] = getPopularityRank(apiDetails);
+		localDetails[fieldFavoritedCount] = getFavoritedCount(apiDetails);
+		localDetails[fieldEpisodeCount] = getEpisodeCount(apiDetails);
+		
+		setTitleDetails(localDetails, apiDetails);
+		
+		localDetails[fieldStartDate] = getStartDate(apiDetails);
+		localDetails[fieldEndDate] = getEndDate(apiDetails);
+		
+		return localDetails;
 	}
 	
-	function addCaseInsensitiveTitleDetails(details) {
-		var title = details.title;
-		details[caseInsensitiveTitleField] = (typeof title === 'undefined') ? '' : title.toLowerCase();
+	function setTitleDetails(localDetails, apiDetails) {
+		var mainTitle = apiDetails.title;
+		var otherTitles = apiDetails.other_titles;
+		
+		localDetails[fieldMainTitle] = mainTitle;
+		localDetails[fieldCaseInsensitiveTitle] = getCaseInsensitiveTitle(mainTitle);
+		localDetails[fieldEnglishTitle] = getEnglishTitle(mainTitle, otherTitles);
+		localDetails[fieldAllTitles] = getTitlesList(mainTitle, otherTitles);
 	}
 	
-	function addAllTitlesDetails(details) {
-		var mainTitle = details.title;
-		var otherTitles = details.other_titles || {};
-		otherTitles = $.map(otherTitles, function(item) {
+	function getCaseInsensitiveTitle(mainTitle) {
+		return (typeof mainTitle === 'undefined') ? '' : mainTitle.toLowerCase();
+	}
+	
+	function getTitlesList(mainTitle, otherTitles) {
+		var otherTitlesList = otherTitles || {};
+		otherTitlesList = $.map(otherTitlesList, function(item) {
 			return item;
 		});
 		
-		details[allTitlesField] = [mainTitle].concat(otherTitles);
+		return [mainTitle].concat(otherTitlesList);
 	}
 	
-	function addParsedAiredDateDetails(details) {
-		details[parsedStartDateField] = getParsedAiredDateDetails(details.start_date);
-		details[parsedEndDateField] = getParsedAiredDateDetails(details.end_date);
+	function getEnglishTitle(mainTitle, otherTitles) {
+		var englishTitles = otherTitles.english
+		if (typeof englishTitles === 'undefined' || englishTitles.length === 0) {
+			// Doesn't exist.
+			return null;
+		}
+
+		var englishTitle = englishTitles[0];
+		if (englishTitle === mainTitle) {
+			// Not unique.
+			return null;
+		}
+		
+		return englishTitle;
+	}
+	
+	function getType(apiDetails) {
+		return apiDetails['type'] || '';
+	}
+	
+	function getGenres(apiDetails) {
+		return apiDetails['genres'];
+	}
+	
+	function getClassification(apiDetails) {
+		return apiDetails['classification'];
+	}
+	
+	function getStatus(apiDetails) {
+		return apiDetails['status'];
+	}
+	
+	function getSynopsis(apiDetails) {
+		return apiDetails['synopsis'];
+	}
+	
+	function getMembersScore(apiDetails) {
+		return apiDetails['members_score'];
+	}
+	
+	function getRank(apiDetails) {
+		return apiDetails['rank'];
+	}
+	
+	function getPopularityRank(apiDetails) {
+		return apiDetails['popularity_rank'];
+	}
+	
+	function getFavoritedCount(apiDetails) {
+		return apiDetails['favorited_count'];
+	}
+	
+	function getEpisodeCount(apiDetails) {
+		return apiDetails['episodes'];
+	}
+	
+	function getStartDate(apiDetails) {
+		return getParsedAiredDateDetails(apiDetails.start_date);
+	}
+	
+	function getEndDate(apiDetails) {
+		return getParsedAiredDateDetails(apiDetails.end_date);
 	}
 	
 	function getParsedAiredDateDetails(dateStr) {
@@ -340,10 +421,6 @@ var preprocessing = (function() {
 		}
 		
 		return value;
-	}
-	
-	function fixTypeDetails(details) {
-		details.type = details.type || '';
 	}
 	
 	return {

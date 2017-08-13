@@ -1,6 +1,4 @@
-var infoPopover = (function() {
-	var noEnglishTitle = '';
-	
+var infoPopover = (function() {	
 	function run() {
 		insertInfoDiv();
 		addInfoIcons();
@@ -93,15 +91,15 @@ var infoPopover = (function() {
 			'top': y
 		});
 		
-		$('.mal-ext-popover-title').html(details.title);
+		$('.mal-ext-popover-title').html(details[fieldMainTitle]);
 		updateEnglishTitle(details);
-		$('.mal-ext-popover-aired').text(getFullAiredDate(details[parsedStartDateField], details[parsedEndDateField]));
+		$('.mal-ext-popover-aired').text(getFullAiredDate(details[fieldStartDate], details[fieldEndDate]));
 		$('.mal-ext-popover-average').text(getMemberScore(details));
 		$('.mal-ext-popover-rank').text(getRank(details));
-		$('.mal-ext-popover-popularity').text(details.popularity_rank.toLocaleString());
-		$('.mal-ext-popover-favorited').text(details.favorited_count.toLocaleString());
+		$('.mal-ext-popover-popularity').text(details[fieldPopularityRank].toLocaleString());
+		$('.mal-ext-popover-favorited').text(details[fieldFavoritedCount].toLocaleString());
 		
-		var genres = details.genres.join(', ');
+		var genres = details[fieldGenres].join(', ');
 		$('.mal-ext-popover-genres').text(genres);
 		
 		popoverAnimeId = id;
@@ -109,38 +107,17 @@ var infoPopover = (function() {
 	}
 	
 	function updateEnglishTitle(details) {
-		var mainTitle = details.title;
-		var otherTitles = details.other_titles;
-		
 		var section = $('.mal-ext-popover-english-title');
 		var container = section.parent();
 		
-		var englishTitle = getEnglishTitleIfExistsAndUnique(otherTitles, mainTitle);
-		if (englishTitle === noEnglishTitle) {
+		var englishTitle = details[fieldEnglishTitle];
+		if (englishTitle === null) {
 			container.hide();
 		}
 		else {
-			section.text(otherTitles.english[0]);
+			section.text(englishTitle);
 			container.show();
 		}
-	}
-	
-	function getEnglishTitleIfExistsAndUnique(otherTitles, mainTitle) {
-		if (typeof otherTitles === 'undefined') {
-			return noEnglishTitle;
-		}
-		
-		var englishTitles = otherTitles.english
-		if (typeof englishTitles === 'undefined' || englishTitles.length === 0) {
-			return noEnglishTitle;
-		}
-
-		var englishTitle = englishTitles[0];
-		if (englishTitle === mainTitle) {
-			return noEnglishTitle;
-		}
-		
-		return englishTitle;
 	}
 	
 	function getFullAiredDate(startDateObj, endDateObj) {
@@ -160,7 +137,7 @@ var infoPopover = (function() {
 	}
 	
 	function getMemberScore(details) {
-		var memberScore = details.members_score;
+		var memberScore = details[fieldMemberScore];
 		if (invalidScore(memberScore)) {
 			return 'N/A';
 		}
@@ -169,7 +146,7 @@ var infoPopover = (function() {
 	}
 	
 	function getRank(details) {
-		var rank = details.rank;
+		var rank = details[fieldRank];
 		if (invalidScore(rank)) {
 			return 'N/A';
 		}

@@ -13,12 +13,28 @@ var loadingStatusSelector = '.' + loadingStatusClass;
 var animeSectionClass = 'mal-ext-anime-section';
 var animeSectionSelector = '.' + animeSectionClass;
 
-var userTagsField = 'mal_ext_user_tags';
-var caseInsensitiveTitleField = 'mal_ext_case_insensitive_title';
-var allTitlesField = 'mal_ext_all_titles';
-var parsedStartDateField = 'mal_ext_parsed_start_date';
-var parsedEndDateField = 'mal_ext_parsed_end_date';
-var priorityField = 'mal_ext_priority';
+// FIELDS
+var fieldMainTitle = 'title';
+var fieldCaseInsensitiveTitle = 'case_insensitive_title';
+var fieldEnglishTitle = 'english_title';
+var fieldAllTitles = 'all_titles';
+
+var fieldAnimeType = 'type';
+var fieldGenres = 'genres';
+var fieldClassification = 'classification';
+var fieldStatus = 'status';
+var fieldSynopsis = 'synopsis';
+var fieldMemberScore = 'members_score';
+var fieldRank = 'rank';
+var fieldPopularityRank = 'popularity_rank';
+var fieldFavoritedCount = 'favorited_count';
+var fieldEpisodeCount = 'episode_count';
+
+var fieldUserTags = 'user_tags';
+var fieldStartDate = 'start_date_data';
+var fieldEndDate = 'end_date_data';
+var fieldUserPriority = 'user_priority';
+// END FIELDS
 
 var actualRatings = ['G - All Ages', 'PG - Children', 'PG-13 - Teens 13 or older', 'R - 17+ (violence & profanity)', 'R+ - Mild Nudity', 'Rx - Hentai'];
 

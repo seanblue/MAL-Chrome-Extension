@@ -99,42 +99,42 @@ var sorting = (function() {
 	}
 	
 	function sortAnimeByTitle() {
-		var field = caseInsensitiveTitleField;
+		var field = fieldCaseInsensitiveTitle;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByAverageScore() {
-		var field = 'members_score';
+		var field = fieldMemberScore;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByRank() {
-		var field = 'rank';
+		var field = fieldRank;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByPopularity() {
-		var field = 'popularity_rank';
+		var field = fieldPopularityRank;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByFavorited() {
-		var field = 'favorited_count';
+		var field = fieldFavoritedCount;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByRating() {
-		var field = 'classification';
+		var field = fieldClassification;
 		
 		var getValueMethod = function(val) {
 			return ratings.indexOf(val);
@@ -146,18 +146,18 @@ var sorting = (function() {
 	}
 	
 	function sortAnimeByNumberOfEpisodes() {
-		var field = 'episodes';
+		var field = fieldEpisodeCount;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});
 	}
 	
 	function sortAnimeByStartDate() {
-		sortAnimeByDate(parsedStartDateField);
+		sortAnimeByDate(fieldStartDate);
 	}
 	
 	function sortAnimeByEndDate() {
-		sortAnimeByDate(parsedEndDateField);
+		sortAnimeByDate(fieldEndDate);
 	}
 	
 	function sortAnimeByDate(field) {
@@ -205,7 +205,7 @@ var sorting = (function() {
 		var sortBeforeMethod = getSortBeforeMethod(reverseSort);
 		var sortAfterMethod = getSortAfterMethod(reverseSort);
 		
-		var tieBreakField = caseInsensitiveTitleField;
+		var tieBreakField = fieldCaseInsensitiveTitle;
 		sectionData.order.sort(function(id1, id2) {
 			var anime1 = sectionData.data[id1].details;
 			var anime2 = sectionData.data[id2].details;
