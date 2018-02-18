@@ -2,7 +2,7 @@ var filtering = (function() {
 	var activeFilterClass = 'mal-ext-active-filter';
 	var activeFilterSelector = '.' + activeFilterClass;
 	
-	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Priority', 'Title', 'Synopsis', 'Studio', 'Tag', 'Date'];
+	var filterTypes = ['None', 'Type', 'Genre', 'Rating', 'Status', 'Priority', 'Title', 'Synopsis', 'Tag', 'Date'];
 	var mediaTypes = ['All', 'TV', 'OVA', 'Movie', 'Special', 'ONA', 'Music'];
 	var genres = ['All', 'Action', 'Adventure', 'Cars', 'Comedy', 'Dementia', 'Demons', 'Drama', 'Ecchi', 'Fantasy', 'Game', 'Harem', 'Hentai', 'Historical', 'Horror', 'Josei', 'Kids', 'Magic', 'Martial Arts', 'Mecha', 'Military', 'Music', 'Mystery', 'Parody', 'Police', 'Psychological', 'Romance', 'Samurai', 'School', 'Sci-Fi', 'Seinen', 'Shoujo', 'Shoujo Ai', 'Shounen', 'Shounen Ai', 'Slice of Life', 'Space', 'Sports', 'Super Power', 'Supernatural', 'Thriller', 'Vampire', 'Yaoi', 'Yuri'];
 	var ratingsValues = ['All'].concat(actualRatings);
@@ -58,8 +58,6 @@ var filtering = (function() {
 		
 		var synopsisFilterInput = getInput('mal-ext-content-synopsis-filter');
 		
-		var studiosFilterInput = getInput('mal-ext-content-studios-filter');
-
 		var userTagsFilterInput = getInput('mal-ext-content-user-tags-filter');
 		
 		var dateInputSection = getDateInputSection();
@@ -76,7 +74,6 @@ var filtering = (function() {
 		contentTypeFilter.append(getHiddenFilterContainer().append(priorityFilterSelect));
 		contentTypeFilter.append(getHiddenFilterContainer().append(titleFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(synopsisFilterInput));
-		contentTypeFilter.append(getHiddenFilterContainer().append(studiosFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(userTagsFilterInput));
 		contentTypeFilter.append(getHiddenFilterContainer().append(dateInputSection));
 	}
@@ -118,7 +115,6 @@ var filtering = (function() {
 		var prioritySelect = $('.mal-ext-content-priority-filter');
 		var titleInput = $('.mal-ext-content-title-filter');
 		var synopsisInput = $('.mal-ext-content-synopsis-filter');
-		var studiosInput = $('.mal-ext-content-studios-filter');
 		var userTagsInput = $('.mal-ext-content-user-tags-filter');
 		var dateInputSection = $('.mal-ext-content-date-filter-section');
 		
@@ -147,9 +143,6 @@ var filtering = (function() {
 			}
 			else if (val === 'Synopsis') {
 				showSelectedFilter(synopsisInput)
-			}
-			else if (val === 'Studio') {
-				showSelectedFilter(studiosInput)
 			}
 			else if (val === 'Tag') {
 				showSelectedFilter(userTagsInput)
@@ -186,21 +179,16 @@ var filtering = (function() {
 	
 		setupTitleFilterEvent(titleInput);
 		setupSynopsisFilterEvent(synopsisInput);
-		setupStudiosFilterEvent(studiosInput);
 		setupUserTagsFilterEvent(userTagsInput);
 		setupDateFilterEvent();
 	}
-
+	
 	function setupTitleFilterEvent(titleInput) {
 		setupInputFilterEvent(titleInput, filterAnimeByTitle);
 	}
-
+	
 	function setupSynopsisFilterEvent(synopsisInput) {
 		setupInputFilterEvent(synopsisInput, filterAnimeBySynopsis);
-	}
-
-	function setupStudiosFilterEvent(studiosInput) {
-		setupInputFilterEvent(studiosInput, filterAnimeByStudio);
 	}
 	
 	function setupUserTagsFilterEvent(userTagsInput) {
@@ -279,17 +267,12 @@ var filtering = (function() {
 		var showIfTrueFunction = getShowIfTrueValueIsLikeFunction(val);
 		filterAnime(field, val, showIfTrueFunction, '');
 	}
-
-	function filterAnimeByStudio(val) {
-		var showIfTrueFunction = getShowIfTrueAnyValueInListIsLikeAnyFunction(val);
-		filterAnime(fieldStudios, val, showIfTrueFunction, '');
-	}
-
+	
 	function filterAnimeByUserTag(val) {
 		var showIfTrueFunction = getShowIfTrueAnyValueInListIsLikeAnyFunction(val);
 		filterAnime(fieldUserTags, val, showIfTrueFunction, '');
 	}
-
+	
 	function filterAnimeByDate() {
 		var startDateInputVal = startDateInput.val();
 		var endDateInputVal = endDateInput.val();

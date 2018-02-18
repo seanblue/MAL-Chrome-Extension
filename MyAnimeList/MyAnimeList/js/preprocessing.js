@@ -287,12 +287,10 @@ var preprocessing = (function() {
 		localDetails[fieldStatus] = getStatus(apiDetails);
 		localDetails[fieldSynopsis] = getSynopsis(apiDetails);
 		localDetails[fieldMemberScore] = getMembersScore(apiDetails);
-		localDetails[fieldNumberOfVotes] = getNumberOfVotes(apiDetails);
 		localDetails[fieldRank] = getRank(apiDetails);
 		localDetails[fieldPopularityRank] = getPopularityRank(apiDetails);
 		localDetails[fieldFavoritedCount] = getFavoritedCount(apiDetails);
 		localDetails[fieldEpisodeCount] = getEpisodeCount(apiDetails);
-		localDetails[fieldStudios] = getStudios(apiDetails);
 		
 		setTitleDetails(localDetails, apiDetails);
 		
@@ -303,8 +301,8 @@ var preprocessing = (function() {
 	}
 	
 	function setTitleDetails(localDetails, apiDetails) {
-		var mainTitle = apiDetails.name;
-		var otherTitles = apiDetails.other_names;
+		var mainTitle = apiDetails.title;
+		var otherTitles = apiDetails.other_titles;
 		
 		localDetails[fieldMainTitle] = mainTitle;
 		localDetails[fieldCaseInsensitiveTitle] = getCaseInsensitiveTitle(mainTitle);
@@ -362,31 +360,23 @@ var preprocessing = (function() {
 	}
 	
 	function getMembersScore(apiDetails) {
-		return apiDetails.stats['score'];
-	}
-	
-	function getNumberOfVotes(apiDetails) {
-		return apiDetails.stats['score_count'];
+		return apiDetails['members_score'];
 	}
 	
 	function getRank(apiDetails) {
-		return apiDetails.stats['rank'];
+		return apiDetails['rank'];
 	}
 	
 	function getPopularityRank(apiDetails) {
-		return apiDetails.stats['popularity_rank'];
+		return apiDetails['popularity_rank'];
 	}
 	
 	function getFavoritedCount(apiDetails) {
-		return apiDetails.stats['favorited_count'];
+		return apiDetails['favorited_count'];
 	}
 	
 	function getEpisodeCount(apiDetails) {
 		return apiDetails['episodes'];
-	}
-	
-	function getStudios(apiDetails) {
-		return apiDetails['studios'].map(d => d.name);
 	}
 	
 	function getStartDate(apiDetails) {
@@ -407,12 +397,19 @@ var preprocessing = (function() {
 			dateDetails[displayField] = '?'
 			dateDetails[sortField] = '9999-99-99'
 		}
+		else if (dateStr.length === 4 && (dateStr.startsWith('19') || dateStr.startsWith('20'))) {
+			// Only a year.
+			dateDetails[displayField] = dateStr;
+			dateDetails[sortField] = dateStr + '-99-99'
+		}
 		else {
-			var date = dateStr.substring(0, 10);
-			var [year, month, day] = date.split('-');
+			var date = new Date(dateStr);
+			var month = date.getMonth(); // zero-based
+			var day = date.getDate();
+			var year = date.getFullYear();
 			
-			dateDetails[displayField] = `${months[month - 1]} ${day}, ${year}`;
-			dateDetails[sortField] = date;
+			dateDetails[displayField] = months[month] + ' ' + day + ', ' + year;
+			dateDetails[sortField] = year + '-' + padDate(month + 1) + '-' + padDate(day);
 		}
 		
 		return dateDetails;

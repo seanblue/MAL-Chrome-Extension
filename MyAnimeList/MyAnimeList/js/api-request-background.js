@@ -19,7 +19,7 @@
 	}
 	
 	function getApiUrl(id) {
-		return 'https://railgun-api.herokuapp.com/1.1/anime/' + id;
+		return 'http://umal-api.coreyjustinroberts.com/1.1/anime/' + id;
 	}
 	
 	function getApiResponse(event) {

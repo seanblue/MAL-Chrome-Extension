@@ -1,5 +1,5 @@
 var sorting = (function() {
-	var sortingTypes = ['Default', 'Title', 'Average Score', 'Number of Votes', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes', 'Start Date', 'End Date'];
+	var sortingTypes = ['Default', 'Title', 'Average Score', 'Rank', 'Popularity', 'Favorited', 'Rating', 'Episodes', 'Start Date', 'End Date'];
 	var ratings = actualRatings.concat(['None']);
 	var mainSortingSelect;
 	var mainSortingReverseCheckbox;
@@ -49,17 +49,13 @@ var sorting = (function() {
 				hideReverseSorting()
 				sortWithInitialOrder();
 			}
-			else if (val === 'Title') {
+			if (val === 'Title') {
 				showReverseSorting();
 				sortAnimeByTitle()
 			}
-			else if (val === 'Average Score') {
+			if (val === 'Average Score') {
 				showReverseSorting();
 				sortAnimeByAverageScore()
-			}
-			else if (val === 'Number of Votes') {
-				showReverseSorting();
-				sortAnimeByNumberOfVotes()
 			}
 			else if (val === 'Rank') {
 				showReverseSorting();
@@ -111,13 +107,6 @@ var sorting = (function() {
 	
 	function sortAnimeByAverageScore() {
 		var field = fieldMemberScore;
-		sortAnime(function(sectionData) {
-			return getSortedOrder(sectionData, field);
-		});
-	}
-	
-	function sortAnimeByNumberOfVotes() {
-		var field = fieldNumberOfVotes;
 		sortAnime(function(sectionData) {
 			return getSortedOrder(sectionData, field);
 		});

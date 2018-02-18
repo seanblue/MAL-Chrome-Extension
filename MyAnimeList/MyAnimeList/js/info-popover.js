@@ -28,7 +28,6 @@ var infoPopover = (function() {
 		animePaddedDiv.append(getContentDiv('Popularity', 'popularity'));
 		animePaddedDiv.append(getContentDiv('Favorited', 'favorited'));
 		animePaddedDiv.append(getContentDiv('Genres', 'genres'));
-		animePaddedDiv.append(getContentDiv('Studios', 'studios'));
 	}
 	
 	function getContentDiv(title, contentClass) {
@@ -99,15 +98,12 @@ var infoPopover = (function() {
 		$('.mal-ext-popover-rank').text(getRank(details));
 		$('.mal-ext-popover-popularity').text(details[fieldPopularityRank].toLocaleString());
 		$('.mal-ext-popover-favorited').text(details[fieldFavoritedCount].toLocaleString());
-		$('.mal-ext-popover-genres').text(listToString(details[fieldGenres]));
-		$('.mal-ext-popover-studios').text(listToString(details[fieldStudios]));
+		
+		var genres = details[fieldGenres].join(', ');
+		$('.mal-ext-popover-genres').text(genres);
 		
 		popoverAnimeId = id;
 		animeInfoDiv.show();
-	}
-	
-	function listToString(data) {
-		return data.join(', ');
 	}
 	
 	function updateEnglishTitle(details) {
@@ -146,9 +142,7 @@ var infoPopover = (function() {
 			return 'N/A';
 		}
 		
-		var numberOfVotes = details[fieldNumberOfVotes].toLocaleString();
-		
-		return `${memberScore.toFixed(2)} (${numberOfVotes} votes)`;
+		return memberScore.toFixed(2);
 	}
 	
 	function getRank(details) {
